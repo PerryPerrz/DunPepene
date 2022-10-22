@@ -1,6 +1,6 @@
 const fs = require('fs');
 const fileName = './public/models/event.json';
-const json = require('./event.json');
+const json = require('./event.json'); //json is an object that's contains the whole file content "event.json"
 
 module.exports = {
     getEventsByMonth: function (date, user) {
@@ -65,6 +65,22 @@ module.exports = {
         })
         return eventRes;
     },
+    addEvent: function(id, owner, title, date, duration, start_time) {
+        let hasAnError = false;
+        json.forEach(function (event) {
+            if (event.id === id) { //If the event's id already exists, we return an error.
+                //TODO Faire une classe d'erreur propre à nous
+                hasAnError = true;
+                console.log("Error")
+            }
+        })
+        if(!hasAnError) { //Here, the event doesn't exist yet.
+            //We add the event in the Json object.
+            json.push({"id" : id, "owner" : owner, "title" : title, "date" : date, "duration" : duration, "start_time" : start_time});
+            //We rewrite the Json file with the Json object's content.
+            saveInJsonFile();
+        }
+    },
     deleteEvent: function (id) {
         let i = 0;
         //We search in the JSON file for the event that has the id (an id is unique) we are searching for, and then we delete it from the json object.
@@ -74,13 +90,7 @@ module.exports = {
             }
             i++;
         })
-
-        //We rewrite the content of the .json file with the new content of the json object (after deleting).
-        fs.writeFile(fileName, JSON.stringify(json, null, 2), function writeJSON(err) {
-            if (err) return console.log(err);
-            console.log(JSON.stringify(json,null, 2));
-            console.log('writing to ' + fileName);
-        });
+        saveInJsonFile();
     }
 }
 
@@ -99,4 +109,13 @@ function getWeekFromDate(date) {
     var yearStart = new Date(Date.UTC(date.getUTCFullYear(), 0, 1));
     // Calculate full weeks to the nearest Thursday
     return Math.ceil((((date - yearStart) / 86400000) + 1) / 7);
+}
+
+//Function that rewrites the content of the .json file with the new content of the json object.
+function saveInJsonFile(){
+    fs.writeFile(fileName, JSON.stringify(json, null, 2), function writeJSON(err) {
+        if (err) return console.log(err);
+        console.log(JSON.stringify(json,null, 2));
+        console.log('writing to ' + fileName);
+    });
 }

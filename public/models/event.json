@@ -26,9 +26,17 @@
   {
     "id": "3",
     "owner": "Hugo",
-    "title": "S'acheter des médiacments contre les mini-pouces",
+    "title": "S'acheter des médicaments contre les mini-pouces",
     "date": "2022-10-18",
     "duration": "0.5",
     "start_time": "16"
+  },
+  {
+    "id": "69",
+    "owner": "Hugo",
+    "title": "Ramener un jeu de pétanque.",
+    "date": "2022-10-7",
+    "duration": "2",
+    "start_time": "1"
   }
 ]

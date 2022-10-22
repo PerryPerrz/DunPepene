@@ -52,6 +52,19 @@ app.get('/events/edit', (req, res) => {
     res.send("Events")
 })
 
+app.get('/events/add', (req, res) => {
+    let id = req.query.id;
+    let owner = req.query.owner;
+    let title = req.query.title;
+    let date = req.query.date;
+    let duration = req.query.duration;
+    let start_time = req.query.start_time;
+
+    controller.addEvent(id,owner,title,date,duration,start_time);
+
+    res.send("Event added successfully")
+})
+
 app.get('/events/delete', (req, res) => {
     let id = req.query.id;
     controller.deleteEvent(id);

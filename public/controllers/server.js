@@ -23,25 +23,29 @@ app.get('/register', (req, res) => {
 
 app.get('/calendar/month', (req, res) => {
     let date = req.query.date;
-    res.send(controller.getEventsByMonth(date));
+    let user = req.query.user;
+    res.send(controller.getEventsByMonth(date, user));
 })
 
 app.get('/calendar/week', (req, res) => {
     let date = req.query.date;
-    res.send(controller.getEventsByWeek(date));
+    let user = req.query.user;
+    res.send(controller.getEventsByWeek(date, user));
 })
 
 app.get('/calendar/day', (req, res) => {
     let date = req.query.date;
-    res.send(controller.getEventsByDay(date));
+    let user = req.query.user;
+    res.send(controller.getEventsByDay(date, user));
 })
 
 app.get('/events', (req, res) => {
-    res.send("Events")
+    res.send(controller.getAllEvents());
 })
 
 app.get('/events/get', (req, res) => {
-    res.send("Events")
+    let id = req.query.id;
+    res.send(controller.getEventById(id));
 })
 
 app.get('/events/edit', (req, res) => {
@@ -49,5 +53,7 @@ app.get('/events/edit', (req, res) => {
 })
 
 app.get('/events/delete', (req, res) => {
-    res.send("Events")
+    let id = req.query.id;
+    controller.deleteEvent(id);
+    res.send("Event deleted successfully");
 })

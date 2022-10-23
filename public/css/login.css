@@ -24,17 +24,31 @@ body{
 }
 .shape:first-child{
     background: linear-gradient(
-            #1845ad,
-            #23a2f6
+            to top,
+            #C02D1E,
+            #B00D03,
+            #7B1005,
+            #C02D1E,
+            #D7B79C,
+            #A49C1A,
+            #858A1A,
+            #586613,
+            #424E06
     );
     left: -80px;
     top: -80px;
 }
 .shape:last-child{
     background: linear-gradient(
-            to right,
-            #ff512f,
-            #f09819
+            to bottom,
+            #C02D1E,
+            #B00D03,
+            #C02D1E,
+            #D7B79C,
+            #A49C1A,
+            #858A1A,
+            #586613,
+            #424E06
     );
     right: -30px;
     bottom: -80px;
@@ -90,7 +104,7 @@ input{
 button{
     margin-top: 50px;
     width: 100%;
-    background-color: rgb(172, 235, 255);
+    background-color: rgb(199, 239, 255);
     color: #000000;
     padding: 15px 0;
     font-size: 18px;

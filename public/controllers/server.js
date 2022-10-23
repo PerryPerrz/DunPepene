@@ -53,6 +53,7 @@ app.get('/events/edit', (req, res) => {
 })
 
 app.get('/events/add', (req, res) => {
+    //TODO Passer en post une fois formulaire d'ajout d'event fait.
     let id = req.query.id;
     let owner = req.query.owner;
     let title = req.query.title;
@@ -66,6 +67,7 @@ app.get('/events/add', (req, res) => {
 })
 
 app.get('/events/delete', (req, res) => {
+    //TODO Passer en delete/post une fois bouton de delete d'event fait. (permet d'éviter de passer des infos dans l'url; et donc d'éviter de les rendres visibles)
     let id = req.query.id;
     controller.deleteEvent(id);
     res.send("Event deleted successfully");

@@ -2,6 +2,8 @@ const controller = require('../models/event.js')
 const express = require('express')
 const path = require('path')
 const app = express()
+const bodyParser = require("body-parser")
+const urlEncodedParser = bodyParser.urlencoded({extended: false});
 
 app.use(express.static(__dirname + '/../../public'));
 
@@ -52,14 +54,13 @@ app.get('/events/edit', (req, res) => {
     res.send("Events")
 })
 
-app.get('/events/add', (req, res) => {
-    //TODO Passer en post une fois formulaire d'ajout d'event fait.
-    let id = req.query.id;
-    let owner = req.query.owner;
-    let title = req.query.title;
-    let date = req.query.date;
-    let duration = req.query.duration;
-    let start_time = req.query.start_time;
+app.post('/events/add', urlEncodedParser, (req, res) => {
+    let id = req.body.id;
+    let owner = req.body.owner;
+    let title = req.body.title;
+    let date = req.body.date;
+    let duration = req.body.duration;
+    let start_time = req.body.start_time;
 
     controller.addEvent(id,owner,title,date,duration,start_time);
 

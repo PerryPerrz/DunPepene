@@ -26,28 +26,47 @@ app.get('/register', (req, res) => {
 app.get('/calendar/month', (req, res) => {
     let date = req.query.date;
     let user = req.query.user;
+    res.status(200); // TODO : gérer les erreurs possibles une fois que l'on à le calendrier.
     res.send(controller.getEventsByMonth(date, user));
 })
 
 app.get('/calendar/week', (req, res) => {
     let date = req.query.date;
     let user = req.query.user;
+    res.status(200); // TODO : gérer les erreurs possibles une fois que l'on à le calendrier.
     res.send(controller.getEventsByWeek(date, user));
 })
 
 app.get('/calendar/day', (req, res) => {
     let date = req.query.date;
     let user = req.query.user;
+    res.status(200); // TODO : gérer les erreurs possibles une fois que l'on à le calendrier.
     res.send(controller.getEventsByDay(date, user));
 })
 
 app.get('/events', (req, res) => {
-    res.send(controller.getAllEvents());
+    let reponse = controller.getAllEvents();
+
+    if (reponse === null) {
+        res.status(204);
+        res.send("no content");
+    } else {
+        res.status(200);
+        res.send(reponse);
+    }
 })
 
 app.get('/events/get', (req, res) => {
     let id = req.query.id;
-    res.send(controller.getEventById(id));
+    let reponse = controller.getEventById(id)
+
+    if (reponse === null) {
+        res.status(204);
+        res.send("no content");
+    } else {
+        res.status(200);
+        res.send(reponse);
+    }
 })
 
 app.get('/events/edit', (req, res) => {
@@ -62,14 +81,35 @@ app.post('/events/add', urlEncodedParser, (req, res) => {
     let duration = req.body.duration;
     let start_time = req.body.start_time;
 
-    controller.addEvent(id,owner,title,date,duration,start_time);
+    let reponse = controller.addEvent(id,owner,title,date,duration,start_time);
 
-    res.send("Event added successfully")
+    //TODO : préciser les erreurs et les codes et en rajouter si nécessaire.
+    if (reponse === "failure") {
+        res.status(400);
+        res.send(reponse);
+    } else if (reponse === "success") {
+        res.status(201);
+        res.send(reponse);
+    } else {
+        res.status(400);
+        res.send("error");
+    }
 })
 
 app.get('/events/delete', (req, res) => {
     //TODO Passer en delete/post une fois bouton de delete d'event fait. (permet d'éviter de passer des infos dans l'url; et donc d'éviter de les rendres visibles)
     let id = req.query.id;
-    controller.deleteEvent(id);
-    res.send("Event deleted successfully");
+    let reponse = controller.deleteEvent(id);
+
+    //TODO : préciser les erreurs et les codes et en rajouter si nécessaire.
+    if (reponse === "failure") {
+        res.status(400);
+        res.send(reponse);
+    } else if (reponse === "success") {
+        res.status(200);
+        res.send(reponse);
+    } else {
+        res.status(400);
+        res.send("error");
+    }
 })

@@ -29,8 +29,6 @@ app.post('/signin', urlEncodedParser, (req, res) => {
     let email = req.body.email;
     let password = req.body.password;
 
-    console.log(email, password);
-
     let reponse = controllerAccount.signIn(email, password);
 
     //TODO : préciser les erreurs et les codes et en rajouter si nécessaire.
@@ -50,6 +48,7 @@ app.post('/signup', urlEncodedParser, (req, res) => {
     let username = req.body.username;
     let email = req.body.email;
     let password = req.body.password;
+
     let reponse = controllerAccount.signUp(username, email, password);
 
     //TODO : préciser les erreurs et les codes et en rajouter si nécessaire.

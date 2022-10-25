@@ -31,5 +31,5 @@ formulaire.addEventListener("submit", function (event) {
     };
     fetch("/signin", params)
         .then((response) => response.text())
-        .then((text) => (contents.innerHTML = text));
+        .then((text) => (console.log(text)));
 });

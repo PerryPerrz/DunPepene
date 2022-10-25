@@ -55,28 +55,16 @@ module.exports = {
         return events;
     },
     getEventById: function (id) {
-        let eventRes = null;
-
-        //We search in the JSON file for the event that has the id (an id is unique) we are searching for.
-        json.forEach(function (event) {
-            if (event.id === id){
-                eventRes = event;
-            }
-        })
-        return eventRes;
+        let res = findEventById(id);
+        if (res[0] === null)
+            return "failure"
+        return res[1];
     },
     addEvent: function(id, owner, title, date, duration, start_time) {
-        let failed = false;
-        json.forEach(function (event) {
-            if (event.id === id) { //If the event's id already exists, we return an error.
-                failed = true;
-            }
-        })
-        if (failed)
+        if (findEventById(id)[0] !== null)
             return "failure";
 
-
-         //Here, the event doesn't exist yet.
+        //Here, the event doesn't exist yet.
         //We add the event in the Json object.
         json.push({"id" : id, "owner" : owner, "title" : title, "date" : date, "duration" : duration, "start_time" : start_time});
         //We rewrite the Json file with the Json object's content.
@@ -85,19 +73,12 @@ module.exports = {
         return "success";
     },
     deleteEvent: function (id) {
-        let deleted = false;
-        let i = 0;
-        //We search in the JSON file for the event that has the id (an id is unique) we are searching for, and then we delete it from the json object.
-        json.forEach(function (event) {
-            if (event.id === id){
-                json.splice(i,1);
-                deleted = true;
-            }
-            i++;
-        })
-        if (!deleted)
-            return "failure";
+        let event = findEventById(id)[0];
+        console.log(event);
+        if (event === null)
+            return "failure"
 
+        json.splice(event,1);
         saveInJsonFile();
         return "success";
     }
@@ -127,4 +108,19 @@ function saveInJsonFile(){
         /*console.log(JSON.stringify(json,null, 2));
         console.log('writing to ' + fileName);*/
     });
+}
+
+function findEventById(id) {
+    let res = null;
+    let res2 = null;
+    let i = 0;
+    //We search in the JSON file for the event that has the id (an id is unique) we are searching for.
+    json.forEach(function (event) {
+        if (event.id === id){
+            res = i;
+            res2 = event;
+        }
+        i++;
+    })
+    return [res,res2];
 }

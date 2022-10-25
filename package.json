@@ -4,12 +4,14 @@
   "description": "Projet de Design Patterns de M1.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "autorun": "node ./public/controllers/server.js"
   },
   "keywords": [],
   "author": "IOPETI Hugo, YVOZ Ludovic",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.18.2"
+    "express": "^4.18.2",
+    "nodemon": "^2.0.20"
   }
 }

@@ -60,7 +60,7 @@ app.get('/events/get', (req, res) => {
     let id = req.query.id;
     let reponse = controller.getEventById(id)
 
-    if (reponse === null) {
+    if (reponse === "failure") {
         res.status(204);
         res.send("no content");
     } else {

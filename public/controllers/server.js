@@ -1,4 +1,5 @@
 const controller = require('../models/event.js')
+const controllerAccount = require('../models/account.js')
 const express = require('express')
 const path = require('path')
 const app = express()
@@ -21,6 +22,44 @@ app.get('/login', (req, res) => {
 
 app.get('/register', (req, res) => {
     res.send("Register")
+})
+
+app.post('/signin',urlEncodedParser, (req, res) => {
+    let email = req.body.email;
+    let password = req.body.password;
+
+    let reponse = controllerAccount.signIn(email,password);
+
+    //TODO : préciser les erreurs et les codes et en rajouter si nécessaire.
+    if (reponse === "failure") {
+        res.status(400);
+        res.send(reponse);
+    } else if (reponse === "success") {
+        res.status(200);
+        res.send(reponse);
+    } else {
+        res.status(400);
+        res.send("error");
+    }
+})
+
+app.post('/signup',urlEncodedParser, (req, res) => {
+    let username = req.body.username;
+    let email = req.body.email;
+    let password = req.body.password;
+    let reponse = controllerAccount.signUp(username,email,password);
+
+    //TODO : préciser les erreurs et les codes et en rajouter si nécessaire.
+    if (reponse === "failure") {
+        res.status(400);
+        res.send(reponse);
+    } else if (reponse === "success") {
+        res.status(201);
+        res.send(reponse);
+    } else {
+        res.status(400);
+        res.send("error");
+    }
 })
 
 app.get('/calendar/month', (req, res) => {

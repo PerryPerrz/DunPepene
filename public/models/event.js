@@ -110,6 +110,7 @@ function saveInJsonFile(){
     });
 }
 
+//Function that finds an event by a given id, it returns an array that contains the index and the content of the event.
 function findEventById(id) {
     let res = null;
     let res2 = null;

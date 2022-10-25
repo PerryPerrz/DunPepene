@@ -1,7 +1,5 @@
 "use strict";
 
-//const axios = require('axios');
-
 const formulaire = document.querySelector("form");
 
 //When the form is submitted.
@@ -11,9 +9,6 @@ formulaire.addEventListener("submit", function (event) {
 
     let email = document.querySelector('#email');
     let password = document.querySelector('#password');
-
-    console.log(email.value);
-    console.log(password.value);
 
     // Tests if fields are filled and if values matches the regex.
     if (email.value === "") {
@@ -27,5 +22,14 @@ formulaire.addEventListener("submit", function (event) {
     } else if (!password.value.match("^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$")) {
         alert("Le mot de passe ne correspond pas au modèle necéssaire !");
     }
+    //We send the datas to our API
+    let body = {email: email.value, password: password.value}
+    let params = {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify(body),
+    };
+    fetch("/signin", params)
+        .then((response) => response.text())
+        .then((text) => (contents.innerHTML = text));
 });
-

@@ -7,6 +7,7 @@ const bodyParser = require("body-parser")
 const urlEncodedParser = bodyParser.urlencoded({extended: false});
 
 app.use(express.static(__dirname + '/../../public'));
+app.use(express.json());
 
 app.listen(3030, () => {
     console.log("Server is starting !")
@@ -21,12 +22,14 @@ app.get('/login', (req, res) => {
 })
 
 app.get('/register', (req, res) => {
-    res.send("Register")
+    res.sendFile(path.join(__dirname + "/../views/registerView.html"))
 })
 
 app.post('/signin', urlEncodedParser, (req, res) => {
     let email = req.body.email;
     let password = req.body.password;
+
+    console.log(email, password);
 
     let reponse = controllerAccount.signIn(email, password);
 

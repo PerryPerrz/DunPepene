@@ -24,11 +24,11 @@ app.get('/register', (req, res) => {
     res.send("Register")
 })
 
-app.post('/signin',urlEncodedParser, (req, res) => {
+app.post('/signin', urlEncodedParser, (req, res) => {
     let email = req.body.email;
     let password = req.body.password;
 
-    let reponse = controllerAccount.signIn(email,password);
+    let reponse = controllerAccount.signIn(email, password);
 
     //TODO : préciser les erreurs et les codes et en rajouter si nécessaire.
     if (reponse === "failure") {
@@ -43,11 +43,11 @@ app.post('/signin',urlEncodedParser, (req, res) => {
     }
 })
 
-app.post('/signup',urlEncodedParser, (req, res) => {
+app.post('/signup', urlEncodedParser, (req, res) => {
     let username = req.body.username;
     let email = req.body.email;
     let password = req.body.password;
-    let reponse = controllerAccount.signUp(username,email,password);
+    let reponse = controllerAccount.signUp(username, email, password);
 
     //TODO : préciser les erreurs et les codes et en rajouter si nécessaire.
     if (reponse === "failure") {
@@ -120,7 +120,7 @@ app.post('/events/add', urlEncodedParser, (req, res) => {
     let duration = req.body.duration;
     let start_time = req.body.start_time;
 
-    let reponse = controller.addEvent(id,owner,title,date,duration,start_time);
+    let reponse = controller.addEvent(id, owner, title, date, duration, start_time);
 
     //TODO : préciser les erreurs et les codes et en rajouter si nécessaire.
     if (reponse === "failure") {

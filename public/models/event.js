@@ -60,13 +60,20 @@ module.exports = {
             return "failure"
         return res[1];
     },
-    addEvent: function(id, owner, title, date, duration, start_time) {
+    addEvent: function (id, owner, title, date, duration, start_time) {
         if (findEventById(id)[0] !== null)
             return "failure";
 
         //Here, the event doesn't exist yet.
         //We add the event in the Json object.
-        json.push({"id" : id, "owner" : owner, "title" : title, "date" : date, "duration" : duration, "start_time" : start_time});
+        json.push({
+            "id": id,
+            "owner": owner,
+            "title": title,
+            "date": date,
+            "duration": duration,
+            "start_time": start_time
+        });
         //We rewrite the Json file with the Json object's content.
         saveInJsonFile();
 
@@ -78,7 +85,7 @@ module.exports = {
         if (event === null)
             return "failure"
 
-        json.splice(event,1);
+        json.splice(event, 1);
         saveInJsonFile();
         return "success";
     }
@@ -102,7 +109,7 @@ function getWeekFromDate(date) {
 }
 
 //Function that rewrites the content of the .json file with the new content of the json object.
-function saveInJsonFile(){
+function saveInJsonFile() {
     fs.writeFile(fileName, JSON.stringify(json, null, 2), function writeJSON(err) {
         if (err) return console.log(err);
         /*console.log(JSON.stringify(json,null, 2));
@@ -117,11 +124,11 @@ function findEventById(id) {
     let i = 0;
     //We search in the JSON file for the event that has the id (an id is unique) we are searching for.
     json.forEach(function (event) {
-        if (event.id === id){
+        if (event.id === id) {
             res = i;
             res2 = event;
         }
         i++;
     })
-    return [res,res2];
+    return [res, res2];
 }

@@ -1,5 +1,6 @@
 "use strict";
 
+
 const formulaire = document.querySelector("form");
 
 //When the form is submitted.
@@ -10,18 +11,15 @@ formulaire.addEventListener("submit", function (event) {
     let email = document.querySelector('#email');
     let password = document.querySelector('#password');
 
-    // Tests if fields are filled and if values matches the regex.
-    if (email.value === "") {
-        alert("Indiquez un email !");
-    } else if (!email.value.match("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$")) {
-        alert("Le mail ne correspond pas au modèle necéssaire !");
+    try {
+        checkEmail(email);
+        checkPassword(password);
+    }catch (e) {
+        //TODO : gérer l'erreur pour changer le css/html (texte en rouge etc...).
+        alert(e.message);
+        return;
     }
 
-    if (password.value === "") {
-        alert("Sélectionner un password !");
-    } else if (!password.value.match("^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$")) {
-        alert("Le mot de passe ne correspond pas au modèle necéssaire !");
-    }
     //We send the datas to our API
     let body = {email: email.value, password: password.value}
     let params = {
@@ -33,3 +31,21 @@ formulaire.addEventListener("submit", function (event) {
         .then((response) => response.text())
         .then((text) => (console.log(text)));
 });
+
+function checkEmail(email) {
+    // Tests if fields are filled and if values matches the regex.
+    if (email.value === "") {
+        throw new Error("Indiquez un email !");
+    } else if (!email.value.match("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$")) {
+        throw new Error("Le mail ne correspond pas au modèle necéssaire !");
+    }
+}
+
+function checkPassword(password) {
+    // Tests if fields are filled and if values matches the regex.
+    if (password.value === "") {
+        throw new Error("Sélectionner un password !");
+    } else if (!password.value.match("^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$")) {
+        throw new Error("Le mot de passe ne correspond pas au modèle necéssaire !");
+    }
+}

@@ -18,11 +18,11 @@ app.get('/', (req, res) => {
 })
 
 app.get('/login', (req, res) => {
-    res.send("Login")
+    res.sendFile(path.join(__dirname + "/../views/loginView.html"));
 })
 
 app.get('/register', (req, res) => {
-    res.sendFile(path.join(__dirname + "/../views/registerView.html"))
+    res.sendFile(path.join(__dirname + "/../views/registerView.html"));
 })
 
 app.post('/signin', urlEncodedParser, (req, res) => {

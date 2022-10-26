@@ -85,6 +85,18 @@ app.get('/calendar/day', (req, res) => {
     res.send(controller.getEventsByDay(date, user));
 })
 
+app.get('/calendar/show/month', (req, res) => {
+    res.sendFile(path.join(__dirname + "/../views/calendarMonthView.html"));
+})
+
+app.get('/calendar/show/week', (req, res) => {
+    res.sendFile(path.join(__dirname + "/../views/calendarWeekView.html"));
+})
+
+app.get('/calendar/show/day', (req, res) => {
+    res.sendFile(path.join(__dirname + "/../views/calendarDayView.html"));
+})
+
 app.get('/events', (req, res) => {
     let reponse = controller.getAllEvents();
 

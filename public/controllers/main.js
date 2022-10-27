@@ -18,37 +18,21 @@ showDate.innerHTML = currentDate.toDateString();
 //Value : "month", "week" or "day"
 let currentVersion = "month";
 
+displayCalendar(currentVersion);
+
 //Setting up the button that switches the display of the calendar to the day display.
 dayButton.addEventListener("click", function (event) {
-        fetch("/calendar/show/day")
-            .then((response) => response.text())
-            .then((html) => {
-                    divCalendar.innerHTML = html;
-                    currentVersion = "day";
-                    refreshShownDate();
-            })
+        displayCalendar("day");
 })
 
 //Setting up the button that switches the display of the calendar to the week display.
 WeekButton.addEventListener("click", function (event) {
-        fetch("/calendar/show/week")
-            .then((response) => response.text())
-            .then((html) => {
-                    divCalendar.innerHTML = html;
-                    currentVersion = "week";
-                    refreshShownDate();
-            })
+        displayCalendar("week");
 })
 
 //Setting up the button that switches the display of the calendar to the month display.
 MonthButton.addEventListener("click", function (event) {
-        fetch("/calendar/show/month")
-            .then((response) => response.text())
-            .then((html) => {
-                    divCalendar.innerHTML = html;
-                    currentVersion = "month";
-                    refreshShownDate();
-            })
+        displayCalendar("month");
 })
 
 //Setting up the button that switches the display of the calendar to the previous day/week/month depending on the current view.
@@ -138,7 +122,7 @@ function nextDay() {
 }
 
 function prevMonth() {
-    //We go to the next month
+    //We go to the previous month
     if (currentDate.getMonth() === 0) { //If it is december, we add 1 to the year
         currentDate = new Date(currentDate.getFullYear() - 1, 11, currentDate.getDate());
     } else {
@@ -157,7 +141,7 @@ function prevDay() {
     currentDate.setDate(currentDate.getDate() - 1);
 }
 
-//Function that refreshes the date shown on top of the page, the display depends on the current version of the calendar.
+//Function that refreshes the date shown the page, the display depends on the current version of the calendar.
 function refreshShownDate() {
     switch (currentVersion) {
         case "month":
@@ -172,6 +156,7 @@ function refreshShownDate() {
         default :
             console.log("Erreur de version");
     }
+    adjustCalendarData();
 }
 
 //Function that returns the string to display as the date for the week version.
@@ -186,4 +171,63 @@ function weekDisplay(date) {
     // Calculate full weeks to the nearest Thursday
     let weekNo =  Math.ceil((((date - yearStart) / 86400000) + 1) / 7);
     return "week " + weekNo + " of " + date.getFullYear() + " (" + getMonthName(date.getMonth()) + ")" ; //TODO : changer en "du x(jour) au x(jour) y(mois).
+}
+
+//Function that displays the calendar according to the version passed as a parameter.
+function displayCalendar(version) {
+    fetch("/calendar/show/"+ version)
+        .then((response) => response.text())
+        .then((html) => {
+            divCalendar.innerHTML = html;
+            currentVersion = version;
+            refreshShownDate();
+        })
+}
+
+//Function that adjusts the data shown on the calendar according to the date and the events
+function adjustCalendarData() {
+    switch (currentVersion) {
+        case "month":
+            adjustMonthDays();
+            break;
+        case "week":
+            break;
+        case "day":
+            break;
+        default :
+            console.log("Erreur de version");
+    }
+}
+
+//Function that adjusts the days on the month calendar to be shown in the correct position.
+function adjustMonthDays() {
+    let firstDay = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
+    let lastDay = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0);
+
+    //We retrieve the box where we will write the 1st day of the month.
+    let firstBox = firstDay.getDay() === 0 ? 7 : firstDay.getDay();
+
+    //We retrieve the box where we will write the last day of the month.
+    let lastBox = lastDay.getDate() + firstBox;
+
+    //We fill the first boxes of the calendar (before firstBox) with blanks.
+    for(let i = 1; i < firstBox; i++) {
+        const td = document.querySelector("#Month"+i);
+        td.innerHTML = "";
+    }
+
+    //We fill the boxes between the firstBox and the lastBox with the days oh the month.
+    for (let i = firstBox; i < lastBox ; i++) {
+        const td = document.querySelector("#Month"+i);
+        td.innerHTML = "" + (i - firstBox + 1);
+    }
+
+    //We fill the last boxes with the first days of the next month.
+    let j = 1;
+    for (let i = lastBox; i <= 42; i++) {
+        const td = document.querySelector("#Month"+i);
+        td.innerHTML = "" + j;
+        j++;
+    }
+
 }

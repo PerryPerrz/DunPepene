@@ -17,7 +17,7 @@ dayButton.addEventListener("click", function (event) {
             .then((response) => response.text())
             .then((html) => {
                     divCalendar.innerHTML = html;
-                    showDate.innerHTML = currentDate.toDateString(); //TODO : améliorer l'affichage
+                    showDate.innerHTML = currentDate.toDateString();
             })
 })
 
@@ -27,7 +27,7 @@ WeekButton.addEventListener("click", function (event) {
             .then((response) => response.text())
             .then((html) => {
                     divCalendar.innerHTML = html;
-                    showDate.innerHTML = currentDate.toDateString(); //TODO : améliorer l'affichage
+                    showDate.innerHTML = weekDisplay(currentDate);
             })
 })
 
@@ -37,7 +37,7 @@ MonthButton.addEventListener("click", function (event) {
             .then((response) => response.text())
             .then((html) => {
                     divCalendar.innerHTML = html;
-                    showDate.innerHTML = getMonthName(currentDate.getMonth()) + " " + currentDate.getFullYear().toString(); //TODO : améliorer l'affichage (mois)
+                    showDate.innerHTML = getMonthName(currentDate.getMonth()) + " " + currentDate.getFullYear().toString();
             })
 })
 
@@ -69,6 +69,19 @@ function getMonthName(month) {
                 case 11 :
                         return "December";
         }
+}
+
+function weekDisplay(date) {
+    // Copy date so don't modify original
+    date = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
+    // Set to the nearest Thursday: current date + 4 - current day number
+    // Make Sunday's day number 7
+    date.setUTCDate(date.getUTCDate() + 4 - (date.getUTCDay() || 7));
+    // Get first day of year
+    let yearStart = new Date(Date.UTC(date.getUTCFullYear(), 0, 1));
+    // Calculate full weeks to the nearest Thursday
+    let weekNo =  Math.ceil((((date - yearStart) / 86400000) + 1) / 7);
+    return "week " + weekNo + " of " + date.getFullYear() + " (" + getMonthName(date.getMonth()) + ")" ; //TODO : changer en "du x(jour) au x(jour) y(mois).
 }
 
 

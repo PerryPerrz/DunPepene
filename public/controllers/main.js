@@ -188,7 +188,7 @@ function displayCalendar(version) {
 function adjustCalendarData() {
     switch (currentVersion) {
         case "month":
-            adjustMonthDays();
+            adjustMonth();
             break;
         case "week":
             break;
@@ -199,8 +199,12 @@ function adjustCalendarData() {
     }
 }
 
+function dateToJsonFormat(date) {
+    return date.getFullYear() + "-" + (date.getMonth() + 1)  + "-" + date.getDate();
+}
+
 //Function that adjusts the days on the month calendar to be shown in the correct position.
-function adjustMonthDays() {
+function adjustMonth() {
     let firstDay = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
     let lastDay = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0);
 
@@ -216,11 +220,39 @@ function adjustMonthDays() {
         td.innerHTML = "";
     }
 
-    //We fill the boxes between the firstBox and the lastBox with the days oh the month.
-    for (let i = firstBox; i < lastBox ; i++) {
-        const td = document.querySelector("#Month"+i);
-        td.innerHTML = "" + (i - firstBox + 1);
-    }
+    //We retrieve the events of this month for this user.
+    fetch("/calendar/month?date="+dateToJsonFormat(currentDate)+"&user=Hugo")
+        .then((response) => response.text())
+        .then((json) => {
+            //We get a json object containing the events of this month.
+            let jsonObj = JSON.parse(json);
+
+            //We create a hashmap that contains the events in this way "day of the month" : "indexes of the events in the json object".
+            let hashMap = new Map();
+            for (let i = 0; i < jsonObj.length; i++) {
+                if (hashMap.get(jsonObj[i]["date"].substring(8, 10)) === undefined)
+                    hashMap.set(jsonObj[i]["date"].substring(8, 10), [i]);
+                else
+                    hashMap.get(jsonObj[i]["date"].substring(8, 10)).push(i);
+            }
+            //We fill the boxes between the firstBox and the lastBox with the days of the month and the events for those days.
+            for (let i = firstBox; i < lastBox ; i++) {
+                const td = document.querySelector("#Month"+i);
+                let day = (i - firstBox + 1);
+
+                //We check if there are any events this specific day, if so, we get them from the hashmap and the json object them and display them.
+                if (hashMap.get("" + day) === undefined) {
+                    td.innerHTML = "" + day;
+                } else {
+                    let events = "";
+                    for(let j = 0; j < hashMap.get("" + day).length; j++)
+                        events += "<br>" + jsonObj[hashMap.get("" + day)[j]]["title"] + " " + jsonObj[hashMap.get("" + day)[j]]["start_time"] + "h";
+                    td.innerHTML = "" + day + events ;
+                }
+            }
+        })
+
+
 
     //We fill the last boxes with the first days of the next month.
     let j = 1;

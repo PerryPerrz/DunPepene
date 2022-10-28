@@ -14,7 +14,7 @@ formulaire.addEventListener("submit", function (event) {
     try {
         checkEmail(email);
         checkPassword(password);
-    }catch (e) {
+    } catch (e) {
         //TODO : gérer l'erreur pour changer le css/html (texte en rouge etc...).
         alert(e.message);
         return;

@@ -22,17 +22,17 @@ displayCalendar(currentVersion);
 
 //Setting up the button that switches the display of the calendar to the day display.
 dayButton.addEventListener("click", function (event) {
-        displayCalendar("day");
+    displayCalendar("day");
 })
 
 //Setting up the button that switches the display of the calendar to the week display.
 WeekButton.addEventListener("click", function (event) {
-        displayCalendar("week");
+    displayCalendar("week");
 })
 
 //Setting up the button that switches the display of the calendar to the month display.
 MonthButton.addEventListener("click", function (event) {
-        displayCalendar("month");
+    displayCalendar("month");
 })
 
 //Setting up the button that switches the display of the calendar to the previous day/week/month depending on the current view.
@@ -73,32 +73,32 @@ NextButton.addEventListener("click", function (event) {
 
 //Function that returns the name of the month passed as a parameter (number 0-11).
 function getMonthName(month) {
-        switch (month) {
-                case 0 :
-                        return "January";
-                case 1 :
-                        return "February";
-                case 2 :
-                        return "March";
-                case 3 :
-                        return "April";
-                case 4 :
-                        return "May";
-                case 5 :
-                        return "June";
-                case 6 :
-                        return "July";
-                case 7 :
-                        return "August";
-                case 8 :
-                        return "September";
-                case 9 :
-                        return "October";
-                case 10 :
-                        return "November";
-                case 11 :
-                        return "December";
-        }
+    switch (month) {
+        case 0 :
+            return "January";
+        case 1 :
+            return "February";
+        case 2 :
+            return "March";
+        case 3 :
+            return "April";
+        case 4 :
+            return "May";
+        case 5 :
+            return "June";
+        case 6 :
+            return "July";
+        case 7 :
+            return "August";
+        case 8 :
+            return "September";
+        case 9 :
+            return "October";
+        case 10 :
+            return "November";
+        case 11 :
+            return "December";
+    }
 }
 
 function nextMonth() {
@@ -169,13 +169,13 @@ function weekDisplay(date) {
     // Get first day of year
     let yearStart = new Date(Date.UTC(date.getUTCFullYear(), 0, 1));
     // Calculate full weeks to the nearest Thursday
-    let weekNo =  Math.ceil((((date - yearStart) / 86400000) + 1) / 7);
-    return "week " + weekNo + " of " + date.getFullYear() + " (" + getMonthName(date.getMonth()) + ")" ; //TODO : changer en "du x(jour) au x(jour) y(mois).
+    let weekNo = Math.ceil((((date - yearStart) / 86400000) + 1) / 7);
+    return "week " + weekNo + " of " + date.getFullYear() + " (" + getMonthName(date.getMonth()) + ")"; //TODO : changer en "du x(jour) au x(jour) y(mois).
 }
 
 //Function that displays the calendar according to the version passed as a parameter.
 function displayCalendar(version) {
-    fetch("/calendar/show/"+ version)
+    fetch("/calendar/show/" + version)
         .then((response) => response.text())
         .then((html) => {
             divCalendar.innerHTML = html;
@@ -200,7 +200,7 @@ function adjustCalendarData() {
 }
 
 function dateToJsonFormat(date) {
-    return date.getFullYear() + "-" + (date.getMonth() + 1)  + "-" + date.getDate();
+    return date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate();
 }
 
 //Function that adjusts the days on the month calendar to be shown in the correct position.
@@ -215,13 +215,13 @@ function adjustMonth() {
     let lastBox = lastDay.getDate() + firstBox;
 
     //We fill the first boxes of the calendar (before firstBox) with blanks.
-    for(let i = 1; i < firstBox; i++) {
-        const td = document.querySelector("#Month"+i);
+    for (let i = 1; i < firstBox; i++) {
+        const td = document.querySelector("#Month" + i);
         td.innerHTML = "";
     }
 
     //We retrieve the events of this month for this user.
-    fetch("/calendar/month?date="+dateToJsonFormat(currentDate)+"&user=Hugo")
+    fetch("/calendar/month?date=" + dateToJsonFormat(currentDate) + "&user=Hugo")
         .then((response) => response.text())
         .then((json) => {
             //We get a json object containing the events of this month.
@@ -236,8 +236,8 @@ function adjustMonth() {
                     hashMap.get(jsonObj[i]["date"].substring(8, 10)).push(i);
             }
             //We fill the boxes between the firstBox and the lastBox with the days of the month and the events for those days.
-            for (let i = firstBox; i < lastBox ; i++) {
-                const td = document.querySelector("#Month"+i);
+            for (let i = firstBox; i < lastBox; i++) {
+                const td = document.querySelector("#Month" + i);
                 let day = (i - firstBox + 1);
 
                 //We check if there are any events this specific day, if so, we get them from the hashmap and the json object them and display them.
@@ -245,19 +245,18 @@ function adjustMonth() {
                     td.innerHTML = "" + day;
                 } else {
                     let events = "";
-                    for(let j = 0; j < hashMap.get("" + day).length; j++)
+                    for (let j = 0; j < hashMap.get("" + day).length; j++)
                         events += "<br>" + jsonObj[hashMap.get("" + day)[j]]["title"] + " " + jsonObj[hashMap.get("" + day)[j]]["start_time"] + "h";
-                    td.innerHTML = "" + day + events ;
+                    td.innerHTML = "" + day + events;
                 }
             }
         })
 
 
-
     //We fill the last boxes with the first days of the next month.
     let j = 1;
     for (let i = lastBox; i <= 42; i++) {
-        const td = document.querySelector("#Month"+i);
+        const td = document.querySelector("#Month" + i);
         td.innerHTML = "" + j;
         j++;
     }

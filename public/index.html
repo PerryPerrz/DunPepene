@@ -7,24 +7,26 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600&display=swap" rel="stylesheet">
 </head>
 <body>
-    <h2 align="center" style="color: orange;" id="ShowDate"></h2>
-    <br>
-        <div class="menu">
-            <div><button id="CreateEventButton">Add Event</button></div>
-            <div class="menu2">
-                <button id="PrevButton"><<</button>
-                <button id="NextButton">>></button>
-            </div>
-            <div class="menu2">
-                <button id="DayButton">Day</button>
-                <button id="WeekButton">Week</button>
-                <button id="MonthButton">Month</button>
-            </div>
-        </div>
+<h2 align="center" class="titleDate" id="ShowDate"></h2>
+<br>
+<div class="menu">
+    <div>
+        <button id="CreateEventButton">Add Event</button>
+    </div>
+    <div class="menu2">
+        <button id="PrevButton"><<</button>
+        <button id="NextButton">>></button>
+    </div>
+    <div class="menu2">
+        <button id="DayButton">Day</button>
+        <button id="WeekButton">Week</button>
+        <button id="MonthButton">Month</button>
+    </div>
+</div>
+<br>
+<br>
+<div id="calendar"></div>
 
-    <br>
-    <div id="calendar"></div>
-
-    <script src="controllers/main.js"></script>
+<script src="controllers/main.js"></script>
 </body>
 </html>

@@ -11,7 +11,7 @@
   },
   {
     "id": "1",
-    "owner": "Luduvic",
+    "owner": "Hugo",
     "title": "Accueillir",
     "description": "Accueillir les clients à l'entrée du restaurant.",
     "date": "2022-10-23",
@@ -21,7 +21,7 @@
   },
   {
     "id": "2",
-    "owner": "Jeanik",
+    "owner": "Hugo",
     "title": "Fromage",
     "description": "Chercher le fromage dans la cave.",
     "date": "2022-10-22",
@@ -37,7 +37,7 @@
     "date": "2022-10-29",
     "duration": "0.5",
     "start_time": "16",
-    "color": "yelow"
+    "color": "yellow"
   },
   {
     "id": "4",

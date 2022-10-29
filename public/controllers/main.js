@@ -241,6 +241,7 @@ function adjustMonth() {
     for(let i = 1; i < firstBox; i++) {
         const td = document.querySelector("#Month"+i);
         td.innerHTML = "";
+        td.classList.add("empty");
     }
 
     //We retrieve the events of this month for this user.
@@ -261,16 +262,27 @@ function adjustMonth() {
             //We fill the boxes between the firstBox and the lastBox with the days of the month and the events for those days.
             for (let i = firstBox; i < lastBox ; i++) {
                 const td = document.querySelector("#Month"+i);
+                td.classList.remove("empty");
                 let day = (i - firstBox + 1);
 
+                let content = "";
                 //We check if there are any events this specific day, if so, we get them from the hashmap and the json object them and display them.
+
+                let today = new Date();
+                if(today.getDate() === day && today.getMonth() === currentDate.getMonth() && today.getFullYear() === currentDate.getFullYear()){
+                    //If we're today, we put a circle on the day's number.
+                    content += '<div class="circle">' + day + '</div>';
+                }
+                else {
+                    content += day ;
+                }
+
                 if (hashMap.get(String(day)) === undefined) {
-                    td.innerHTML = String(day);
+                    td.innerHTML = content;
                 } else {
-                    let events = "";
                     for(let j = 0; j < hashMap.get(String(day)).length; j++)
-                        events += '<button class="' + jsonObj[hashMap.get(String(day))[j]]["color"] + 'Event">'  + jsonObj[hashMap.get(String(day))[j]]["title"] + '</button>';
-                    td.innerHTML = "" + day + events ;
+                        content += '<button class="' + jsonObj[hashMap.get(String(day))[j]]["color"] + 'Event">'  + jsonObj[hashMap.get(String(day))[j]]["title"] + '</button>';
+                    td.innerHTML = content ;
                     //TODO : ajouter l'affichage d'une fenêtre modale contenant les informations sur les events au clic des boutons.
                 }
             }

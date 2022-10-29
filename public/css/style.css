@@ -12,7 +12,7 @@ body {
     border-radius: 10px;
     backdrop-filter: blur(10px);
     border: 2px solid rgba(255, 255, 255, 0.1);
-    box-shadow: 0 0 40px rgb(215, 183, 156);
+    box-shadow: 0 0 40px rgb(255, 255, 255);
     padding: 50px 35px;
 }
 
@@ -49,7 +49,7 @@ button {
 }
 
 .frame {
-    background-color: rgb(215, 183, 156);
+    background-color: rgb(255, 255, 255);
     box-shadow: 0 0 40px rgb(215, 183, 156);
     border-radius: 10px;
     padding-bottom: 30px;
@@ -95,7 +95,7 @@ button {
 }
 
 .line {
-    border: 2.5px solid black;
+    border: 2.5px solid #d7b79c;
     padding: 10px;
     text-align: center;
     width: 50%;
@@ -175,4 +175,18 @@ button {
     border: none;
     cursor: pointer;
     margin-right: 13px;
+}
+
+.empty{
+    background-color: #f5eae4;
+}
+
+.circle{
+    margin-left: auto;
+    margin-right: auto;
+    background: rgb(172, 235, 255);
+    border-radius:50%;
+    width:35px;
+    height:35px;
+    border:2px solid rgba(0, 60, 255, 0.68);
 }

@@ -104,3 +104,11 @@ button {
 .column {
     text-align: center;
 }
+
+.firstBody .secondTh{
+    text-align:right;
+}
+
+.secondTh:nth-child(1){
+    width:50px;
+}

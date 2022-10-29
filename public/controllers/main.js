@@ -213,6 +213,7 @@ function adjustCalendarData() {
             adjustMonth();
             break;
         case "week":
+            adjustWeek();
             break;
         case "day":
             adjustDay();
@@ -333,9 +334,85 @@ function adjustDay() {
                     }
                     td.innerHTML = events ;
                     //TODO : ajouter l'affichage d'une fenêtre modale contenant les informations sur les events au clic des boutons.
+                } else {
+                    td.innerHTML = "";
                 }
             }
         })
+}
+
+//Function that adjusts shows the events on the week calendar.
+function adjustWeek() {
+    //We retrieve the events of this week for this user.
+    fetch("/calendar/week?date=" + dateToJsonFormat(currentDate) + "&user=Hugo")
+        .then((response) => response.text())
+        .then((json) => {
+            //We get a json object containing the events of this week.
+            let jsonObj = JSON.parse(json);
+
+            //We create a hashmap that contains the events in this way -> ("day of the week-hour") : "indexes of the events in the json object".
+            let hashMap = new Map();
+            for (let i = 0; i < jsonObj.length; i++) {
+                let dayOfTheWeek = new Date(jsonObj[i]["date"]).getDay();
+                let hours = getHoursOfEvent(Number(jsonObj[i]["start_time"]), Number(jsonObj[i]["duration"]));
+                hours.forEach(function (h) {
+                    let key = dayOfTheWeek + "-" + h;
+                    if (hashMap.get(key) === undefined)
+                        hashMap.set(key, [i]);
+                    else
+                        hashMap.get(key).push(i);
+                })
+            }
+
+            //We fill the calendar day by day and hour by hour
+            for(let day = 0; day <= 6; day++) {
+                for(let hour = 0; hour <= 22; hour+=2){
+                    console.log("#Week"+getWeekId(day)+hour)
+                    const td = document.querySelector("#Week"+getWeekId(day)+hour);
+                    //We check if there are any events this specific hour, if so, we get them from the hashmap and the json object them and display them.
+                    if (hashMap.get(day + "-" + hour) !== undefined) {
+                        let events = "";
+                        for(let j = 0; j < hashMap.get(day + "-" + hour).length; j++) {
+                            events += '<button class="' + jsonObj[hashMap.get(day + "-" + hour)[j]]["color"] + 'Event">'  + jsonObj[hashMap.get(day + "-" + hour)[j]]["title"] + '</button>';
+                        }
+                        td.innerHTML = events;
+                        //TODO : ajouter l'affichage d'une fenêtre modale contenant les informations sur les events au clic des boutons.
+                    } else {
+                        td.innerHTML = "";
+                    }
+                }
+            }
+
+        })
+}
+
+//Function that returns the id of the day of the week passed as a parameter.
+function getWeekId(day) {
+    let res = "";
+    switch (day) {
+        case 0:
+            res = "Sun";
+            break;
+        case 1:
+            res = "Mon";
+            break;
+        case 2:
+            res = "Tue";
+            break;
+        case 3:
+            res = "Wed";
+            break;
+        case 4:
+            res = "Thu";
+            break;
+        case 5:
+            res = "Fri";
+            break;
+        case 6:
+            res = "Sat";
+            break;
+    }
+    return res;
 }
 
 //Function that returns an array containing all the hours of the event

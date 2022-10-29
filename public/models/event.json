@@ -32,7 +32,7 @@
   {
     "id": "3",
     "owner": "Hugo",
-    "title" : "Médicaments",
+    "title" : "Médicament",
     "description": "S'acheter des médicaments contre les mini-pouces.",
     "date": "2022-10-29",
     "duration": "0.5",
@@ -55,6 +55,16 @@
     "title": "Travail",
     "description": "Horaires de travail au restaurant.",
     "date": "2022-10-29",
+    "duration": "8",
+    "start_time": "10",
+    "color": "red"
+  },
+  {
+    "id": "6",
+    "owner": "Hugo",
+    "title": "Travail",
+    "description": "Horaires de travail au restaurant.",
+    "date": "2022-10-25",
     "duration": "8",
     "start_time": "10",
     "color": "red"

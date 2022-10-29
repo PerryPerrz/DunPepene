@@ -16,7 +16,7 @@ body {
     padding: 50px 35px;
 }
 
-button {
+.bigButton {
     display: block;
     margin-top: 50px;
     width: 100%;

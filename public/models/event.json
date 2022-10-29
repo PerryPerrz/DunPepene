@@ -2,41 +2,61 @@
   {
     "id": "0",
     "owner": "Hugo",
-    "title": "Acheter des ingrédients",
-    "date": "2022-10-22",
+    "title": "Ingredients",
+    "description": "Acheter des ingrédients frais au marché.",
+    "date": "2022-10-29",
     "duration": "2",
-    "start_time": "9"
+    "start_time": "9",
+    "color": "red"
   },
   {
     "id": "1",
     "owner": "Luduvic",
-    "title": "Accueillir les clients",
+    "title": "Accueillir",
+    "description": "Accueillir les clients à l'entrée du restaurant.",
     "date": "2022-10-23",
     "duration": "8",
-    "start_time": "11"
+    "start_time": "11",
+    "color": "orange"
   },
   {
     "id": "2",
     "owner": "Jeanik",
-    "title": "Chercher le fromage",
+    "title": "Fromage",
+    "description": "Chercher le fromage dans la cave.",
     "date": "2022-10-22",
     "duration": "4",
-    "start_time": "8"
+    "start_time": "8",
+    "color": "green"
   },
   {
     "id": "3",
     "owner": "Hugo",
-    "title": "S'acheter des médicaments contre les mini-pouces",
-    "date": "2022-10-18",
+    "title" : "Médicaments",
+    "description": "S'acheter des médicaments contre les mini-pouces.",
+    "date": "2022-10-29",
     "duration": "0.5",
-    "start_time": "16"
+    "start_time": "16",
+    "color": "yelow"
   },
   {
     "id": "4",
     "owner": "Hugo",
-    "title": "Ne pas oublier sa carte de la salle",
-    "date": "2022-10-18",
+    "title": "Carte",
+    "description": "Ne pas oublier sa carte de la salle.",
+    "date": "2022-10-29",
     "duration": "0.1",
-    "start_time": "13"
+    "start_time": "13",
+    "color": "yellow"
+  },
+  {
+    "id": "5",
+    "owner": "Hugo",
+    "title": "Travail",
+    "description": "Horaires de travail au restaurant.",
+    "date": "2022-10-29",
+    "duration": "8",
+    "start_time": "10",
+    "color": "red"
   }
 ]

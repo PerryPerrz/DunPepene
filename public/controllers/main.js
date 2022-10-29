@@ -215,6 +215,7 @@ function adjustCalendarData() {
         case "week":
             break;
         case "day":
+            adjustDay();
             break;
         default :
             console.log("Erreur de version");
@@ -249,7 +250,7 @@ function adjustMonth() {
             //We get a json object containing the events of this month.
             let jsonObj = JSON.parse(json);
 
-            //We create a hashmap that contains the events in this way "day of the month" : "indexes of the events in the json object".
+            //We create a hashmap that contains the events in this way -> "day of the month" : "indexes of the events in the json object".
             let hashMap = new Map();
             for (let i = 0; i < jsonObj.length; i++) {
                 if (hashMap.get(jsonObj[i]["date"].substring(8, 10)) === undefined)
@@ -263,13 +264,14 @@ function adjustMonth() {
                 let day = (i - firstBox + 1);
 
                 //We check if there are any events this specific day, if so, we get them from the hashmap and the json object them and display them.
-                if (hashMap.get("" + day) === undefined) {
-                    td.innerHTML = "" + day;
+                if (hashMap.get(String(day)) === undefined) {
+                    td.innerHTML = String(day);
                 } else {
                     let events = "";
-                    for(let j = 0; j < hashMap.get("" + day).length; j++)
-                        events += "<br>" + jsonObj[hashMap.get("" + day)[j]]["title"] + " " + jsonObj[hashMap.get("" + day)[j]]["start_time"] + "h";
+                    for(let j = 0; j < hashMap.get(String(day)).length; j++)
+                        events += '<button class="' + jsonObj[hashMap.get(String(day))[j]]["color"] + 'Event">'  + jsonObj[hashMap.get(String(day))[j]]["title"] + '</button>';
                     td.innerHTML = "" + day + events ;
+                    //TODO : ajouter l'affichage d'une fenêtre modale contenant les informations sur les events au clic des boutons.
                 }
             }
         })
@@ -282,6 +284,53 @@ function adjustMonth() {
         const td = document.querySelector("#Month"+i);
         td.innerHTML = "" + j;
         j++;
+        //TODO : ajouter les évenements du mois prochain.
     }
+}
 
+//Function that adjusts shows the events on the day calendar.
+function adjustDay() {
+
+    //We retrieve the events of this day for this user.
+    fetch("/calendar/day?date=" + dateToJsonFormat(currentDate) + "&user=Hugo")
+        .then((response) => response.text())
+        .then((json) => {
+            //We get a json object containing the events of this day.
+            let jsonObj = JSON.parse(json);
+
+            //We create a hashmap that contains the events in this way -> "hour" : "indexes of the events in the json object".
+            let hashMap = new Map();
+            for (let i = 0; i < jsonObj.length; i++) {
+                let hours = getHoursOfEvent(Number(jsonObj[i]["start_time"]), Number(jsonObj[i]["duration"]));
+                hours.forEach(function (h) {
+                    if (hashMap.get(h) === undefined)
+                        hashMap.set(h, [i]);
+                    else
+                        hashMap.get(h).push(i);
+                })
+            }
+
+            //We fill the calendar hour by hour
+            for(let i = 0; i <= 23; i++){
+                const td = document.querySelector("#Day"+i);
+                //We check if there are any events this specific hour, if so, we get them from the hashmap and the json object them and display them.
+                if (hashMap.get(i) !== undefined) {
+                    let events = "";
+                    for(let j = 0; j < hashMap.get(i).length; j++) {
+                        events += '<button class="' + jsonObj[hashMap.get(i)[j]]["color"] + 'Event">'  + jsonObj[hashMap.get(i)[j]]["title"] + '</button>';
+                    }
+                    td.innerHTML = events ;
+                    //TODO : ajouter l'affichage d'une fenêtre modale contenant les informations sur les events au clic des boutons.
+                }
+            }
+        })
+}
+
+//Function that returns an array containing all the hours of the event
+function getHoursOfEvent(start_time, duration) {
+    let hours = [];
+    for (let i = start_time; i < start_time + duration; i++) {
+        hours.push(i);
+    }
+    return hours;
 }

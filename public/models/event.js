@@ -103,7 +103,7 @@ function getWeekFromDate(date) {
     // Make Sunday's day number 7
     date.setUTCDate(date.getUTCDate() + 4 - (date.getUTCDay() || 7));
     // Get first day of year
-    var yearStart = new Date(Date.UTC(date.getUTCFullYear(), 0, 1));
+    let yearStart = new Date(Date.UTC(date.getUTCFullYear(), 0, 1));
     // Calculate full weeks to the nearest Thursday
     return Math.ceil((((date - yearStart) / 86400000) + 1) / 7);
 }

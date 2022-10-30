@@ -22,17 +22,17 @@ displayCalendar(currentVersion);
 
 //Setting up the button that switches the display of the calendar to the day display.
 dayButton.addEventListener("click", function (event) {
-        displayCalendar("day");
+    displayCalendar("day");
 })
 
 //Setting up the button that switches the display of the calendar to the week display.
 WeekButton.addEventListener("click", function (event) {
-        displayCalendar("week");
+    displayCalendar("week");
 })
 
 //Setting up the button that switches the display of the calendar to the month display.
 MonthButton.addEventListener("click", function (event) {
-        displayCalendar("month");
+    displayCalendar("month");
 })
 
 //Setting up the button that switches the display of the calendar to the previous day/week/month depending on the current view.
@@ -73,32 +73,32 @@ NextButton.addEventListener("click", function (event) {
 
 //Function that returns the name of the month passed as a parameter (number 0-11).
 function getMonthName(month) {
-        switch (month) {
-                case 0 :
-                        return "Janvier";
-                case 1 :
-                        return "Février";
-                case 2 :
-                        return "Mars";
-                case 3 :
-                        return "Avril";
-                case 4 :
-                        return "Mai";
-                case 5 :
-                        return "Juin";
-                case 6 :
-                        return "Juillet";
-                case 7 :
-                        return "Août";
-                case 8 :
-                        return "Septembre";
-                case 9 :
-                        return "Octobre";
-                case 10 :
-                        return "Novembre";
-                case 11 :
-                        return "Décembre";
-        }
+    switch (month) {
+        case 0 :
+            return "Janvier";
+        case 1 :
+            return "Février";
+        case 2 :
+            return "Mars";
+        case 3 :
+            return "Avril";
+        case 4 :
+            return "Mai";
+        case 5 :
+            return "Juin";
+        case 6 :
+            return "Juillet";
+        case 7 :
+            return "Août";
+        case 8 :
+            return "Septembre";
+        case 9 :
+            return "Octobre";
+        case 10 :
+            return "Novembre";
+        case 11 :
+            return "Décembre";
+    }
 }
 
 //Function that returns the name of the day passed as a parameter (number 0-6).
@@ -126,7 +126,7 @@ function nextMonth() {
     if (currentDate.getMonth() === 11) { //If it is december, we add 1 to the year
         currentDate = new Date(currentDate.getFullYear() + 1, 0, currentDate.getDate());
     } else {
-        if (currentDate.getDate() === 31  || ((currentDate.getDate() === 30 || currentDate.getDate() === 29)  && currentDate.getMonth() === 0)) //If the day is a 31, we go to the last day of the next month (the 0th day of the 2nd next month).
+        if (currentDate.getDate() === 31 || ((currentDate.getDate() === 30 || currentDate.getDate() === 29) && currentDate.getMonth() === 0)) //If the day is a 31, we go to the last day of the next month (the 0th day of the 2nd next month).
             currentDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + 2, 0);
         else
             currentDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, currentDate.getDate());
@@ -146,7 +146,7 @@ function prevMonth() {
     if (currentDate.getMonth() === 0) { //If it is december, we add 1 to the year
         currentDate = new Date(currentDate.getFullYear() - 1, 11, currentDate.getDate());
     } else {
-        if (currentDate.getDate() === 31 || ((currentDate.getDate() === 30 || currentDate.getDate() === 29)  && currentDate.getMonth() === 2)) //If the day is a 31, we go to the last day of the previous month (the 0th day of this month). Exceptions for January
+        if (currentDate.getDate() === 31 || ((currentDate.getDate() === 30 || currentDate.getDate() === 29) && currentDate.getMonth() === 2)) //If the day is a 31, we go to the last day of the previous month (the 0th day of this month). Exceptions for January
             currentDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), 0);
         else
             currentDate = new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, currentDate.getDate());
@@ -186,18 +186,18 @@ function weekDisplay(date) {
     let lastDay = new Date(date);
     lastDay.setDate(date.getDay() === 0 ? date.getDate() : date.getDate() + (7 - date.getDay()));
 
-    return "Du " + firstDay.getDate() + " " + getMonthName(firstDay.getMonth()) + " au " + lastDay.getDate() + " " + getMonthName(lastDay.getMonth()) + " " +  date.getFullYear();
+    return "Du " + firstDay.getDate() + " " + getMonthName(firstDay.getMonth()) + " au " + lastDay.getDate() + " " + getMonthName(lastDay.getMonth()) + " " + date.getFullYear();
 }
 
 //Function that returns the string to display as the date for the day version.
 function dayDisplay(date) {
-    return getDayName(date.getDay()) + " " + date.getDate() + " " + getMonthName(date.getMonth()) + " " +  date.getFullYear();
+    return getDayName(date.getDay()) + " " + date.getDate() + " " + getMonthName(date.getMonth()) + " " + date.getFullYear();
 }
 
 
 //Function that displays the calendar according to the version passed as a parameter.
 function displayCalendar(version) {
-    fetch("/calendar/show/"+ version)
+    fetch("/calendar/show/" + version)
         .then((response) => response.text())
         .then((html) => {
             divCalendar.innerHTML = html;
@@ -224,7 +224,7 @@ function adjustCalendarData() {
 }
 
 function dateToJsonFormat(date) {
-    return date.getFullYear() + "-" + (date.getMonth() + 1)  + "-" + date.getDate();
+    return date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate();
 }
 
 //Function that adjusts the days on the month calendar to be shown in the correct position.
@@ -240,14 +240,14 @@ function adjustMonth() {
     let lastBox = lastDay.getDate() + firstBox;
 
     //We fill the first boxes of the calendar (before firstBox) with blanks.
-    for(let i = 1; i < firstBox; i++) {
-        const td = document.querySelector("#Month"+i);
+    for (let i = 1; i < firstBox; i++) {
+        const td = document.querySelector("#Month" + i);
         td.innerHTML = "";
         td.classList.add("empty");
     }
 
     //We retrieve the events of this month for this user.
-    fetch("/calendar/month?date="+dateToJsonFormat(currentDate)+"&user=Hugo")
+    fetch("/calendar/month?date=" + dateToJsonFormat(currentDate) + "&user=Hugo")
         .then((response) => response.text())
         .then((json) => {
             //We get a json object containing the events of this month.
@@ -263,8 +263,8 @@ function adjustMonth() {
                     hashMap.get(jsonObj[i]["date"].substring(len_date - 2, len_date)).push(i);
             }
             //We fill the boxes between the firstBox and the lastBox with the days of the month and the events for those days.
-            for (let i = firstBox; i < lastBox ; i++) {
-                const td = document.querySelector("#Month"+i);
+            for (let i = firstBox; i < lastBox; i++) {
+                const td = document.querySelector("#Month" + i);
                 td.classList.remove("empty");
                 let day = (i - firstBox + 1);
 
@@ -272,21 +272,20 @@ function adjustMonth() {
                 //We check if there are any events this specific day, if so, we get them from the hashmap and the json object them and display them.
 
                 let today = new Date();
-                if(today.getDate() === day && today.getMonth() === currentDate.getMonth() && today.getFullYear() === currentDate.getFullYear()){
+                if (today.getDate() === day && today.getMonth() === currentDate.getMonth() && today.getFullYear() === currentDate.getFullYear()) {
                     //If we're today, we put a circle on the day's number.
                     content += '<div class="circle">' + day + '</div>';
-                }
-                else {
-                    content += day ;
+                } else {
+                    content += day;
                 }
 
                 if (hashMap.get(String(day)) === undefined) {
                     td.innerHTML = content;
                 } else {
-                    for(let j = 0; j < hashMap.get(String(day)).length; j++) {
+                    for (let j = 0; j < hashMap.get(String(day)).length; j++) {
                         content += '<button class="modal-open ' + jsonObj[hashMap.get(String(day))[j]]["color"] + 'Event" data-modal="modal' + jsonObj[hashMap.get(String(day))[j]]["id"] + '">' + jsonObj[hashMap.get(String(day))[j]]["title"] + '</button>';
                     }
-                    td.innerHTML = content ;
+                    td.innerHTML = content;
                 }
             }
 
@@ -297,7 +296,7 @@ function adjustMonth() {
     //We fill the last boxes with the first days of the next month.
     let j = 1;
     for (let i = lastBox; i <= 42; i++) {
-        const td = document.querySelector("#Month"+i);
+        const td = document.querySelector("#Month" + i);
         td.innerHTML = "" + j;
         td.classList.add("empty");
         j++;
@@ -316,7 +315,7 @@ function adjustDay() {
 
             //We retrieve the events of the day before, in case they extend on this day.
             let yesterday = new Date();
-            yesterday.setDate(currentDate.getDate()-1);
+            yesterday.setDate(currentDate.getDate() - 1);
             fetch("/calendar/day?date=" + dateToJsonFormat(yesterday) + "&user=Hugo")
                 .then((response2) => response2.text())
                 .then((json2) => {
@@ -339,31 +338,31 @@ function adjustDay() {
                     for (let i = 0; i < jsonObj2.length; i++) {
                         let hours2 = getHoursOfEvent(Number(jsonObj2[i]["start_time"]), Number(jsonObj2[i]["duration"]));
                         hours2.forEach(function (h) {
-                            if(h >= 24) {
-                                if (hashMap.get(h-24) === undefined)
-                                    hashMap.set(h-24, [i]);
+                            if (h >= 24) {
+                                if (hashMap.get(h - 24) === undefined)
+                                    hashMap.set(h - 24, [i]);
                                 else
-                                    hashMap.get(h-24).push(i);
+                                    hashMap.get(h - 24).push(i);
                             }
                         })
                     }
 
                     //We fill the calendar hour by hour
-                    for(let i = 0; i <= 23; i++){
-                        const td = document.querySelector("#Day"+i);
+                    for (let i = 0; i <= 23; i++) {
+                        const td = document.querySelector("#Day" + i);
                         //We check if there are any events this specific hour, if so, we get them from the hashmap and the json object them and display them.
                         if (hashMap.get(i) !== undefined) {
                             let events = "";
-                            for(let j = 0; j < hashMap.get(i).length; j++) {
+                            for (let j = 0; j < hashMap.get(i).length; j++) {
                                 if (jsonObj[hashMap.get(i)[j]] != null) {
                                     events += '<button class="modal-open ' + jsonObj[hashMap.get(i)[j]]["color"] + 'Event" data-modal="modal' + jsonObj[hashMap.get(i)[j]]["id"] + '">' + jsonObj[hashMap.get(i)[j]]["title"] + '</button>';
-                                } else if(jsonObj2[hashMap.get(i)[j]] != null) {
+                                } else if (jsonObj2[hashMap.get(i)[j]] != null) {
                                     events += '<button class="modal-open ' + jsonObj2[hashMap.get(i)[j]]["color"] + 'Event" data-modal="modal' + jsonObj2[hashMap.get(i)[j]]["id"] + '">' + jsonObj2[hashMap.get(i)[j]]["title"] + '</button>';
                                 } else {
                                     console.log("UNKNOWN ERROR");
                                 }
                             }
-                            td.innerHTML = events ;
+                            td.innerHTML = events;
                         } else {
                             td.innerHTML = "";
                         }
@@ -397,7 +396,7 @@ function adjustWeek() {
                     //We handle the fact that an event can be spread on 2 days.
                     let key = dayOfTheWeek + "-" + h;
                     if (h >= 24) {
-                        key = dayAfter + "-" + (h-24);
+                        key = dayAfter + "-" + (h - 24);
                     }
 
                     if (hashMap.get(key) === undefined)
@@ -408,13 +407,13 @@ function adjustWeek() {
             }
 
             //We fill the calendar day by day and hour by hour
-            for(let day = 0; day <= 6; day++) {
-                for(let hour = 0; hour <= 23; hour++){
-                    const td = document.querySelector("#Week"+getWeekId(day)+hour);
+            for (let day = 0; day <= 6; day++) {
+                for (let hour = 0; hour <= 23; hour++) {
+                    const td = document.querySelector("#Week" + getWeekId(day) + hour);
                     //We check if there are any events this specific hour, if so, we get them from the hashmap and the json object them and display them.
                     if (hashMap.get(day + "-" + hour) !== undefined) {
                         let events = "";
-                        for(let j = 0; j < hashMap.get(day + "-" + hour).length; j++) {
+                        for (let j = 0; j < hashMap.get(day + "-" + hour).length; j++) {
                             events += '<button class="modal-open ' + jsonObj[hashMap.get(day + "-" + hour)[j]]["color"] + 'Event" data-modal="modal' + jsonObj[hashMap.get(day + "-" + hour)[j]]["id"] + '">' + jsonObj[hashMap.get(day + "-" + hour)[j]]["title"] + '</button>';
                         }
                         td.innerHTML = events;
@@ -472,8 +471,8 @@ function associateModalBtnsToWindows() {
 
     //We get the buttons opening the windows and associate them with their modal windows
     let modalBtns = document.querySelectorAll(".modal-open");
-    modalBtns.forEach(function(btn){
-        btn.onclick = function(){
+    modalBtns.forEach(function (btn) {
+        btn.onclick = function () {
             let modal = btn.getAttribute('data-modal');
 
             document.getElementById(modal).style.display = 'block';
@@ -483,7 +482,7 @@ function associateModalBtnsToWindows() {
     //We get the buttons closing the windows and associate them with their modal windows
     let closeBtns = document.querySelectorAll('.modal-close');
     closeBtns.forEach(function (btn) {
-        btn.onclick = function(){
+        btn.onclick = function () {
             btn.closest(".modal").style.display = "none";
         }
     })
@@ -505,21 +504,21 @@ function createModalWindows(jsonObj) {
     //Creating the windows with the events' information inside them.
     for (let i = 0; i < jsonObj.length; i++) {
         modalWindows += '<div class="modal" id="modal' + jsonObj[i]["id"] + '">\n' +
-                        '    <div class="modal-content">\n' +
-                        '        <div class="modal-header">' + jsonObj[i]["title"] + '\n' +
-                        '            <button class="icon modal-close"><i class="material-icons">close</i></button>\n' +
-                        '        </div>\n' +
-                        '        <div class="modal-body">\n' +
-                        '           ' + jsonObj[i]["description"] + '<br>' +
-                                    'Date : ' + dayDisplay(new Date(jsonObj[i]["date"])) + '<br>' +
-                                    'Début : ' + jsonObj[i]["start_time"] + ' h' + '<br>' +
-                                    'Durée : ' + jsonObj[i]["duration"] + ' h' +  '<br>' +
-                                    'Importance : ' + getImportance(jsonObj[i]["color"]) +
-                        '        </div>\n' +
-                        '        <div class="modal-footer">\n' +
-                        '        </div>\n' +
-                        '    </div>\n' +
-                        '</div>';
+            '    <div class="modal-content">\n' +
+            '        <div class="modal-header">' + jsonObj[i]["title"] + '\n' +
+            '            <button class="icon modal-close"><i class="material-icons">close</i></button>\n' +
+            '        </div>\n' +
+            '        <div class="modal-body">\n' +
+            '           ' + jsonObj[i]["description"] + '<br>' +
+            'Date : ' + dayDisplay(new Date(jsonObj[i]["date"])) + '<br>' +
+            'Début : ' + jsonObj[i]["start_time"] + ' h' + '<br>' +
+            'Durée : ' + jsonObj[i]["duration"] + ' h' + '<br>' +
+            'Importance : ' + getImportance(jsonObj[i]["color"]) +
+            '        </div>\n' +
+            '        <div class="modal-footer">\n' +
+            '        </div>\n' +
+            '    </div>\n' +
+            '</div>';
     }
 
     container.innerHTML += modalWindows;

@@ -1,16 +1,26 @@
+require('dotenv').config()
+
 const controller = require('../models/event.js')
 const controllerAccount = require('../models/account.js')
 const express = require('express')
 const path = require('path')
 const app = express()
+
+const jwt = require('jsonwebtoken')
 const bodyParser = require("body-parser")
 const urlEncodedParser = bodyParser.urlencoded({extended: false});
 
+const account = require('../models/account.json')
+
+app.use(express.json())
 app.use(express.static(__dirname + '/../../public'));
-app.use(express.json());
 
 app.listen(3030, () => {
     console.log("Server is starting !")
+})
+
+app.get('/posts', authenticateToken, (req, res) => {
+    res.json(account.filter(post => post.email === req.user.email));
 })
 
 app.get('/', (req, res) => {
@@ -25,19 +35,27 @@ app.get('/register', (req, res) => {
     res.sendFile(path.join(__dirname + "/../views/registerView.html"));
 })
 
+app.get('/index', (req, res) => {
+    res.sendFile(path.join(__dirname + "/../index.html"));
+})
+
 app.post('/signin', urlEncodedParser, (req, res) => {
     let email = req.body.email;
     let password = req.body.password;
-
     let reponse = controllerAccount.signIn(email, password);
 
     //TODO : préciser les erreurs et les codes et en rajouter si nécessaire.
     if (reponse === "failure") {
         res.status(400);
-        res.send(reponse);
+        res.send("failure")
     } else if (reponse === "success") {
         res.status(200);
-        res.send(reponse);
+
+        //Authenticate User
+        const user = {email: email}
+        const accessToken = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, {expiresIn: '1h'})
+
+        res.json({accessToken: accessToken})
     } else {
         res.status(400);
         res.send("error");
@@ -168,3 +186,20 @@ app.get('/events/delete', (req, res) => {
         res.send("error");
     }
 })
+
+function authenticateToken(req, res, next) {
+    const authHeader = req.headers['authorization']
+    const token = authHeader && authHeader.split(' ')[1]; //If authHeader exist, split it otherwise return undefine.
+    if (token == null) {
+        return res.sendStatus(401);
+    }
+
+    //Verify the token
+    jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
+        if (err) {
+            return res.sendStatus(403);
+        }
+        req.user = user;
+        next();
+    })
+}

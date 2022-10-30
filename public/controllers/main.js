@@ -126,7 +126,7 @@ function nextMonth() {
     if (currentDate.getMonth() === 11) { //If it is december, we add 1 to the year
         currentDate = new Date(currentDate.getFullYear() + 1, 0, currentDate.getDate());
     } else {
-        if (currentDate.getDate() === 31) //If the day is a 31, we go to the last day of the next month (the 0th day of the 2nd next month).
+        if (currentDate.getDate() === 31  || ((currentDate.getDate() === 30 || currentDate.getDate() === 29)  && currentDate.getMonth() === 0)) //If the day is a 31, we go to the last day of the next month (the 0th day of the 2nd next month).
             currentDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + 2, 0);
         else
             currentDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, currentDate.getDate());
@@ -146,7 +146,7 @@ function prevMonth() {
     if (currentDate.getMonth() === 0) { //If it is december, we add 1 to the year
         currentDate = new Date(currentDate.getFullYear() - 1, 11, currentDate.getDate());
     } else {
-        if (currentDate.getDate() === 31) //If the day is a 31, we go to the last day of the previous month (the 0th day of this month).
+        if (currentDate.getDate() === 31 || ((currentDate.getDate() === 30 || currentDate.getDate() === 29)  && currentDate.getMonth() === 2)) //If the day is a 31, we go to the last day of the previous month (the 0th day of this month). Exceptions for January
             currentDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), 0);
         else
             currentDate = new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, currentDate.getDate());
@@ -299,8 +299,8 @@ function adjustMonth() {
     for (let i = lastBox; i <= 42; i++) {
         const td = document.querySelector("#Month"+i);
         td.innerHTML = "" + j;
+        td.classList.add("empty");
         j++;
-        //TODO : ajouter les évenements du mois prochain.
     }
 }
 

@@ -130,11 +130,13 @@ app.post('/events/add', urlEncodedParser, (req, res) => {
     let id = req.body.id;
     let owner = req.body.owner;
     let title = req.body.title;
+    let description = req.body.description;
     let date = req.body.date;
     let duration = req.body.duration;
     let start_time = req.body.start_time;
+    let color = req.body.color;
 
-    let reponse = controller.addEvent(id, owner, title, date, duration, start_time);
+    let reponse = controller.addEvent(id, owner, title, description, date, duration, start_time, color);
 
     //TODO : préciser les erreurs et les codes et en rajouter si nécessaire.
     if (reponse === "failure") {

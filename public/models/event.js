@@ -60,7 +60,7 @@ module.exports = {
             return "failure"
         return res[1];
     },
-    addEvent: function (id, owner, title, date, duration, start_time) {
+    addEvent: function (id, owner, title, description, date, duration, start_time, color) {
         if (findEventById(id)[0] !== null)
             return "failure";
 
@@ -70,9 +70,11 @@ module.exports = {
             "id": id,
             "owner": owner,
             "title": title,
+            "description": description,
             "date": date,
             "duration": duration,
-            "start_time": start_time
+            "start_time": start_time,
+            "color": color
         });
         //We rewrite the Json file with the Json object's content.
         saveInJsonFile();

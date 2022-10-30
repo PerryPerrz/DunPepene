@@ -32,7 +32,7 @@
   {
     "id": "3",
     "owner": "Hugo",
-    "title" : "Médicament",
+    "title": "Médicament",
     "description": "S'acheter des médicaments contre les mini-pouces.",
     "date": "2022-10-29",
     "duration": "0.5",
@@ -68,5 +68,15 @@
     "duration": "8",
     "start_time": "10",
     "color": "red"
+  },
+  {
+    "id": "7",
+    "owner": "Hugo",
+    "title": "Insomnie",
+    "description": "Pas réussir à dormir, encore.",
+    "date": "2022-10-30",
+    "duration": "5",
+    "start_time": "22",
+    "color": "green"
   }
 ]

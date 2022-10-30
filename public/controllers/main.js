@@ -229,6 +229,7 @@ function dateToJsonFormat(date) {
 
 //Function that adjusts the days on the month calendar to be shown in the correct position.
 function adjustMonth() {
+    cleanModalWindows();
     let firstDay = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
     let lastDay = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0);
 
@@ -255,10 +256,11 @@ function adjustMonth() {
             //We create a hashmap that contains the events in this way -> "day of the month" : "indexes of the events in the json object".
             let hashMap = new Map();
             for (let i = 0; i < jsonObj.length; i++) {
-                if (hashMap.get(jsonObj[i]["date"].substring(8, 10)) === undefined)
-                    hashMap.set(jsonObj[i]["date"].substring(8, 10), [i]);
+                let len_date = jsonObj[i]["date"].length;
+                if (hashMap.get(jsonObj[i]["date"].substring(len_date - 2, len_date)) === undefined)
+                    hashMap.set(jsonObj[i]["date"].substring(len_date - 2, len_date), [i]);
                 else
-                    hashMap.get(jsonObj[i]["date"].substring(8, 10)).push(i);
+                    hashMap.get(jsonObj[i]["date"].substring(len_date - 2, len_date)).push(i);
             }
             //We fill the boxes between the firstBox and the lastBox with the days of the month and the events for those days.
             for (let i = firstBox; i < lastBox ; i++) {
@@ -281,15 +283,16 @@ function adjustMonth() {
                 if (hashMap.get(String(day)) === undefined) {
                     td.innerHTML = content;
                 } else {
-                    for(let j = 0; j < hashMap.get(String(day)).length; j++)
-                        content += '<button class="' + jsonObj[hashMap.get(String(day))[j]]["color"] + 'Event">'  + jsonObj[hashMap.get(String(day))[j]]["title"] + '</button>';
+                    for(let j = 0; j < hashMap.get(String(day)).length; j++) {
+                        content += '<button class="modal-open ' + jsonObj[hashMap.get(String(day))[j]]["color"] + 'Event" data-modal="modal' + jsonObj[hashMap.get(String(day))[j]]["id"] + '">' + jsonObj[hashMap.get(String(day))[j]]["title"] + '</button>';
+                    }
                     td.innerHTML = content ;
-                    //TODO : ajouter l'affichage d'une fenêtre modale contenant les informations sur les events au clic des boutons.
                 }
             }
+
+            createModalWindows(jsonObj);
+            associateModalBtnsToWindows();
         })
-
-
 
     //We fill the last boxes with the first days of the next month.
     let j = 1;
@@ -303,7 +306,7 @@ function adjustMonth() {
 
 //Function that adjusts shows the events on the day calendar.
 function adjustDay() {
-
+    cleanModalWindows()
     //We retrieve the events of this day for this user.
     fetch("/calendar/day?date=" + dateToJsonFormat(currentDate) + "&user=Hugo")
         .then((response) => response.text())
@@ -330,14 +333,16 @@ function adjustDay() {
                 if (hashMap.get(i) !== undefined) {
                     let events = "";
                     for(let j = 0; j < hashMap.get(i).length; j++) {
-                        events += '<button class="' + jsonObj[hashMap.get(i)[j]]["color"] + 'Event">'  + jsonObj[hashMap.get(i)[j]]["title"] + '</button>';
+                        events += '<button class="modal-open ' + jsonObj[hashMap.get(i)[j]]["color"] + 'Event" data-modal="modal' + jsonObj[hashMap.get(i)[j]]["id"] + '">' + jsonObj[hashMap.get(i)[j]]["title"] + '</button>';
                     }
                     td.innerHTML = events ;
-                    //TODO : ajouter l'affichage d'une fenêtre modale contenant les informations sur les events au clic des boutons.
                 } else {
                     td.innerHTML = "";
                 }
             }
+
+            createModalWindows(jsonObj);
+            associateModalBtnsToWindows();
         })
 }
 
@@ -367,22 +372,22 @@ function adjustWeek() {
             //We fill the calendar day by day and hour by hour
             for(let day = 0; day <= 6; day++) {
                 for(let hour = 0; hour <= 22; hour+=2){
-                    console.log("#Week"+getWeekId(day)+hour)
                     const td = document.querySelector("#Week"+getWeekId(day)+hour);
                     //We check if there are any events this specific hour, if so, we get them from the hashmap and the json object them and display them.
                     if (hashMap.get(day + "-" + hour) !== undefined) {
                         let events = "";
                         for(let j = 0; j < hashMap.get(day + "-" + hour).length; j++) {
-                            events += '<button class="' + jsonObj[hashMap.get(day + "-" + hour)[j]]["color"] + 'Event">'  + jsonObj[hashMap.get(day + "-" + hour)[j]]["title"] + '</button>';
+                            events += '<button class="modal-open ' + jsonObj[hashMap.get(day + "-" + hour)[j]]["color"] + 'Event" data-modal="modal' + jsonObj[hashMap.get(day + "-" + hour)[j]]["id"] + '">' + jsonObj[hashMap.get(day + "-" + hour)[j]]["title"] + '</button>';
                         }
                         td.innerHTML = events;
-                        //TODO : ajouter l'affichage d'une fenêtre modale contenant les informations sur les events au clic des boutons.
                     } else {
                         td.innerHTML = "";
                     }
                 }
             }
 
+            createModalWindows(jsonObj);
+            associateModalBtnsToWindows();
         })
 }
 
@@ -422,4 +427,88 @@ function getHoursOfEvent(start_time, duration) {
         hours.push(i);
     }
     return hours;
+}
+
+//Function that associates the modal buttons to their respective modal windows
+function associateModalBtnsToWindows() {
+
+    //We get the buttons opening the windows and associate them with their modal windows
+    let modalBtns = document.querySelectorAll(".modal-open");
+    modalBtns.forEach(function(btn){
+        btn.onclick = function(){
+            let modal = btn.getAttribute('data-modal');
+
+            document.getElementById(modal).style.display = 'block';
+        }
+    })
+
+    //We get the buttons closing the windows and associate them with their modal windows
+    let closeBtns = document.querySelectorAll('.modal-close');
+    closeBtns.forEach(function (btn) {
+        btn.onclick = function(){
+            btn.closest(".modal").style.display = "none";
+        }
+    })
+
+    //We make it so that a click outside the modal window closes it.
+    window.onclick = function (e) {
+        if (e.target.className === "modal") {
+            e.target.style.display = "none";
+        }
+    }
+}
+
+//Function that creates the modal windows based on the events' information
+function createModalWindows(jsonObj) {
+    //Getting the div that will contain the modal windows
+    const container = document.querySelector("#modal-windows");
+    let modalWindows = "";
+
+    //Creating the windows with the events' information inside them.
+    for (let i = 0; i < jsonObj.length; i++) {
+        modalWindows += '<div class="modal" id="modal' + jsonObj[i]["id"] + '">\n' +
+                        '    <div class="modal-content">\n' +
+                        '        <div class="modal-header">' + jsonObj[i]["title"] + '\n' +
+                        '            <button class="icon modal-close"><i class="material-icons">close</i></button>\n' +
+                        '        </div>\n' +
+                        '        <div class="modal-body">\n' +
+                        '           ' + jsonObj[i]["description"] + '<br>' +
+                                    'Date : ' + dayDisplay(new Date(jsonObj[i]["date"])) + '<br>' +
+                                    'Début : ' + jsonObj[i]["start_time"] + ' h' + '<br>' +
+                                    'Durée : ' + jsonObj[i]["duration"] + ' h' +  '<br>' +
+                                    'Importance : ' + getImportance(jsonObj[i]["color"]) +
+                        '        </div>\n' +
+                        '        <div class="modal-footer">\n' +
+                        '        </div>\n' +
+                        '    </div>\n' +
+                        '</div>';
+    }
+
+    container.innerHTML = modalWindows;
+}
+
+//Function that cleans the div containing the modal windows
+function cleanModalWindows() {
+    const container = document.querySelector("#modal-windows");
+    container.innerHTML = "";
+}
+
+//Function that returns the importance of an event based on its color
+function getImportance(color) {
+    let res = "";
+    switch (color) {
+        case "red":
+            res = "very important";
+            break;
+        case "orange":
+            res = "important";
+            break;
+        case "yellow":
+            res = "mildly important";
+            break;
+        case "green":
+            res = "unimportant";
+            break;
+    }
+    return res;
 }

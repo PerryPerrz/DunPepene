@@ -210,35 +210,44 @@ body {
 }
 
 .modal-content {
-    background: #fff;
-    margin-top: 100px;
+    background: #ffffff;
+    margin-top: 10%;
     width: 50%;
     margin-left: auto;
     margin-right: auto;
     padding: 8px 24px;
     border-radius: 4px;
+    box-shadow: 0 0 40px rgb(214, 183, 156);
     z-index: 4;
 }
 
 .modal-header {
-    font-weight: 500;
+    font-family: 'Poppins', sans-serif;
+    font-size: 32px;
+    font-weight: 600;
+    color: #d6b79c;
     padding: 10px 0;
-    font-size: 26px;
 }
 
 .modal-header .modal-close {
+    font-family: 'Poppins', sans-serif;
+    font-size: 18px;
+    font-weight: 400;
     float: right;
-    font-size: 20px;
-    background: #efefef;
+    background: #d6b79c;
     border: 0;
     outline: 0;
     padding: 5px 8px;
     border-radius: 50%;
+    cursor: pointer;
 }
 
 .modal-body {
-    color: #7b7b7b;
+    font-family: 'Poppins', sans-serif;
+    font-size: 24px;
+    font-weight: 400;
     padding: 15px 0;
+    color: #000000;
 }
 
 .modal-footer {

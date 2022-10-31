@@ -10,6 +10,9 @@ const NextButton = document.querySelector("#NextButton");
 
 const divCalendar = document.querySelector("#calendar");
 
+window.addEventListener('scroll', () => {
+    document.documentElement.style.setProperty('--scroll-y', `${window.scrollY}px`);
+});
 
 //We get the current date.
 let currentDate = new Date();
@@ -489,6 +492,11 @@ function associateModalBtnsToWindows() {
             let modal = btn.getAttribute('data-modal');
 
             document.getElementById(modal).style.display = 'block';
+
+            //Disable the page's scrolling whilst the modal window is open.
+            const scrollY = document.documentElement.style.getPropertyValue('--scroll-y');
+            document.body.style.position = 'fixed';
+            document.body.style.top = `-${scrollY}`;
         }
     })
 
@@ -497,6 +505,12 @@ function associateModalBtnsToWindows() {
     closeBtns.forEach(function (btn) {
         btn.onclick = function () {
             btn.closest(".modal").style.display = "none";
+
+            //Enable the page's scrolling whilst the modal window is close.
+            const scrollY = document.body.style.top;
+            document.body.style.position = '';
+            document.body.style.top = '';
+            window.scrollTo(0, parseInt(scrollY || '0') * -1);
         }
     })
 
@@ -504,6 +518,12 @@ function associateModalBtnsToWindows() {
     window.onclick = function (e) {
         if (e.target.className === "modal") {
             e.target.style.display = "none";
+
+            //Enable the page's scrolling whilst the modal window is close.
+            const scrollY = document.body.style.top;
+            document.body.style.position = '';
+            document.body.style.top = '';
+            window.scrollTo(0, parseInt(scrollY || '0') * -1);
         }
     }
 }
@@ -548,16 +568,16 @@ function getImportance(color) {
     let res = "";
     switch (color) {
         case "red":
-            res = "very important";
+            res = "Très important !";
             break;
         case "orange":
-            res = "important";
+            res = "Important";
             break;
         case "yellow":
-            res = "mildly important";
+            res = "Assez important";
             break;
         case "green":
-            res = "unimportant";
+            res = "Peu important...mais nécessaire !";
             break;
     }
     return res;

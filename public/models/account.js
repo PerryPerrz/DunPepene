@@ -26,6 +26,13 @@ module.exports = {
         saveInJsonFile();
 
         return "success";
+    },
+    getUsernameWithEmail: function (email) {
+        let account = findAccountByEmail(email);
+        if (account[0] === null)
+            return "failure";
+
+        return account[1].username;
     }
 }
 

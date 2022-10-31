@@ -187,6 +187,23 @@ app.get('/events/delete', (req, res) => {
     }
 })
 
+app.get('/account/getUsername', (req, res) => {
+    let email = req.query.email;
+    let reponse = controllerAccount.getUsernameWithEmail(email);
+
+    if (reponse === null) {
+        res.status(204);
+        res.send("no content");
+    } else if (reponse === "failure") {
+        res.status(400);
+        res.send("failure");
+    } else {
+        res.status(200);
+        res.send(reponse);
+    }
+})
+
+
 function authenticateToken(req, res, next) {
     const authHeader = req.headers['authorization']
     const token = authHeader && authHeader.split(' ')[1]; //If authHeader exist, split it otherwise return undefine.

@@ -246,51 +246,55 @@ function adjustMonth() {
         td.classList.add("empty");
     }
 
-    //We retrieve the events of this month for this user.
-    fetch("/calendar/month?date=" + dateToJsonFormat(currentDate) + "&user=Hugo")
+    fetch("/account/getUsername?email=" + getLoggedInUser())
         .then((response) => response.text())
-        .then((json) => {
-            //We get a json object containing the events of this month.
-            let jsonObj = JSON.parse(json);
+        .then((username) => {
+            //We retrieve the events of this month for this user.
+            fetch("/calendar/month?date=" + dateToJsonFormat(currentDate) + "&user=" + username)
+                .then((response) => response.text())
+                .then((json) => {
+                    //We get a json object containing the events of this month.
+                    let jsonObj = JSON.parse(json);
 
-            //We create a hashmap that contains the events in this way -> "day of the month" : "indexes of the events in the json object".
-            let hashMap = new Map();
-            for (let i = 0; i < jsonObj.length; i++) {
-                let len_date = jsonObj[i]["date"].length;
-                if (hashMap.get(jsonObj[i]["date"].substring(len_date - 2, len_date)) === undefined)
-                    hashMap.set(jsonObj[i]["date"].substring(len_date - 2, len_date), [i]);
-                else
-                    hashMap.get(jsonObj[i]["date"].substring(len_date - 2, len_date)).push(i);
-            }
-            //We fill the boxes between the firstBox and the lastBox with the days of the month and the events for those days.
-            for (let i = firstBox; i < lastBox; i++) {
-                const td = document.querySelector("#Month" + i);
-                td.classList.remove("empty");
-                let day = (i - firstBox + 1);
-
-                let content = "";
-                //We check if there are any events this specific day, if so, we get them from the hashmap and the json object them and display them.
-
-                let today = new Date();
-                if (today.getDate() === day && today.getMonth() === currentDate.getMonth() && today.getFullYear() === currentDate.getFullYear()) {
-                    //If we're today, we put a circle on the day's number.
-                    content += '<div class="circle">' + day + '</div>';
-                } else {
-                    content += day;
-                }
-
-                if (hashMap.get(String(day)) === undefined) {
-                    td.innerHTML = content;
-                } else {
-                    for (let j = 0; j < hashMap.get(String(day)).length; j++) {
-                        content += '<button class="modal-open ' + jsonObj[hashMap.get(String(day))[j]]["color"] + 'Event" data-modal="modal' + jsonObj[hashMap.get(String(day))[j]]["id"] + '">' + jsonObj[hashMap.get(String(day))[j]]["title"] + '</button>';
+                    //We create a hashmap that contains the events in this way -> "day of the month" : "indexes of the events in the json object".
+                    let hashMap = new Map();
+                    for (let i = 0; i < jsonObj.length; i++) {
+                        let len_date = jsonObj[i]["date"].length;
+                        if (hashMap.get(jsonObj[i]["date"].substring(len_date - 2, len_date)) === undefined)
+                            hashMap.set(jsonObj[i]["date"].substring(len_date - 2, len_date), [i]);
+                        else
+                            hashMap.get(jsonObj[i]["date"].substring(len_date - 2, len_date)).push(i);
                     }
-                    td.innerHTML = content;
-                }
-            }
+                    //We fill the boxes between the firstBox and the lastBox with the days of the month and the events for those days.
+                    for (let i = firstBox; i < lastBox; i++) {
+                        const td = document.querySelector("#Month" + i);
+                        td.classList.remove("empty");
+                        let day = (i - firstBox + 1);
 
-            createModalWindows(jsonObj);
-            associateModalBtnsToWindows();
+                        let content = "";
+                        //We check if there are any events this specific day, if so, we get them from the hashmap and the json object them and display them.
+
+                        let today = new Date();
+                        if (today.getDate() === day && today.getMonth() === currentDate.getMonth() && today.getFullYear() === currentDate.getFullYear()) {
+                            //If we're today, we put a circle on the day's number.
+                            content += '<div class="circle">' + day + '</div>';
+                        } else {
+                            content += day;
+                        }
+
+                        if (hashMap.get(String(day)) === undefined) {
+                            td.innerHTML = content;
+                        } else {
+                            for (let j = 0; j < hashMap.get(String(day)).length; j++) {
+                                content += '<button class="modal-open ' + jsonObj[hashMap.get(String(day))[j]]["color"] + 'Event" data-modal="modal' + jsonObj[hashMap.get(String(day))[j]]["id"] + '">' + jsonObj[hashMap.get(String(day))[j]]["title"] + '</button>';
+                            }
+                            td.innerHTML = content;
+                        }
+                    }
+
+                    createModalWindows(jsonObj);
+                    associateModalBtnsToWindows();
+                })
         })
 
     //We fill the last boxes with the first days of the next month.
@@ -306,125 +310,134 @@ function adjustMonth() {
 //Function that adjusts shows the events on the day calendar.
 function adjustDay() {
     cleanModalWindows()
-    //We retrieve the events of this day for this user.
-    fetch("/calendar/day?date=" + dateToJsonFormat(currentDate) + "&user=Hugo")
+
+    fetch("/account/getUsername?email=" + getLoggedInUser())
         .then((response) => response.text())
-        .then((json) => {
-            //We get a json object containing the events of this day.
-            let jsonObj = JSON.parse(json);
+        .then((username) => {
+            //We retrieve the events of this day for this user.
+            fetch("/calendar/day?date=" + dateToJsonFormat(currentDate) + "&user=" + username)
+                .then((response) => response.text())
+                .then((json) => {
+                    //We get a json object containing the events of this day.
+                    let jsonObj = JSON.parse(json);
 
-            //We retrieve the events of the day before, in case they extend on this day.
-            let yesterday = new Date();
-            yesterday.setDate(currentDate.getDate() - 1);
-            fetch("/calendar/day?date=" + dateToJsonFormat(yesterday) + "&user=Hugo")
-                .then((response2) => response2.text())
-                .then((json2) => {
-                    //We get a json object containing the events of the day before.
-                    let jsonObj2 = JSON.parse(json2);
+                    //We retrieve the events of the day before, in case they extend on this day.
+                    let yesterday = new Date();
+                    yesterday.setDate(currentDate.getDate() - 1);
+                    fetch("/calendar/day?date=" + dateToJsonFormat(yesterday) + "&user=" + username)
+                        .then((response2) => response2.text())
+                        .then((json2) => {
+                            //We get a json object containing the events of the day before.
+                            let jsonObj2 = JSON.parse(json2);
 
-                    //We create a hashmap that contains the events in this way -> "hour" : "indexes of the events in the json object".
-                    let hashMap = new Map();
-                    //We go through all of today's events and get them in the hashmap.
-                    for (let i = 0; i < jsonObj.length; i++) {
-                        let hours = getHoursOfEvent(Number(jsonObj[i]["start_time"]), Number(jsonObj[i]["duration"]));
-                        hours.forEach(function (h) {
-                            if (hashMap.get(h) === undefined)
-                                hashMap.set(h, [i]);
-                            else
-                                hashMap.get(h).push(i);
-                        })
-                    }
-                    //We go through all of yesterday's events and get them in the hashmap if they extend into today.
-                    for (let i = 0; i < jsonObj2.length; i++) {
-                        let hours2 = getHoursOfEvent(Number(jsonObj2[i]["start_time"]), Number(jsonObj2[i]["duration"]));
-                        hours2.forEach(function (h) {
-                            if (h >= 24) {
-                                if (hashMap.get(h - 24) === undefined)
-                                    hashMap.set(h - 24, [i]);
-                                else
-                                    hashMap.get(h - 24).push(i);
+                            //We create a hashmap that contains the events in this way -> "hour" : "indexes of the events in the json object".
+                            let hashMap = new Map();
+                            //We go through all of today's events and get them in the hashmap.
+                            for (let i = 0; i < jsonObj.length; i++) {
+                                let hours = getHoursOfEvent(Number(jsonObj[i]["start_time"]), Number(jsonObj[i]["duration"]));
+                                hours.forEach(function (h) {
+                                    if (hashMap.get(h) === undefined)
+                                        hashMap.set(h, [i]);
+                                    else
+                                        hashMap.get(h).push(i);
+                                })
                             }
-                        })
-                    }
+                            //We go through all of yesterday's events and get them in the hashmap if they extend into today.
+                            for (let i = 0; i < jsonObj2.length; i++) {
+                                let hours2 = getHoursOfEvent(Number(jsonObj2[i]["start_time"]), Number(jsonObj2[i]["duration"]));
+                                hours2.forEach(function (h) {
+                                    if (h >= 24) {
+                                        if (hashMap.get(h - 24) === undefined)
+                                            hashMap.set(h - 24, [i]);
+                                        else
+                                            hashMap.get(h - 24).push(i);
+                                    }
+                                })
+                            }
 
-                    //We fill the calendar hour by hour
-                    for (let i = 0; i <= 23; i++) {
-                        const td = document.querySelector("#Day" + i);
-                        //We check if there are any events this specific hour, if so, we get them from the hashmap and the json object them and display them.
-                        if (hashMap.get(i) !== undefined) {
-                            let events = "";
-                            for (let j = 0; j < hashMap.get(i).length; j++) {
-                                if (jsonObj[hashMap.get(i)[j]] != null) {
-                                    events += '<button class="modal-open ' + jsonObj[hashMap.get(i)[j]]["color"] + 'Event" data-modal="modal' + jsonObj[hashMap.get(i)[j]]["id"] + '">' + jsonObj[hashMap.get(i)[j]]["title"] + '</button>';
-                                } else if (jsonObj2[hashMap.get(i)[j]] != null) {
-                                    events += '<button class="modal-open ' + jsonObj2[hashMap.get(i)[j]]["color"] + 'Event" data-modal="modal' + jsonObj2[hashMap.get(i)[j]]["id"] + '">' + jsonObj2[hashMap.get(i)[j]]["title"] + '</button>';
+                            //We fill the calendar hour by hour
+                            for (let i = 0; i <= 23; i++) {
+                                const td = document.querySelector("#Day" + i);
+                                //We check if there are any events this specific hour, if so, we get them from the hashmap and the json object them and display them.
+                                if (hashMap.get(i) !== undefined) {
+                                    let events = "";
+                                    for (let j = 0; j < hashMap.get(i).length; j++) {
+                                        if (jsonObj[hashMap.get(i)[j]] != null) {
+                                            events += '<button class="modal-open ' + jsonObj[hashMap.get(i)[j]]["color"] + 'Event" data-modal="modal' + jsonObj[hashMap.get(i)[j]]["id"] + '">' + jsonObj[hashMap.get(i)[j]]["title"] + '</button>';
+                                        } else if (jsonObj2[hashMap.get(i)[j]] != null) {
+                                            events += '<button class="modal-open ' + jsonObj2[hashMap.get(i)[j]]["color"] + 'Event" data-modal="modal' + jsonObj2[hashMap.get(i)[j]]["id"] + '">' + jsonObj2[hashMap.get(i)[j]]["title"] + '</button>';
+                                        } else {
+                                            console.log("UNKNOWN ERROR");
+                                        }
+                                    }
+                                    td.innerHTML = events;
                                 } else {
-                                    console.log("UNKNOWN ERROR");
+                                    td.innerHTML = "";
                                 }
                             }
-                            td.innerHTML = events;
-                        } else {
-                            td.innerHTML = "";
-                        }
-                    }
 
-                    createModalWindows(jsonObj);
-                    createModalWindows(jsonObj2);
-                    associateModalBtnsToWindows();
+                            createModalWindows(jsonObj);
+                            createModalWindows(jsonObj2);
+                            associateModalBtnsToWindows();
+                        })
                 })
         })
 }
 
 //Function that adjusts shows the events on the week calendar.
 function adjustWeek() {
-    //We retrieve the events of this week for this user.
-    fetch("/calendar/week?date=" + dateToJsonFormat(currentDate) + "&user=Hugo")
+    fetch("/account/getUsername?email=" + getLoggedInUser())
         .then((response) => response.text())
-        .then((json) => {
-            //We get a json object containing the events of this week.
-            let jsonObj = JSON.parse(json);
+        .then((username) => {
+            //We retrieve the events of this week for this user.
+            fetch("/calendar/week?date=" + dateToJsonFormat(currentDate) + "&user=" + username)
+                .then((response) => response.text())
+                .then((json) => {
+                    //We get a json object containing the events of this week.
+                    let jsonObj = JSON.parse(json);
 
-            //We create a hashmap that contains the events in this way -> ("day of the week-hour") : "indexes of the events in the json object".
-            let hashMap = new Map();
-            for (let i = 0; i < jsonObj.length; i++) {
-                let dayOfTheWeek = new Date(jsonObj[i]["date"]).getDay();
+                    //We create a hashmap that contains the events in this way -> ("day of the week-hour") : "indexes of the events in the json object".
+                    let hashMap = new Map();
+                    for (let i = 0; i < jsonObj.length; i++) {
+                        let dayOfTheWeek = new Date(jsonObj[i]["date"]).getDay();
 
-                let dayAfter = dayOfTheWeek + 1;
+                        let dayAfter = dayOfTheWeek + 1;
 
-                let hours = getHoursOfEvent(Number(jsonObj[i]["start_time"]), Number(jsonObj[i]["duration"]));
-                hours.forEach(function (h) {
-                    //We handle the fact that an event can be spread on 2 days.
-                    let key = dayOfTheWeek + "-" + h;
-                    if (h >= 24) {
-                        key = dayAfter + "-" + (h - 24);
+                        let hours = getHoursOfEvent(Number(jsonObj[i]["start_time"]), Number(jsonObj[i]["duration"]));
+                        hours.forEach(function (h) {
+                            //We handle the fact that an event can be spread on 2 days.
+                            let key = dayOfTheWeek + "-" + h;
+                            if (h >= 24) {
+                                key = dayAfter + "-" + (h - 24);
+                            }
+
+                            if (hashMap.get(key) === undefined)
+                                hashMap.set(key, [i]);
+                            else
+                                hashMap.get(key).push(i);
+                        })
                     }
 
-                    if (hashMap.get(key) === undefined)
-                        hashMap.set(key, [i]);
-                    else
-                        hashMap.get(key).push(i);
-                })
-            }
-
-            //We fill the calendar day by day and hour by hour
-            for (let day = 0; day <= 6; day++) {
-                for (let hour = 0; hour <= 23; hour++) {
-                    const td = document.querySelector("#Week" + getWeekId(day) + hour);
-                    //We check if there are any events this specific hour, if so, we get them from the hashmap and the json object them and display them.
-                    if (hashMap.get(day + "-" + hour) !== undefined) {
-                        let events = "";
-                        for (let j = 0; j < hashMap.get(day + "-" + hour).length; j++) {
-                            events += '<button class="modal-open ' + jsonObj[hashMap.get(day + "-" + hour)[j]]["color"] + 'Event" data-modal="modal' + jsonObj[hashMap.get(day + "-" + hour)[j]]["id"] + '">' + jsonObj[hashMap.get(day + "-" + hour)[j]]["title"] + '</button>';
+                    //We fill the calendar day by day and hour by hour
+                    for (let day = 0; day <= 6; day++) {
+                        for (let hour = 0; hour <= 23; hour++) {
+                            const td = document.querySelector("#Week" + getWeekId(day) + hour);
+                            //We check if there are any events this specific hour, if so, we get them from the hashmap and the json object them and display them.
+                            if (hashMap.get(day + "-" + hour) !== undefined) {
+                                let events = "";
+                                for (let j = 0; j < hashMap.get(day + "-" + hour).length; j++) {
+                                    events += '<button class="modal-open ' + jsonObj[hashMap.get(day + "-" + hour)[j]]["color"] + 'Event" data-modal="modal' + jsonObj[hashMap.get(day + "-" + hour)[j]]["id"] + '">' + jsonObj[hashMap.get(day + "-" + hour)[j]]["title"] + '</button>';
+                                }
+                                td.innerHTML = events;
+                            } else {
+                                td.innerHTML = "";
+                            }
                         }
-                        td.innerHTML = events;
-                    } else {
-                        td.innerHTML = "";
                     }
-                }
-            }
 
-            createModalWindows(jsonObj);
-            associateModalBtnsToWindows();
+                    createModalWindows(jsonObj);
+                    associateModalBtnsToWindows();
+                })
         })
 }
 
@@ -548,4 +561,15 @@ function getImportance(color) {
             break;
     }
     return res;
+}
+
+//Function that returns the username of the user currently logged in
+function getLoggedInUser() {
+    let token = localStorage.getItem('token');
+
+    let encodedEmail = token.split('.')[1];
+
+    let decodedEmail = JSON.parse(window.atob(encodedEmail));
+
+    return decodedEmail.email;
 }

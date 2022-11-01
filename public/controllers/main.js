@@ -571,6 +571,9 @@ function associateModalBtnsToWindows() {
             document.body.style.position = '';
             document.body.style.top = '';
             window.scrollTo(0, parseInt(scrollY || '0') * -1);
+
+            //Function that reset the fields of the add event's form, when the user leave the modal window.
+            formulaire.reset()
         }
     })
 
@@ -584,11 +587,14 @@ function associateModalBtnsToWindows() {
             document.body.style.position = '';
             document.body.style.top = '';
             window.scrollTo(0, parseInt(scrollY || '0') * -1);
+
+            //Function that reset the fields of the add event's form, when the user leave the modal window.
+            formulaire.reset()
         }
     }
 }
 
-//Function that creates the modal windows based on the events' information
+//Function that creates the modal windows based on their event's information
 function createModalWindows(jsonObj) {
     //Getting the div that will contain the modal windows
     const container = document.querySelector("#modal-windows");

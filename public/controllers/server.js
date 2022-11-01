@@ -146,7 +146,6 @@ app.get('/events/get', (req, res) => {
 })
 
 app.post('/events/edit', urlEncodedParser, (req, res) => {
-    console.log(req.body)
     let id = req.body.id;
     let owner = req.body.owner;
     let title = req.body.title;
@@ -155,8 +154,6 @@ app.post('/events/edit', urlEncodedParser, (req, res) => {
     let duration = req.body.duration;
     let start_time = req.body.start_time;
     let color = req.body.color;
-
-
 
     let reponse = controller.editEvent(id, owner, title, description, date, duration, start_time, color);
 
@@ -200,7 +197,6 @@ app.post('/events/add', urlEncodedParser, (req, res) => {
 
 app.delete('/events/delete', urlEncodedParser, (req, res) => {
     let id = req.body.id;
-    console.log(id)
     let response = controller.deleteEvent(id);
 
     //TODO : préciser les erreurs et les codes et en rajouter si nécessaire.

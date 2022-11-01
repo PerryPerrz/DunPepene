@@ -12,7 +12,7 @@ const divCalendar = document.querySelector("#calendar");
 const LogoutButton = document.querySelector("#LogOut");
 
 window.addEventListener('scroll', () => {
-    document.documentElement.style.setProperty('--scroll-y', `${window.scrollY}px`);
+    sessionStorage.setItem('scrollY', `${window.scrollY}px`);
 });
 
 let currentVersion = "";
@@ -564,10 +564,20 @@ function associateModalBtnsToWindows() {
         btn.onclick = function () {
             let modal = btn.getAttribute('data-modal');
 
+
             document.getElementById(modal).style.display = 'block';
 
+            let scrollY = 0;
+
+            //We associate the forms in the modal windows made to edit events.
+            if (modal.substring(0,4) === "edit") {
+                associateForm(modal);
+                scrollY = sessionStorage.getItem('scrollBefore');
+            } else {
+                scrollY = sessionStorage.getItem('scrollY');
+                sessionStorage.setItem('scrollBefore', scrollY);
+            }
             //Disable the page's scrolling whilst the modal window is open.
-            const scrollY = document.documentElement.style.getPropertyValue('--scroll-y');
             document.body.style.position = 'fixed';
             document.body.style.top = `-${scrollY}`;
         }
@@ -580,13 +590,14 @@ function associateModalBtnsToWindows() {
             btn.closest(".modal").style.display = "none";
 
             //Enable the page's scrolling whilst the modal window is close.
-            const scrollY = document.body.style.top;
+            const scrollY = sessionStorage.getItem('scrollBefore');
             document.body.style.position = '';
             document.body.style.top = '';
-            window.scrollTo(0, parseInt(scrollY || '0') * -1);
+            window.scrollTo(0, parseInt(scrollY || '0'));
 
             //Function that reset the fields of the add event's form, when the user leave the modal window.
-            formulaire.reset()
+            formulaire.reset();
+            resetEditForms();
         }
     })
 
@@ -596,17 +607,17 @@ function associateModalBtnsToWindows() {
             e.target.style.display = "none";
 
             //Enable the page's scrolling whilst the modal window is close.
-            const scrollY = document.body.style.top;
+            const scrollY = sessionStorage.getItem('scrollBefore');
             document.body.style.position = '';
             document.body.style.top = '';
-            window.scrollTo(0, parseInt(scrollY || '0') * -1);
+            window.scrollTo(0, parseInt(scrollY || '0'));
 
-            //Function that reset the fields of the add event's form, when the user leave the modal window.
-            formulaire.reset()
+            //Function that reset the fields of the forms, when the user leaves the modal window.
+            resetEditForms();
         }
     }
 
-    //We get the buttons closing the windows and associate them with their modal windows
+    //We get the buttons deleting the events and associate them with their modal windows
     let deleteBtns = document.querySelectorAll('.delete');
     deleteBtns.forEach(function (btn) {
         btn.onclick = function () {
@@ -628,6 +639,60 @@ function associateModalBtnsToWindows() {
                 })
         }
     })
+}
+
+function resetEditForms() {
+    let forms = document.querySelectorAll("form");
+
+    forms.forEach(function (form) {
+        form.reset();
+    })
+}
+
+//Function that activates a form to edit an event.
+function associateForm(id) {
+    const formulaireEdit = document.querySelector("#" + id + "form");
+
+    //When the form to edit an event is submitted.
+    formulaireEdit.addEventListener("submit", function (event) {
+        //Disable the form's sending.
+        event.preventDefault();
+
+        let title = document.querySelector('#title' + id);
+        let description = document.querySelector('#description' + id);
+        let date = document.querySelector('#start-date' + id);
+        let start_time = document.querySelector('#start_time' + id);
+        let duration = document.querySelector('#duration' + id);
+        let color = document.querySelector('#color' + id);
+
+        //We get the username of the logged-in user.
+        fetch("/account/getUsername?email=" + getLoggedInUser())
+            .then((response) => response.text())
+            .then((username) => {
+                //We send the datas to our API
+                let body = {
+                    id: id.substring(4),
+                    owner: username,
+                    title: title.value,
+                    description: description.value,
+                    date: date.value,
+                    start_time: start_time.value,
+                    duration: duration.value,
+                    color: color.value
+                }
+                let params = {
+                    method: "POST",
+                    headers: {"Content-Type": "application/json"},
+                    body: JSON.stringify(body),
+                };
+                fetch("/events/edit", params)
+                    .then((response) => response.text())
+                    .then((json) => {
+                        //We redirect the user to the index page.
+                        location.reload();
+                    });
+            })
+    });
 }
 
 //Function that creates the modal windows based on their event's information
@@ -678,19 +743,19 @@ function createEditModalWindow(jsonObj, i) {
         '            <button class="icon modal-close"><i class="material-icons">close</i></button>\n' +
         '        </div>\n' +
         '        <div class="modal-body">\n' +
-        '        <form method="post" id="editEvent' + jsonObj[i]["id"] + '">\n' +
+        '        <form method="post" id="edit' + jsonObj[i]["id"] + 'form">\n' +
         '           <label for="title"></label>\n' +
-        '           <input type="text" id="title" value="' + jsonObj[i]["title"] + '" maxlength="10" required>\n' +
+        '           <input type="text" id="titleedit' + jsonObj[i]["id"] + '" value="' + jsonObj[i]["title"] + '" maxlength="10" required>\n' +
         '           <label for="description"></label>\n' +
-        '                <textarea id="description" name="description" rows="5" cols="33">' + jsonObj[i]["description"] + '</textarea>\n' +
+        '                <textarea id="descriptionedit' + jsonObj[i]["id"] + '" name="description" rows="5" cols="33">' + jsonObj[i]["description"] + '</textarea>\n' +
         '           <label for="start-date"></label>\n' +
-        '           <input class="hour" type="date" id="start-date" name="start-date"\n' +
+        '           <input class="hour" type="date" id="start-dateedit' + jsonObj[i]["id"] + '" name="start-date"\n' +
         '                  value="' + jsonObj[i]["date"] + '"\n' +
-        '                  min="2022-11-01" required>' +
+        '                  required>' +
         '           <label for="start_time"></label>\n' +
-        '           <input class="hour" type="number" id="start_time" value="' + jsonObj[i]["start_time"] + '" min="0" max="23" required>\n' +
+        '           <input class="hour" type="number" id="start_timeedit' + jsonObj[i]["id"] + '" value="' + jsonObj[i]["start_time"] + '" min="0" max="23" required>\n' +
         '           <label for="duration"></label>\n' +
-        '           <input class="hour" type="number" id="duration" value="' + jsonObj[i]["duration"] + '" min="1" max="24" required>\n' +
+        '           <input class="hour" type="number" id="durationedit' + jsonObj[i]["id"] + '" value="' + jsonObj[i]["duration"] + '" min="1" max="24" required>\n' +
 
                     createSelectImportanceToEdit(jsonObj, i) +
 
@@ -698,7 +763,7 @@ function createEditModalWindow(jsonObj, i) {
         '        </div>\n' +
         '        <div class="modal-footer">\n' +
         '        <button class="modal-close">Annuler</button>\n' +
-        '        <button class="smallButton" form="edit' + jsonObj[i]["id"] + '">Sauvegarder</button>' +
+        '        <button class="smallButton" form="edit' + jsonObj[i]["id"] + 'form">Sauvegarder</button>' +
         '        </div>\n' +
         '    </div>\n' +
         '</div>';
@@ -709,7 +774,7 @@ function createSelectImportanceToEdit(jsonObj, i) {
     let colorEvent = jsonObj[i]["color"];
 
     let res = '<label for="color"></label>\n' +
-              '<select name="color" id="color">\n';
+              '<select name="color" id="coloredit' + jsonObj[i]["id"] + '">\n';
 
     //The first option should be the priority that the event has right now.
     res +=  '<option value="' + colorEvent + '">' + getImportance(colorEvent) + '</option>\n';

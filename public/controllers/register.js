@@ -36,7 +36,13 @@ formulaire.addEventListener("submit", function (event) {
         };
         fetch("/signup", params)
             .then((response) => response.text())
-            .then((text) => (console.log(text)));
+            .then((json) => {
+                //We store the token in the browser's local storage.
+                let jsonObj = JSON.parse(json);
+                localStorage.setItem("token", jsonObj["accessToken"]);
+                //We redirect the user to the index page.
+                location.assign("/");
+            });
     }
 });
 

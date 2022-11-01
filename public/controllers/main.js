@@ -9,6 +9,7 @@ const PrevButton = document.querySelector("#PrevButton");
 const NextButton = document.querySelector("#NextButton");
 
 const divCalendar = document.querySelector("#calendar");
+const LogoutButton = document.querySelector("#LogOut");
 
 window.addEventListener('scroll', () => {
     document.documentElement.style.setProperty('--scroll-y', `${window.scrollY}px`);
@@ -72,6 +73,14 @@ NextButton.addEventListener("click", function (event) {
             console.log("Erreur de version");
     }
     refreshShownDate();
+})
+
+//Function that log out the user.
+LogoutButton.addEventListener("click", function (event) {
+    //We reset the token here.
+    localStorage.setItem("token", "");
+    //We send the user to the login page.
+    location.assign("/login");
 })
 
 //Function that returns the name of the month passed as a parameter (number 0-11).
@@ -585,11 +594,13 @@ function getImportance(color) {
 
 //Function that returns the username of the user currently logged in
 function getLoggedInUser() {
-    let token = localStorage.getItem('token');
-
-    let encodedEmail = token.split('.')[1];
-
-    let decodedEmail = JSON.parse(window.atob(encodedEmail));
-
-    return decodedEmail.email;
+    try {
+        let token = localStorage.getItem('token');
+        let encodedEmail = token.split('.')[1];
+        let decodedEmail = JSON.parse(window.atob(encodedEmail));
+        return decodedEmail.email;
+    } catch (err) {
+        alert("Vous devez vous connecter pour voir votre calendrier !")
+        window.location.assign("/login");
+    }
 }

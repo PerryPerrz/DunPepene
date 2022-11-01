@@ -75,7 +75,12 @@ app.post('/signup', urlEncodedParser, (req, res) => {
         res.send(reponse);
     } else if (reponse === "success") {
         res.status(201);
-        res.send(reponse);
+
+        //We authenticate the user when he registers.
+        const user = {email: email}
+        const accessToken = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, {expiresIn: '1h'})
+
+        res.json({accessToken: accessToken})
     } else {
         res.status(400);
         res.send("error");

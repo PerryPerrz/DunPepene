@@ -31,7 +31,6 @@ formulaire.addEventListener("submit", function (event) {
         .then((response) => response.text())
         .then((json) => {
             //We store the token in the browser's local storage.
-            console.log(json);
             let jsonObj = JSON.parse(json);
             localStorage.setItem("token", jsonObj["accessToken"]);
             //We redirect the user to the index page.

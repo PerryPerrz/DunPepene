@@ -564,6 +564,11 @@ function associateModalBtnsToWindows() {
         btn.onclick = function () {
             let modal = btn.getAttribute('data-modal');
 
+            //We activate the forms in the modal windows made to edit events.
+            if (modal.substring(0,4) === "edit") {
+                activateForm(modal);
+            }
+
             document.getElementById(modal).style.display = 'block';
 
             //Disable the page's scrolling whilst the modal window is open.
@@ -630,6 +635,52 @@ function associateModalBtnsToWindows() {
     })
 }
 
+//Function that activates a form to edit an event.
+function activateForm(id) {
+    const formulaireEdit = document.querySelector("#" + id + "form");
+
+    //When the form to edit an event is submitted.
+    formulaireEdit.addEventListener("submit", function (event) {
+        //Disable the form's sending.
+        event.preventDefault();
+
+        let title = document.querySelector('#title' + id);
+        let description = document.querySelector('#description' + id);
+        let date = document.querySelector('#start-date' + id);
+        let start_time = document.querySelector('#start_time' + id);
+        let duration = document.querySelector('#duration' + id);
+        let color = document.querySelector('#color' + id);
+
+        //We get the username of the logged-in user.
+        fetch("/account/getUsername?email=" + getLoggedInUser())
+            .then((response) => response.text())
+            .then((username) => {
+                //We send the datas to our API
+                let body = {
+                    id: id.substring(4),
+                    owner: username,
+                    title: title.value,
+                    description: description.value,
+                    date: date.value,
+                    start_time: start_time.value,
+                    duration: duration.value,
+                    color: color.value
+                }
+                let params = {
+                    method: "POST",
+                    headers: {"Content-Type": "application/json"},
+                    body: JSON.stringify(body),
+                };
+                fetch("/events/edit", params)
+                    .then((response) => response.text())
+                    .then((json) => {
+                        //We redirect the user to the index page.
+                        location.reload();
+                    });
+            })
+    });
+}
+
 //Function that creates the modal windows based on their event's information
 function createModalWindows(jsonObj) {
     //Getting the div that will contain the modal windows
@@ -678,19 +729,19 @@ function createEditModalWindow(jsonObj, i) {
         '            <button class="icon modal-close"><i class="material-icons">close</i></button>\n' +
         '        </div>\n' +
         '        <div class="modal-body">\n' +
-        '        <form method="post" id="editEvent' + jsonObj[i]["id"] + '">\n' +
+        '        <form method="post" id="edit' + jsonObj[i]["id"] + 'form">\n' +
         '           <label for="title"></label>\n' +
-        '           <input type="text" id="title" value="' + jsonObj[i]["title"] + '" maxlength="10" required>\n' +
+        '           <input type="text" id="titleedit' + jsonObj[i]["id"] + '" value="' + jsonObj[i]["title"] + '" maxlength="10" required>\n' +
         '           <label for="description"></label>\n' +
-        '                <textarea id="description" name="description" rows="5" cols="33">' + jsonObj[i]["description"] + '</textarea>\n' +
+        '                <textarea id="descriptionedit' + jsonObj[i]["id"] + '" name="description" rows="5" cols="33">' + jsonObj[i]["description"] + '</textarea>\n' +
         '           <label for="start-date"></label>\n' +
-        '           <input class="hour" type="date" id="start-date" name="start-date"\n' +
+        '           <input class="hour" type="date" id="start-dateedit' + jsonObj[i]["id"] + '" name="start-date"\n' +
         '                  value="' + jsonObj[i]["date"] + '"\n' +
-        '                  min="2022-11-01" required>' +
+        '                  required>' +
         '           <label for="start_time"></label>\n' +
-        '           <input class="hour" type="number" id="start_time" value="' + jsonObj[i]["start_time"] + '" min="0" max="23" required>\n' +
+        '           <input class="hour" type="number" id="start_timeedit' + jsonObj[i]["id"] + '" value="' + jsonObj[i]["start_time"] + '" min="0" max="23" required>\n' +
         '           <label for="duration"></label>\n' +
-        '           <input class="hour" type="number" id="duration" value="' + jsonObj[i]["duration"] + '" min="1" max="24" required>\n' +
+        '           <input class="hour" type="number" id="durationedit' + jsonObj[i]["id"] + '" value="' + jsonObj[i]["duration"] + '" min="1" max="24" required>\n' +
 
                     createSelectImportanceToEdit(jsonObj, i) +
 
@@ -698,7 +749,7 @@ function createEditModalWindow(jsonObj, i) {
         '        </div>\n' +
         '        <div class="modal-footer">\n' +
         '        <button class="modal-close">Annuler</button>\n' +
-        '        <button class="smallButton" form="edit' + jsonObj[i]["id"] + '">Sauvegarder</button>' +
+        '        <button class="smallButton" form="edit' + jsonObj[i]["id"] + 'form">Sauvegarder</button>' +
         '        </div>\n' +
         '    </div>\n' +
         '</div>';
@@ -709,7 +760,7 @@ function createSelectImportanceToEdit(jsonObj, i) {
     let colorEvent = jsonObj[i]["color"];
 
     let res = '<label for="color"></label>\n' +
-              '<select name="color" id="color">\n';
+              '<select name="color" id="coloredit' + jsonObj[i]["id"] + '">\n';
 
     //The first option should be the priority that the event has right now.
     res +=  '<option value="' + colorEvent + '">' + getImportance(colorEvent) + '</option>\n';

@@ -93,7 +93,8 @@ module.exports = {
     },
     editEvent: function (id, owner, title, description, date, duration, start_time, color) {
         let event = findEventById(id);
-        console.log(id)
+        console.log(id,owner,title,description,date,duration,start_time,color)
+
         if (event[0] === null)
             return "failure"
 
@@ -103,7 +104,6 @@ module.exports = {
 
         //We delete the event.
         json.splice(event[0], 1);
-        saveInJsonFile();
 
         //We add the event in the Json object with its new values.
         json.push({

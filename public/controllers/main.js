@@ -547,7 +547,7 @@ function createModalWindows(jsonObj) {
     for (let i = 0; i < jsonObj.length; i++) {
         modalWindows += '<div class="modal" id="modal' + jsonObj[i]["id"] + '">\n' +
             '    <div class="modal-content">\n' +
-            '        <div class="modal-header">' + jsonObj[i]["title"] + '\n' +
+            '        <div class="modal-header ' + jsonObj[i]["color"] + 'Text">' + jsonObj[i]["title"] + '\n' +
             '            <button class="icon modal-close"><i class="material-icons">close</i></button>\n' +
             '        </div>\n' +
             '        <div class="modal-body">\n' +

@@ -15,24 +15,19 @@ window.addEventListener('scroll', () => {
     document.documentElement.style.setProperty('--scroll-y', `${window.scrollY}px`);
 });
 
-//If the user quits the site we want them to still be signed in, but we want their position in the calendar to be cleared.
-window.onbeforeunload = () => {
-    cleanDateAndVersion();
-}
-
 let currentVersion = "";
 let currentDate = null;
 //We check if the user was already navigating the calendar, if so, we put them back where they were.
-if (localStorage.getItem('version') == null) {
+if (sessionStorage.getItem('version') == null) {
     currentVersion = "month";
 } else {
-    currentVersion = localStorage.getItem('version');
+    currentVersion = sessionStorage.getItem('version');
 }
-if (localStorage.getItem('date') == null) {
+if (sessionStorage.getItem('date') == null) {
     //We get the current date.
     currentDate = new Date();
 } else {
-    currentDate = new Date(localStorage.getItem('date'));
+    currentDate = new Date(sessionStorage.getItem('date'));
 }
 showDate.innerHTML = currentDate.toDateString();
 
@@ -69,7 +64,7 @@ PrevButton.addEventListener("click", function (event) {
             console.log("Erreur de version");
     }
     refreshShownDate();
-    localStorage.setItem('date',currentDate);
+    sessionStorage.setItem('date',currentDate);
 })
 
 //Setting up the button that switches the display of the calendar to the next day/week/month depending on the current view.
@@ -88,7 +83,7 @@ NextButton.addEventListener("click", function (event) {
             console.log("Erreur de version");
     }
     refreshShownDate();
-    localStorage.setItem('date',currentDate);
+    sessionStorage.setItem('date',currentDate);
 })
 
 //Function that log out the user.
@@ -280,7 +275,7 @@ function displayCalendar(version) {
 
 //Function that adjusts the data shown on the calendar according to the date and the events
 function adjustCalendarData() {
-    localStorage.setItem('version',currentVersion);
+    sessionStorage.setItem('version',currentVersion);
     switch (currentVersion) {
         case "month":
             adjustMonth();
@@ -705,6 +700,6 @@ function getLoggedInUser() {
 
 //Function that cleans the localStorage of the date and version.
 function cleanDateAndVersion() {
-    localStorage.removeItem('date');
-    localStorage.removeItem('version');
+    sessionStorage.removeItem('date');
+    sessionStorage.removeItem('version');
 }

@@ -145,8 +145,32 @@ app.get('/events/get', (req, res) => {
     }
 })
 
-app.get('/events/edit', (req, res) => {
-    res.send("Events")
+app.post('/events/edit', urlEncodedParser, (req, res) => {
+    console.log(req.body)
+    let id = req.body.id;
+    let owner = req.body.owner;
+    let title = req.body.title;
+    let description = req.body.description;
+    let date = req.body.date;
+    let duration = req.body.duration;
+    let start_time = req.body.start_time;
+    let color = req.body.color;
+
+
+
+    let reponse = controller.editEvent(id, owner, title, description, date, duration, start_time, color);
+
+    //TODO : préciser les erreurs et les codes et en rajouter si nécessaire.
+    if (reponse === "failure") {
+        res.status(400);
+        res.send(reponse);
+    } else if (reponse === "success") {
+        res.status(201);
+        res.send(reponse);
+    } else {
+        res.status(400);
+        res.send("error");
+    }
 })
 
 app.post('/events/add', urlEncodedParser, (req, res) => {
@@ -174,7 +198,7 @@ app.post('/events/add', urlEncodedParser, (req, res) => {
     }
 })
 
-app.delete('/events/delete', (req, res) => {
+app.delete('/events/delete', urlEncodedParser, (req, res) => {
     let id = req.body.id;
     console.log(id)
     let response = controller.deleteEvent(id);

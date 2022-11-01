@@ -84,12 +84,42 @@ module.exports = {
     },
     deleteEvent: function (id) {
         let event = findEventById(id)[0];
-        console.log(event);
         if (event === null)
             return "failure"
 
         json.splice(event, 1);
         saveInJsonFile();
+        return "success";
+    },
+    editEvent: function (id, owner, title, description, date, duration, start_time, color) {
+        let event = findEventById(id);
+        console.log(id)
+        if (event[0] === null)
+            return "failure"
+
+        //We make sure that the owner and id stays the same.
+        if (event[1].id !== id && event[1].owner !== owner)
+            return "failure";
+
+        //We delete the event.
+        json.splice(event[0], 1);
+        saveInJsonFile();
+
+        //We add the event in the Json object with its new values.
+        json.push({
+            "id": id,
+            "owner": owner,
+            "title": title,
+            "description": description,
+            "date": date,
+            "duration": duration,
+            "start_time": start_time,
+            "color": color
+        });
+
+        //We rewrite the Json file with the Json object's content.
+        saveInJsonFile();
+
         return "success";
     }
 }

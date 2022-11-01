@@ -49,7 +49,7 @@ body {
 }
 
 .sideMenu {
-    width: 33%;
+    width: 37%;
 }
 
 .frame {
@@ -225,7 +225,6 @@ body {
     font-family: 'Poppins', sans-serif;
     font-size: 32px;
     font-weight: 600;
-    color: #d6b79c;
     padding: 10px 0;
 }
 
@@ -261,4 +260,20 @@ body {
     outline: none;
     border-radius: 4px;
     color: #1a73e8;
+}
+
+.redText {
+    color: #e3806d;
+}
+
+.orangeText {
+    color: #e1b377;
+}
+
+.yellowText {
+    color: #e2ce6a;
+}
+
+.greenText {
+    color: #92ce6f;
 }

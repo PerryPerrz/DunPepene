@@ -583,6 +583,8 @@ function associateModalBtnsToWindows() {
 
             //We associate the forms in the modal windows made to edit events.
             if (modal.substring(0, 4) === "edit") {
+                //We close the first modal so only the second modal remains open.
+                btn.closest(".modal").style.display = "none";
                 associateForm(modal);
                 scrollY = sessionStorage.getItem('scrollBefore');
             } else {
@@ -603,6 +605,7 @@ function associateModalBtnsToWindows() {
 
             //Enable the page's scrolling whilst the modal window is close.
             const scrollY = sessionStorage.getItem('scrollBefore');
+            //If there is still a modal window open, we don't enable scrolling
             document.body.style.position = '';
             document.body.style.top = '';
             window.scrollTo(0, parseInt(scrollY || '0'));
@@ -750,7 +753,7 @@ function createDisplayModalWindow(jsonObj, i) {
 //Function that creates the html code of the modal window to edit an event.
 function createEditModalWindow(jsonObj, i) {
     return '<div class="modal" id="edit' + jsonObj[i]["id"] + '">\n' +
-        '    <div class="modal-content">\n' +
+        '    <div class="modal-content formModal">\n' +
         '        <div class="modal-header ' + jsonObj[i]["color"] + 'Text">' + jsonObj[i]["title"] + '\n' +
         '            <button class="icon modal-close"><i class="material-icons">close</i></button>\n' +
         '        </div>\n' +
@@ -848,6 +851,8 @@ function cleanDateAndVersion() {
 
 //Function that return the week number from the date given. If week number = 2, it corresponds to the second week of the year.
 function getWeekFromDate(date) {
+    // Copy date so don't modify original
+    date = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
     // Set to the nearest Thursday: current date + 4 - current day number
     // Make Sunday's day number 7
     date.setUTCDate(date.getUTCDate() + 4 - (date.getUTCDay() || 7));

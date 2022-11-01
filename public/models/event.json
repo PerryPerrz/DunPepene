@@ -10,26 +10,6 @@
     "color": "red"
   },
   {
-    "id": "1",
-    "owner": "Hugo",
-    "title": "Accueillir",
-    "description": "Accueillir les clients à l'entrée du restaurant.",
-    "date": "2022-10-23",
-    "duration": "8",
-    "start_time": "11",
-    "color": "orange"
-  },
-  {
-    "id": "2",
-    "owner": "Hugo",
-    "title": "Fromage",
-    "description": "Chercher le fromage dans la cave.",
-    "date": "2022-10-22",
-    "duration": "4",
-    "start_time": "9",
-    "color": "green"
-  },
-  {
     "id": "3",
     "owner": "Hugo",
     "title": "Médicament",
@@ -78,15 +58,5 @@
     "duration": "5",
     "start_time": "22",
     "color": "green"
-  },
-  {
-    "id": "666",
-    "owner": "Hugo",
-    "title": "Cuisine",
-    "description": "Transitionner pour pouvoir faire la cuisine",
-    "date": "2022-10-23",
-    "duration": "4",
-    "start_time": "14",
-    "color": "orange"
   }
 ]

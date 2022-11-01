@@ -211,7 +211,7 @@ body {
 
 .modal-content {
     background: #ffffff;
-    margin-top: 12%;
+    margin-top: 10%;
     width: 50%;
     margin-left: auto;
     margin-right: auto;
@@ -221,11 +221,19 @@ body {
     z-index: 4;
 }
 
+.modal-content.addEvent{
+    margin-top: 6%;
+}
+
 .modal-header {
     font-family: 'Poppins', sans-serif;
     font-size: 32px;
     font-weight: 600;
     padding: 10px 0;
+}
+
+.title{
+    color: #d6b79c
 }
 
 .modal-header .modal-close {
@@ -254,12 +262,36 @@ body {
 }
 
 .modal-footer .modal-close {
-    padding: 8px 16px;
-    font-size: 14px;
+    padding: 15px;
+    font-size: 16px;
+    font-family: 'Poppins', sans-serif;
     border: none;
     outline: none;
-    border-radius: 4px;
-    color: #1a73e8;
+    color: #000000;
+    display: inline-block;
+    margin-top: 10px;
+    width: 20%;
+    background-color: rgb(215, 183, 156);
+    font-weight: 600;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-right: 13px;
+}
+
+.smallButton {
+    display: inline-block;
+    margin-top: 10px;
+    width: 20%;
+    background-color: rgb(215, 183, 156);
+    color: #000000;
+    padding: 15px;
+    font-size: 16px;
+    font-weight: 600;
+    font-family: 'Poppins', sans-serif;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    margin-right: 16px;
 }
 
 .redText {
@@ -276,4 +308,46 @@ body {
 
 .greenText {
     color: #92ce6f;
+}
+
+input[type=text] {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    box-sizing: border-box;
+}
+
+input[type=text]:focus {
+    border: none;
+}
+
+textarea {
+    width: 100%;
+    height: 150px;
+    padding: 12px 20px;
+    box-sizing: border-box;
+    border: none;
+    border-radius: 5px;
+    background-color: #f1f1f1;
+    resize: none;
+    font-family: 'Poppins', sans-serif;
+}
+
+input, select {
+    width: 100%;
+    padding: 16px 20px;
+    border: none;
+    border-radius: 5px;
+    background-color: #f1f1f1;
+    font-family: 'Poppins', sans-serif;
+}
+
+.hour{
+    width: 27%;
+    padding: 16px 20px;
+    border: none;
+    border-radius: 5px;
+    background-color: #f1f1f1;
+    margin-bottom: 10px;
+    font-family: 'Poppins', sans-serif;
 }

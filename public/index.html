@@ -11,8 +11,8 @@
 <div id="modal-windows"></div>
 
 <div class="modal" id="modalAddEvent">
-     <div class="modal-content">
-        <div class="modal-header"> Ajouter un événement
+     <div class="modal-content addEvent">
+        <div class="modal-header title"> Ajouter un événement
         <button class="icon modal-close"><i class="material-icons">close</i></button>
         </div>
         <div class="modal-body">
@@ -21,17 +21,18 @@
                 <input type="text" id="title" placeholder="Titre (10 car. max)" maxlength="10" required>
 
                 <label for="description"></label>
-                <textarea placeholder="La description de votre événement." id="description" name="description" rows="5" cols="33"></textarea>
+                <textarea placeholder="La description (facultative) de votre événement." id="description" name="description" rows="5" cols="33"></textarea>
+
                 <label for="start-date"></label>
-                <input type="date" id="start-date" name="start-date"
+                <input class="hour" type="date" id="start-date" name="start-date"
                        value="2022-11-01"
                        min="2022-11-01" required>
 
                 <label for="start_time"></label>
-                <input type="number" id="start_time" placeholder="Heure de départ" min="0" max="23" required>
+                <input class="hour"type="number" id="start_time" placeholder="Heure de départ" min="0" max="23" required>
 
                 <label for="duration"></label>
-                <input type="number" id="duration" placeholder="Durée en h (24 max)" min="1" max="24" required>
+                <input class="hour" type="number" id="duration" placeholder="Durée en h (24 max)" min="1" max="24" required>
 
                 <label for="color"></label>
                 <select name="color" id="color">
@@ -45,7 +46,7 @@
         </div>
         <div class="modal-footer">
             <button class="modal-close">Annuler</button>
-            <input type="submit" value="Creer" form="addEvent">
+            <button class="smallButton" form="addEvent">Créer</button>
         </div>
     </div>
 </div>

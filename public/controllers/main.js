@@ -656,7 +656,7 @@ function createModalWindows(jsonObj) {
             'Importance : ' + getImportance(jsonObj[i]["color"]) +
             '        </div>\n' +
             '        <div class="modal-footer">\n' +
-                    '<button class="delete" id="delete' + jsonObj[i]["id"] + '">Supprimer</button>' +
+                    '<button class="delete smallButton" id="delete' + jsonObj[i]["id"] + '">Supprimer</button>' +
             '        </div>\n' +
             '    </div>\n' +
             '</div>';

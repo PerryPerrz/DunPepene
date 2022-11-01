@@ -12,7 +12,7 @@ const divCalendar = document.querySelector("#calendar");
 const LogoutButton = document.querySelector("#LogOut");
 
 window.addEventListener('scroll', () => {
-    document.documentElement.style.setProperty('--scroll-y', `${window.scrollY}px`);
+    sessionStorage.setItem('scrollY', `${window.scrollY}px`);
 });
 
 let currentVersion = "";
@@ -564,15 +564,20 @@ function associateModalBtnsToWindows() {
         btn.onclick = function () {
             let modal = btn.getAttribute('data-modal');
 
-            //We activate the forms in the modal windows made to edit events.
-            if (modal.substring(0,4) === "edit") {
-                activateForm(modal);
-            }
 
             document.getElementById(modal).style.display = 'block';
 
+            let scrollY = 0;
+
+            //We associate the forms in the modal windows made to edit events.
+            if (modal.substring(0,4) === "edit") {
+                associateForm(modal);
+                scrollY = sessionStorage.getItem('scrollBefore');
+            } else {
+                scrollY = sessionStorage.getItem('scrollY');
+                sessionStorage.setItem('scrollBefore', scrollY);
+            }
             //Disable the page's scrolling whilst the modal window is open.
-            const scrollY = document.documentElement.style.getPropertyValue('--scroll-y');
             document.body.style.position = 'fixed';
             document.body.style.top = `-${scrollY}`;
         }
@@ -585,13 +590,14 @@ function associateModalBtnsToWindows() {
             btn.closest(".modal").style.display = "none";
 
             //Enable the page's scrolling whilst the modal window is close.
-            const scrollY = document.body.style.top;
+            const scrollY = sessionStorage.getItem('scrollBefore');
             document.body.style.position = '';
             document.body.style.top = '';
-            window.scrollTo(0, parseInt(scrollY || '0') * -1);
+            window.scrollTo(0, parseInt(scrollY || '0'));
 
             //Function that reset the fields of the add event's form, when the user leave the modal window.
-            formulaire.reset()
+            formulaire.reset();
+            resetEditForms();
         }
     })
 
@@ -601,17 +607,17 @@ function associateModalBtnsToWindows() {
             e.target.style.display = "none";
 
             //Enable the page's scrolling whilst the modal window is close.
-            const scrollY = document.body.style.top;
+            const scrollY = sessionStorage.getItem('scrollBefore');
             document.body.style.position = '';
             document.body.style.top = '';
-            window.scrollTo(0, parseInt(scrollY || '0') * -1);
+            window.scrollTo(0, parseInt(scrollY || '0'));
 
-            //Function that reset the fields of the add event's form, when the user leave the modal window.
-            formulaire.reset()
+            //Function that reset the fields of the forms, when the user leaves the modal window.
+            resetEditForms();
         }
     }
 
-    //We get the buttons closing the windows and associate them with their modal windows
+    //We get the buttons deleting the events and associate them with their modal windows
     let deleteBtns = document.querySelectorAll('.delete');
     deleteBtns.forEach(function (btn) {
         btn.onclick = function () {
@@ -635,8 +641,16 @@ function associateModalBtnsToWindows() {
     })
 }
 
+function resetEditForms() {
+    let forms = document.querySelectorAll("form");
+
+    forms.forEach(function (form) {
+        form.reset();
+    })
+}
+
 //Function that activates a form to edit an event.
-function activateForm(id) {
+function associateForm(id) {
     const formulaireEdit = document.querySelector("#" + id + "form");
 
     //When the form to edit an event is submitted.

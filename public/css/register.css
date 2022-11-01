@@ -12,7 +12,7 @@ body {
 
 form {
     height: 590px;
-    width: 400px;
+    width: 500px;
     background-color: rgba(255, 255, 255, 0.13);
     position: absolute;
     transform: translate(-50%, -50%);
@@ -74,4 +74,8 @@ button {
     border-radius: 5px;
     border: none;
     cursor: pointer;
+}
+
+.center{
+    text-align: center;
 }

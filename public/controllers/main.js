@@ -15,12 +15,26 @@ window.addEventListener('scroll', () => {
     document.documentElement.style.setProperty('--scroll-y', `${window.scrollY}px`);
 });
 
-//We get the current date.
-let currentDate = new Date();
-showDate.innerHTML = currentDate.toDateString();
+//If the user quits the site we want them to still be signed in, but we want their position in the calendar to be cleared.
+window.onbeforeunload = () => {
+    cleanDateAndVersion();
+}
 
-//Value : "month", "week" or "day"
-let currentVersion = "month";
+let currentVersion = "";
+let currentDate = null;
+//We check if the user was already navigating the calendar, if so, we put them back where they were.
+if (localStorage.getItem('version') == null) {
+    currentVersion = "month";
+} else {
+    currentVersion = localStorage.getItem('version');
+}
+if (localStorage.getItem('date') == null) {
+    //We get the current date.
+    currentDate = new Date();
+} else {
+    currentDate = new Date(localStorage.getItem('date'));
+}
+showDate.innerHTML = currentDate.toDateString();
 
 displayCalendar(currentVersion);
 
@@ -55,6 +69,7 @@ PrevButton.addEventListener("click", function (event) {
             console.log("Erreur de version");
     }
     refreshShownDate();
+    localStorage.setItem('date',currentDate);
 })
 
 //Setting up the button that switches the display of the calendar to the next day/week/month depending on the current view.
@@ -73,12 +88,14 @@ NextButton.addEventListener("click", function (event) {
             console.log("Erreur de version");
     }
     refreshShownDate();
+    localStorage.setItem('date',currentDate);
 })
 
 //Function that log out the user.
 LogoutButton.addEventListener("click", function (event) {
     //We reset the token here.
-    localStorage.setItem("token", "");
+    localStorage.removeItem("token");
+    cleanDateAndVersion();
     //We send the user to the login page.
     location.assign("/login");
 })
@@ -263,6 +280,7 @@ function displayCalendar(version) {
 
 //Function that adjusts the data shown on the calendar according to the date and the events
 function adjustCalendarData() {
+    localStorage.setItem('version',currentVersion);
     switch (currentVersion) {
         case "month":
             adjustMonth();
@@ -681,7 +699,12 @@ function getLoggedInUser() {
         let decodedEmail = JSON.parse(window.atob(encodedEmail));
         return decodedEmail.email;
     } catch (err) {
-        alert("Vous devez vous connecter pour voir votre calendrier !")
         window.location.assign("/login");
     }
+}
+
+//Function that cleans the localStorage of the date and version.
+function cleanDateAndVersion() {
+    localStorage.removeItem('date');
+    localStorage.removeItem('version');
 }

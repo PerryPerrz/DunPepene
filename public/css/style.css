@@ -195,6 +195,16 @@ body {
     border: 2px solid rgba(0, 60, 255, 0.68);
 }
 
+.rectangle {
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 100px;
+    background: rgb(172, 235, 255);
+    border-radius: 10px 100px / 120px;
+    width: 10%;
+    height: 10%;
+}
+
 .modal-open {
 }
 
@@ -216,12 +226,12 @@ body {
     margin-left: auto;
     margin-right: auto;
     padding: 8px 24px;
-    border-radius: 4px;
+    border-radius: 5px;
     box-shadow: 0 0 40px rgb(214, 183, 156);
     z-index: 4;
 }
 
-.modal-content.addEvent{
+.modal-content.addEvent {
     margin-top: 6%;
 }
 
@@ -232,7 +242,7 @@ body {
     padding: 10px 0;
 }
 
-.title{
+.title {
     color: #d6b79c
 }
 
@@ -342,7 +352,7 @@ input, select {
     font-family: 'Poppins', sans-serif;
 }
 
-.hour{
+.hour {
     width: 27%;
     padding: 16px 20px;
     border: none;
@@ -350,4 +360,8 @@ input, select {
     background-color: #f1f1f1;
     margin-bottom: 10px;
     font-family: 'Poppins', sans-serif;
+}
+
+.center {
+    text-align: center;
 }

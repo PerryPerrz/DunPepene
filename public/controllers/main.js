@@ -64,7 +64,7 @@ PrevButton.addEventListener("click", function (event) {
             console.log("Erreur de version");
     }
     refreshShownDate();
-    sessionStorage.setItem('date',currentDate);
+    sessionStorage.setItem('date', currentDate);
 })
 
 //Setting up the button that switches the display of the calendar to the next day/week/month depending on the current view.
@@ -83,7 +83,7 @@ NextButton.addEventListener("click", function (event) {
             console.log("Erreur de version");
     }
     refreshShownDate();
-    sessionStorage.setItem('date',currentDate);
+    sessionStorage.setItem('date', currentDate);
 })
 
 //Function that log out the user.
@@ -275,7 +275,7 @@ function displayCalendar(version) {
 
 //Function that adjusts the data shown on the calendar according to the date and the events
 function adjustCalendarData() {
-    sessionStorage.setItem('version',currentVersion);
+    sessionStorage.setItem('version', currentVersion);
     switch (currentVersion) {
         case "month":
             adjustMonth();
@@ -292,7 +292,7 @@ function adjustCalendarData() {
 }
 
 function dateToJsonFormat(date) {
-    let monthNum = Number(date.getMonth()+1);
+    let monthNum = Number(date.getMonth() + 1);
     let dayNum = Number(date.getDate());
     let month = monthNum >= 10 ? "" + monthNum : "0" + monthNum;
     let day = dayNum >= 10 ? "" + dayNum : "0" + dayNum;
@@ -493,6 +493,18 @@ function adjustWeek() {
                                 hashMap.get(key).push(i);
                         })
                     }
+                    //We clean all the days of the rectangle class.
+                    for (let i = 0; i < 7; ++i) {
+                        const currentTh = document.querySelector("#Week" + getWeekId(i));
+                        currentTh.classList.remove("rectangle");
+                    }
+
+                    //We add a rectangle on the current day.
+                    let today = new Date();
+                    if (getWeekFromDate(today) === getWeekFromDate(currentDate) && currentDate.getFullYear() === today.getFullYear()) {
+                        const currentTh = document.querySelector("#Week" + getWeekId(today.getDay()));
+                        currentTh.classList.add("rectangle");
+                    }
 
                     //We fill the calendar day by day and hour by hour
                     for (let day = 0; day <= 6; day++) {
@@ -570,7 +582,7 @@ function associateModalBtnsToWindows() {
             let scrollY = 0;
 
             //We associate the forms in the modal windows made to edit events.
-            if (modal.substring(0,4) === "edit") {
+            if (modal.substring(0, 4) === "edit") {
                 associateForm(modal);
                 scrollY = sessionStorage.getItem('scrollBefore');
             } else {
@@ -714,20 +726,20 @@ function createModalWindows(jsonObj) {
 }
 
 //Function that creates the html code of the modal window to display an event.
-function createDisplayModalWindow(jsonObj, i){
+function createDisplayModalWindow(jsonObj, i) {
     return '<div class="modal" id="modal' + jsonObj[i]["id"] + '">\n' +
         '    <div class="modal-content">\n' +
         '        <div class="modal-header ' + jsonObj[i]["color"] + 'Text">' + jsonObj[i]["title"] + '\n' +
         '            <button class="icon modal-close"><i class="material-icons">close</i></button>\n' +
         '        </div>\n' +
-        '        <div class="modal-body">\n' +
+        '        <div class="modal-body center">\n' +
         '           ' + jsonObj[i]["description"] + '<br>' +
         '           Date : ' + dayDisplay(new Date(jsonObj[i]["date"])) + '<br>' +
         '           Début : ' + jsonObj[i]["start_time"] + ' h' + '<br>' +
         '           Durée : ' + jsonObj[i]["duration"] + ' h' + '<br>' +
         '           Importance : ' + getImportance(jsonObj[i]["color"]) +
         '        </div>\n' +
-        '        <div class="modal-footer">\n' +
+        '        <div class="modal-footer center">\n' +
         '        <button class="delete smallButton" id="delete' + jsonObj[i]["id"] + '">Supprimer</button>' +
         '        <button class="edit smallButton modal-open" data-modal="edit' + jsonObj[i]["id"] + '">Modifier</button>' +
         '        </div>\n' +
@@ -742,7 +754,7 @@ function createEditModalWindow(jsonObj, i) {
         '        <div class="modal-header ' + jsonObj[i]["color"] + 'Text">' + jsonObj[i]["title"] + '\n' +
         '            <button class="icon modal-close"><i class="material-icons">close</i></button>\n' +
         '        </div>\n' +
-        '        <div class="modal-body">\n' +
+        '        <div class="modal-body center">\n' +
         '        <form method="post" id="edit' + jsonObj[i]["id"] + 'form">\n' +
         '           <label for="title"></label>\n' +
         '           <input type="text" id="titleedit' + jsonObj[i]["id"] + '" value="' + jsonObj[i]["title"] + '" maxlength="10" required>\n' +
@@ -751,17 +763,17 @@ function createEditModalWindow(jsonObj, i) {
         '           <label for="start-date"></label>\n' +
         '           <input class="hour" type="date" id="start-dateedit' + jsonObj[i]["id"] + '" name="start-date"\n' +
         '                  value="' + jsonObj[i]["date"] + '"\n' +
-        '                  required>' +
+        '                  required style="margin-right:6px">' +
         '           <label for="start_time"></label>\n' +
-        '           <input class="hour" type="number" id="start_timeedit' + jsonObj[i]["id"] + '" value="' + jsonObj[i]["start_time"] + '" min="0" max="23" required>\n' +
+        '           <input class="hour" type="number" id="start_timeedit' + jsonObj[i]["id"] + '" value="' + jsonObj[i]["start_time"] + '" min="0" max="23" required style="margin-right:6px">\n' +
         '           <label for="duration"></label>\n' +
         '           <input class="hour" type="number" id="durationedit' + jsonObj[i]["id"] + '" value="' + jsonObj[i]["duration"] + '" min="1" max="24" required>\n' +
 
-                    createSelectImportanceToEdit(jsonObj, i) +
+        createSelectImportanceToEdit(jsonObj, i) +
 
         '        </form>' +
         '        </div>\n' +
-        '        <div class="modal-footer">\n' +
+        '        <div class="modal-footer center">\n' +
         '        <button class="modal-close">Annuler</button>\n' +
         '        <button class="smallButton" form="edit' + jsonObj[i]["id"] + 'form">Sauvegarder</button>' +
         '        </div>\n' +
@@ -774,19 +786,19 @@ function createSelectImportanceToEdit(jsonObj, i) {
     let colorEvent = jsonObj[i]["color"];
 
     let res = '<label for="color"></label>\n' +
-              '<select name="color" id="coloredit' + jsonObj[i]["id"] + '">\n';
+        '<select name="color" id="coloredit' + jsonObj[i]["id"] + '">\n';
 
     //The first option should be the priority that the event has right now.
-    res +=  '<option value="' + colorEvent + '">' + getImportance(colorEvent) + '</option>\n';
+    res += '<option value="' + colorEvent + '">' + getImportance(colorEvent) + '</option>\n';
 
     let tabColor = ["red", "orange", "yellow", "green"];
-    for(let i = 0; i < 4; i++) {
+    for (let i = 0; i < 4; i++) {
         if (tabColor[i] !== colorEvent) {
-            res +=  '<option value="' + tabColor[i] + '">' + getImportance(tabColor[i]) + '</option>\n';
+            res += '<option value="' + tabColor[i] + '">' + getImportance(tabColor[i]) + '</option>\n';
         }
     }
 
-    res +=  '</select>\n';
+    res += '</select>\n';
     return res;
 }
 
@@ -832,4 +844,15 @@ function getLoggedInUser() {
 function cleanDateAndVersion() {
     sessionStorage.removeItem('date');
     sessionStorage.removeItem('version');
+}
+
+//Function that return the week number from the date given. If week number = 2, it corresponds to the second week of the year.
+function getWeekFromDate(date) {
+    // Set to the nearest Thursday: current date + 4 - current day number
+    // Make Sunday's day number 7
+    date.setUTCDate(date.getUTCDate() + 4 - (date.getUTCDay() || 7));
+    // Get first day of year
+    let yearStart = new Date(Date.UTC(date.getUTCFullYear(), 0, 1));
+    // Calculate full weeks to the nearest Thursday
+    return Math.ceil((((date - yearStart) / 86400000) + 1) / 7);
 }

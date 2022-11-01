@@ -11,31 +11,33 @@
 <div id="modal-windows"></div>
 
 <div class="modal" id="modalAddEvent">
-     <div class="modal-content addEvent">
+    <div class="modal-content addEvent">
         <div class="modal-header title"> Ajouter un événement
-        <button class="icon modal-close"><i class="material-icons">close</i></button>
+            <button class="icon modal-close"><i class="material-icons">close</i></button>
         </div>
-        <div class="modal-body">
-            <form method="post" id="addEvent">
+        <div class="modal-body center">
+            <form id="addEvent" method="post">
                 <label for="title"></label>
-                <input type="text" id="title" placeholder="Titre (10 car. max)" maxlength="10" required>
+                <input id="title" maxlength="10" placeholder="Titre (10 car. max)" required type="text">
 
                 <label for="description"></label>
-                <textarea placeholder="La description (facultative) de votre événement." id="description" name="description" rows="5" cols="33"></textarea>
+                <textarea cols="33" id="description"
+                          name="description" placeholder="La description (facultative) de votre événement." rows="5"></textarea>
 
                 <label for="start-date"></label>
-                <input class="hour" type="date" id="start-date" name="start-date"
-                       value="2022-11-01"
-                       min="2022-11-01" required>
+                <input class="hour" id="start-date" min="2022-11-01" name="start-date" required
+                       style="margin-right:6px" type="date" value="2022-11-01">
 
                 <label for="start_time"></label>
-                <input class="hour"type="number" id="start_time" placeholder="Heure de départ" min="0" max="23" required>
+                <input class="hour" id="start_time" max="23" min="0"
+                       placeholder="Heure de départ" required style="margin-right: 6px" type="number">
 
                 <label for="duration"></label>
-                <input class="hour" type="number" id="duration" placeholder="Durée en h (24 max)" min="1" max="24" required>
+                <input class="hour" id="duration" max="24" min="1" placeholder="Durée en h (24 max)" required
+                       type="number">
 
                 <label for="color"></label>
-                <select name="color" id="color">
+                <select id="color" name="color">
                     <option value="green">Peu important...mais nécessaire !</option>
                     <option value="yellow">Assez important</option>
                     <option value="orange">Important</option>
@@ -44,7 +46,7 @@
 
             </form>
         </div>
-        <div class="modal-footer">
+        <div class="modal-footer center">
             <button class="modal-close">Annuler</button>
             <button class="smallButton" form="addEvent">Créer</button>
         </div>
@@ -58,7 +60,8 @@
 <div class="menu">
     <div class="menu2 sideMenu">
         <button class="bigButton" id="LogOut">Déconnexion</button>
-        <button class="bigButton modal-open" id="CreateEventButton" data-modal="modalAddEvent">Ajouter Événement</button>
+        <button class="bigButton modal-open" data-modal="modalAddEvent" id="CreateEventButton">Ajouter Événement
+        </button>
     </div>
     <div class="menu2">
         <button class="bigButton" id="PrevButton">🡄</button>

@@ -93,7 +93,7 @@ module.exports = {
     },
     editEvent: function (id, owner, title, description, date, duration, start_time, color) {
         let event = findEventById(id);
-        console.log(id,owner,title,description,date,duration,start_time,color)
+        console.log(id, owner, title, description, date, duration, start_time, color)
 
         if (event[0] === null)
             return "failure"

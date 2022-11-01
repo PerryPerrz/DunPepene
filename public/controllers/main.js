@@ -95,7 +95,7 @@ LogoutButton.addEventListener("click", function (event) {
     location.assign("/login");
 })
 
-const formulaire = document.querySelector("form");
+const formulaire = document.querySelector("#addEvent");
 
 //When the form to add an event is submitted.
 formulaire.addEventListener("submit", function (event) {
@@ -638,26 +638,91 @@ function createModalWindows(jsonObj) {
 
     //Creating the windows with the events' information inside them.
     for (let i = 0; i < jsonObj.length; i++) {
-        modalWindows += '<div class="modal" id="modal' + jsonObj[i]["id"] + '">\n' +
-            '    <div class="modal-content">\n' +
-            '        <div class="modal-header ' + jsonObj[i]["color"] + 'Text">' + jsonObj[i]["title"] + '\n' +
-            '            <button class="icon modal-close"><i class="material-icons">close</i></button>\n' +
-            '        </div>\n' +
-            '        <div class="modal-body">\n' +
-            '           ' + jsonObj[i]["description"] + '<br>' +
-            'Date : ' + dayDisplay(new Date(jsonObj[i]["date"])) + '<br>' +
-            'Début : ' + jsonObj[i]["start_time"] + ' h' + '<br>' +
-            'Durée : ' + jsonObj[i]["duration"] + ' h' + '<br>' +
-            'Importance : ' + getImportance(jsonObj[i]["color"]) +
-            '        </div>\n' +
-            '        <div class="modal-footer">\n' +
-                    '<button class="delete smallButton" id="delete' + jsonObj[i]["id"] + '">Supprimer</button>' +
-            '        </div>\n' +
-            '    </div>\n' +
-            '</div>';
+        //The modal window to show the event's information and allow the user to take actions on this event.
+        modalWindows += createDisplayModalWindow(jsonObj, i);
+
+        //The modal window to allow editing of the event's information.
+        modalWindows += createEditModalWindow(jsonObj, i);
     }
 
     container.innerHTML += modalWindows;
+}
+
+//Function that creates the html code of the modal window to display an event.
+function createDisplayModalWindow(jsonObj, i){
+    return '<div class="modal" id="modal' + jsonObj[i]["id"] + '">\n' +
+        '    <div class="modal-content">\n' +
+        '        <div class="modal-header ' + jsonObj[i]["color"] + 'Text">' + jsonObj[i]["title"] + '\n' +
+        '            <button class="icon modal-close"><i class="material-icons">close</i></button>\n' +
+        '        </div>\n' +
+        '        <div class="modal-body">\n' +
+        '           ' + jsonObj[i]["description"] + '<br>' +
+        '           Date : ' + dayDisplay(new Date(jsonObj[i]["date"])) + '<br>' +
+        '           Début : ' + jsonObj[i]["start_time"] + ' h' + '<br>' +
+        '           Durée : ' + jsonObj[i]["duration"] + ' h' + '<br>' +
+        '           Importance : ' + getImportance(jsonObj[i]["color"]) +
+        '        </div>\n' +
+        '        <div class="modal-footer">\n' +
+        '        <button class="delete smallButton" id="delete' + jsonObj[i]["id"] + '">Supprimer</button>' +
+        '        <button class="edit smallButton modal-open" data-modal="edit' + jsonObj[i]["id"] + '">Modifier</button>' +
+        '        </div>\n' +
+        '    </div>\n' +
+        '</div>';
+}
+
+//Function that creates the html code of the modal window to edit an event.
+function createEditModalWindow(jsonObj, i) {
+    return '<div class="modal" id="edit' + jsonObj[i]["id"] + '">\n' +
+        '    <div class="modal-content">\n' +
+        '        <div class="modal-header ' + jsonObj[i]["color"] + 'Text">' + jsonObj[i]["title"] + '\n' +
+        '            <button class="icon modal-close"><i class="material-icons">close</i></button>\n' +
+        '        </div>\n' +
+        '        <div class="modal-body">\n' +
+        '        <form method="post" id="editEvent' + jsonObj[i]["id"] + '">\n' +
+        '           <label for="title"></label>\n' +
+        '           <input type="text" id="title" value="' + jsonObj[i]["title"] + '" maxlength="10" required>\n' +
+        '           <label for="description"></label>\n' +
+        '                <textarea id="description" name="description" rows="5" cols="33">' + jsonObj[i]["description"] + '</textarea>\n' +
+        '           <label for="start-date"></label>\n' +
+        '           <input class="hour" type="date" id="start-date" name="start-date"\n' +
+        '                  value="' + jsonObj[i]["date"] + '"\n' +
+        '                  min="2022-11-01" required>' +
+        '           <label for="start_time"></label>\n' +
+        '           <input class="hour" type="number" id="start_time" value="' + jsonObj[i]["start_time"] + '" min="0" max="23" required>\n' +
+        '           <label for="duration"></label>\n' +
+        '           <input class="hour" type="number" id="duration" value="' + jsonObj[i]["duration"] + '" min="1" max="24" required>\n' +
+
+                    createSelectImportanceToEdit(jsonObj, i) +
+
+        '        </form>' +
+        '        </div>\n' +
+        '        <div class="modal-footer">\n' +
+        '        <button class="modal-close">Annuler</button>\n' +
+        '        <button class="smallButton" form="edit' + jsonObj[i]["id"] + '">Sauvegarder</button>' +
+        '        </div>\n' +
+        '    </div>\n' +
+        '</div>';
+}
+
+//Function that creates the select element's html code based on the current event's importance.
+function createSelectImportanceToEdit(jsonObj, i) {
+    let colorEvent = jsonObj[i]["color"];
+
+    let res = '<label for="color"></label>\n' +
+              '<select name="color" id="color">\n';
+
+    //The first option should be the priority that the event has right now.
+    res +=  '<option value="' + colorEvent + '">' + getImportance(colorEvent) + '</option>\n';
+
+    let tabColor = ["red", "orange", "yellow", "green"];
+    for(let i = 0; i < 4; i++) {
+        if (tabColor[i] !== colorEvent) {
+            res +=  '<option value="' + tabColor[i] + '">' + getImportance(tabColor[i]) + '</option>\n';
+        }
+    }
+
+    res +=  '</select>\n';
+    return res;
 }
 
 //Function that cleans the div containing the modal windows

@@ -9,6 +9,7 @@ module.exports = {
 
         //We search in the JSON file for all the events that have the same month and year as the month we want to display.
         json.forEach(function (event) {
+
             let parsedEventDate = parse(event.date, "-");
             if (parsedEventDate.year === parsedDate.year && parsedEventDate.month === parsedDate.month && event.owner === user) {
                 events.push(event);

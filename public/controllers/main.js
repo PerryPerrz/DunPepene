@@ -83,6 +83,49 @@ LogoutButton.addEventListener("click", function (event) {
     location.assign("/login");
 })
 
+const formulaire = document.querySelector("form");
+
+//When the form to add an event is submitted.
+formulaire.addEventListener("submit", function (event) {
+    //Disable the form's sending.
+    event.preventDefault();
+
+    let title = document.querySelector('#title');
+    let description = document.querySelector('#description');
+    let date = document.querySelector('#start-date');
+    let start_time = document.querySelector('#start_time');
+    let duration = document.querySelector('#duration');
+    let color = document.querySelector('#color');
+
+    //We get the username of the logged-in user.
+    fetch("/account/getUsername?email=" + getLoggedInUser())
+        .then((response) => response.text())
+        .then((username) => {
+            //We send the datas to our API
+            let body = {
+                id: String(new Date().getTime()),
+                owner: username,
+                title: title.value,
+                description: description.value,
+                date: date.value,
+                start_time: start_time.value,
+                duration: duration.value,
+                color: color.value
+            }
+            let params = {
+                method: "POST",
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify(body),
+            };
+            fetch("/events/add", params)
+                .then((response) => response.text())
+                .then((json) => {
+                    //We redirect the user to the index page.
+                    location.assign("/");
+                });
+        })
+});
+
 //Function that returns the name of the month passed as a parameter (number 0-11).
 function getMonthName(month) {
     switch (month) {
@@ -236,7 +279,11 @@ function adjustCalendarData() {
 }
 
 function dateToJsonFormat(date) {
-    return date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate();
+    let monthNum = Number(date.getMonth()+1);
+    let dayNum = Number(date.getDate());
+    let month = monthNum >= 10 ? "" + monthNum : "0" + monthNum;
+    let day = dayNum >= 10 ? "" + dayNum : "0" + dayNum;
+    return date.getFullYear() + "-" + month + "-" + day;
 }
 
 //Function that adjusts the days on the month calendar to be shown in the correct position.
@@ -271,11 +318,15 @@ function adjustMonth() {
                     //We create a hashmap that contains the events in this way -> "day of the month" : "indexes of the events in the json object".
                     let hashMap = new Map();
                     for (let i = 0; i < jsonObj.length; i++) {
-                        let len_date = jsonObj[i]["date"].length;
-                        if (hashMap.get(jsonObj[i]["date"].substring(len_date - 2, len_date)) === undefined)
-                            hashMap.set(jsonObj[i]["date"].substring(len_date - 2, len_date), [i]);
+
+                        let day = jsonObj[i]["date"].split("-")[2];
+                        if (day.charAt(0) === '0')
+                            day = day.charAt(1);
+
+                        if (hashMap.get(day) === undefined)
+                            hashMap.set(day, [i]);
                         else
-                            hashMap.get(jsonObj[i]["date"].substring(len_date - 2, len_date)).push(i);
+                            hashMap.get(day).push(i);
                     }
                     //We fill the boxes between the firstBox and the lastBox with the days of the month and the events for those days.
                     for (let i = firstBox; i < lastBox; i++) {
@@ -592,7 +643,7 @@ function getImportance(color) {
     return res;
 }
 
-//Function that returns the username of the user currently logged in
+//Function that returns the email of the user currently logged in
 function getLoggedInUser() {
     try {
         let token = localStorage.getItem('token');

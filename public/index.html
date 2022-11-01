@@ -10,6 +10,50 @@
 
 <div id="modal-windows"></div>
 
+<div class="modal" id="modalAddEvent">
+     <div class="modal-content">
+        <div class="modal-header"> Ajouter un événement
+        <button class="icon modal-close"><i class="material-icons">close</i></button>
+        </div>
+        <div class="modal-body">
+            <form method="post" id="addEvent">
+                <label for="title"></label>
+                <input type="text" id="title" placeholder="Titre (10 car. max)" maxlength="10" required>
+
+                <label for="description"></label>
+                <textarea id="description" name="description"
+                          rows="5" cols="33">La description de votre événement.
+                </textarea>
+
+
+                <label for="start-date"></label>
+                <input type="date" id="start-date" name="start-date"
+                       value="2022-11-01"
+                       min="2022-11-01" required>
+
+                <label for="start_time"></label>
+                <input type="number" id="start_time" placeholder="Heure de départ" min="0" max="23" required>
+
+                <label for="duration"></label>
+                <input type="number" id="duration" placeholder="Durée en h (24 max)" min="1" max="24" required>
+
+                <label for="color"></label>
+                <select name="color" id="color">
+                    <option value="green">Peu important...mais nécessaire !</option>
+                    <option value="yellow">Assez important</option>
+                    <option value="orange">Important</option>
+                    <option value="red">Très important !</option>
+                </select>
+
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button class="modal-close">Annuler</button>
+            <input type="submit" value="Creer" form="addEvent">
+        </div>
+    </div>
+</div>
+
 <br>
 <h2 align="center" class="titleDate" id="ShowDate"></h2>
 <br>
@@ -17,7 +61,7 @@
 <div class="menu">
     <div class="menu2 sideMenu">
         <button class="bigButton" id="LogOut">Déconnexion</button>
-        <button class="bigButton" id="CreateEventButton">Ajouter Événement</button>
+        <button class="bigButton modal-open" id="CreateEventButton" data-modal="modalAddEvent">Ajouter Événement</button>
     </div>
     <div class="menu2">
         <button class="bigButton" id="PrevButton">🡄</button>

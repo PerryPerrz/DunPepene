@@ -121,7 +121,7 @@ formulaire.addEventListener("submit", function (event) {
                 .then((response) => response.text())
                 .then((json) => {
                     //We redirect the user to the index page.
-                    location.assign("/");
+                    location.reload();
                 });
         })
 });
@@ -592,6 +592,29 @@ function associateModalBtnsToWindows() {
             formulaire.reset()
         }
     }
+
+    //We get the buttons closing the windows and associate them with their modal windows
+    let deleteBtns = document.querySelectorAll('.delete');
+    deleteBtns.forEach(function (btn) {
+        btn.onclick = function () {
+            let idEvent = btn.getAttribute("id").substring(6);
+
+            //We send the id to our API which will delete the event.
+            let body = {
+                id: idEvent
+            }
+            let params = {
+                method: "DELETE",
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify(body),
+            };
+            fetch("/events/delete", params)
+                .then((response) => response.text())
+                .then(() => {
+                    location.reload();
+                })
+        }
+    })
 }
 
 //Function that creates the modal windows based on their event's information
@@ -615,6 +638,7 @@ function createModalWindows(jsonObj) {
             'Importance : ' + getImportance(jsonObj[i]["color"]) +
             '        </div>\n' +
             '        <div class="modal-footer">\n' +
+                    '<button class="delete" id="delete' + jsonObj[i]["id"] + '">Supprimer</button>' +
             '        </div>\n' +
             '    </div>\n' +
             '</div>';

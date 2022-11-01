@@ -174,18 +174,18 @@ app.post('/events/add', urlEncodedParser, (req, res) => {
     }
 })
 
-app.get('/events/delete', (req, res) => {
-    //TODO Passer en delete/post une fois bouton de delete d'event fait. (permet d'éviter de passer des infos dans l'url; et donc d'éviter de les rendres visibles)
-    let id = req.query.id;
-    let reponse = controller.deleteEvent(id);
+app.delete('/events/delete', (req, res) => {
+    let id = req.body.id;
+    console.log(id)
+    let response = controller.deleteEvent(id);
 
     //TODO : préciser les erreurs et les codes et en rajouter si nécessaire.
-    if (reponse === "failure") {
+    if (response === "failure") {
         res.status(400);
-        res.send(reponse);
-    } else if (reponse === "success") {
+        res.send(response);
+    } else if (response === "success") {
         res.status(200);
-        res.send(reponse);
+        res.send(response);
     } else {
         res.status(400);
         res.send("error");

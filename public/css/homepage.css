@@ -1,0 +1,57 @@
+.bigButton {
+    display: block;
+    margin-top: 15px;
+    width: 100%;
+    background-color: rgb(215, 183, 156);
+    color: #000000;
+    padding: 15px;
+    font-size: 20px;
+    font-weight: 600;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    margin-right: 13px;
+}
+
+.menu {
+    display: flex;
+    justify-content: space-between;
+    padding: 0 15px;
+}
+
+.menu2 {
+    display: flex;
+}
+
+.sideMenu {
+    width: 20%;
+}
+
+.pic {
+    text-align: center;
+}
+
+.pic img {
+    vertical-align: middle;
+}
+
+img {
+    width: 50%;
+    height: 50%;
+}
+
+.bord{
+    border: none;
+    box-shadow: 0 0 40px rgb(215, 183, 156);
+}
+
+.logo{
+    justify-content: right;
+    width: 40%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.center {
+    text-align: center;
+}

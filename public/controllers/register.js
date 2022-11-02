@@ -18,14 +18,29 @@ formulaire.addEventListener("submit", function (event) {
         checkPassword(password);
         checkPassword(confirmPassword);
     } catch (e) {
-        //TODO : gérer l'erreur pour changer le css/html (texte en rouge etc...).
-        alert(e.message);
+        console.log(e, e.name)
+        if (e.name === "ErrorEmail") {
+            //TODO : gérer l'erreur pour changer le css/html (texte en rouge etc...).
+            alert(e.message);
+            console.log("email");
+        } else if (e.name === "ErrorPassword") {
+            //TODO : gérer l'erreur pour changer le css/html (texte en rouge etc...).
+            alert(e.message);
+            console.log("mdp");
+        } else if (e.name === "ErrorUsername") {
+            //TODO : gérer l'erreur pour changer le css/html (texte en rouge etc...).
+            alert(e.message);
+            console.log("user");
+        } else {
+            alert(e.message);
+            console.log("aled")
+        }
         return;
     }
 
     if (password.value !== confirmPassword.value) {
+        //TODO : gérer l'erreur pour changer le css/html (texte en rouge etc...).
         alert("Les mots de passes doivent correspondre !")
-
     } else {
         //We send the datas to our API
         let body = {username: username.value, email: email.value, password: password.value}
@@ -37,11 +52,20 @@ formulaire.addEventListener("submit", function (event) {
         fetch("/signup", params)
             .then((response) => response.text())
             .then((json) => {
-                //We store the token in the browser's local storage.
-                let jsonObj = JSON.parse(json);
-                localStorage.setItem("token", jsonObj["accessToken"]);
-                //We redirect the user to the index page.
-                location.assign("/");
+                if (json === "failure") {
+                    //TODO : gérer l'erreur pour changer le css/html (texte en rouge etc...).
+                    alert("Email déjà utilisé !");
+                } else if (json === "error") {
+                    throw new Error("Mauvaise requête");
+                } else {
+                    //We store the token in the browser's local storage.
+                    let jsonObj = JSON.parse(json);
+                    localStorage.setItem("token", jsonObj["accessToken"]);
+                    //We redirect the user to the index page.
+                    location.assign("/");
+                }
+            }).catch((err) => {
+            console.log(err);
             });
     }
 });
@@ -49,26 +73,44 @@ formulaire.addEventListener("submit", function (event) {
 function checkUsername(username) {
     // Tests if fields are filled and if values matches the regex.
     if (username.value === "") {
-        throw new Error("Indiquez un nom d'utilisateur !");
+        throw new ErrorUsername("Indiquez un nom d'utilisateur !");
     } else if (!username.value.match("^[a-zA-Z]{4,}$")) {
-        throw new Error("Le nom d'utilisateur ne correspond pas au modèle requis !");
+        throw new ErrorUsername("Le nom d'utilisateur ne correspond pas au modèle requis !");
     }
 }
 
 function checkEmail(email) {
     // Tests if fields are filled and if values matches the regex.
     if (email.value === "") {
-        throw new Error("Indiquez un email !");
+        throw new ErrorEmail("Indiquez un email !");
     } else if (!email.value.match("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$")) {
-        throw new Error("Le mail ne correspond pas au modèle necéssaire !");
+        throw new ErrorEmail("Le mail ne correspond pas au modèle necéssaire !");
     }
 }
 
 function checkPassword(password) {
     // Tests if fields are filled and if values matches the regex.
     if (password.value === "") {
-        throw new Error("Sélectionner un password !");
+        throw new ErrorPassword("Sélectionner un password !");
     } else if (!password.value.match("^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$")) {
-        throw new Error("Le mot de passe ne correspond pas au modèle necéssaire !");
+        throw new ErrorPassword("Le mot de passe ne correspond pas au modèle necéssaire !");
     }
+}
+
+// Exception thrown when the email isn't in lin with our model.
+function ErrorEmail(message) {
+    this.message = message;
+    this.name = "ErrorEmail";
+}
+
+// Exception thrown when the email isn't in lin with our model.
+function ErrorPassword(message) {
+    this.message = message;
+    this.name = "ErrorPassword";
+}
+
+// Exception thrown when the username isn't in lin with our model.
+function ErrorUsername(message) {
+    this.message = message;
+    this.name = "ErrorUsername";
 }

@@ -42,13 +42,12 @@ app.get('/index', (req, res) => {
 app.post('/signin', urlEncodedParser, (req, res) => {
     let email = req.body.email;
     let password = req.body.password;
-    let reponse = controllerAccount.signIn(email, password);
+    let response = controllerAccount.signIn(email, password);
 
-    //TODO : préciser les erreurs et les codes et en rajouter si nécessaire.
-    if (reponse === "failure") {
+    if (response === "failure") {
         res.status(400);
         res.send("failure")
-    } else if (reponse === "success") {
+    } else if (response === "success") {
         res.status(200);
 
         //Authenticate User
@@ -69,7 +68,6 @@ app.post('/signup', urlEncodedParser, (req, res) => {
 
     let reponse = controllerAccount.signUp(username, email, password);
 
-    //TODO : préciser les erreurs et les codes et en rajouter si nécessaire.
     if (reponse === "failure") {
         res.status(400);
         res.send(reponse);

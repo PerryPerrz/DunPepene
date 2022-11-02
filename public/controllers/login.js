@@ -1,6 +1,5 @@
 "use strict";
 
-
 const formulaire = document.querySelector("form");
 
 //When the form is submitted.
@@ -15,8 +14,15 @@ formulaire.addEventListener("submit", function (event) {
         checkEmail(email);
         checkPassword(password);
     } catch (e) {
-        //TODO : gérer l'erreur pour changer le css/html (texte en rouge etc...).
-        alert(e.message);
+        if (e.name === "ErrorEmail") {
+            //TODO : gérer l'erreur pour changer le css/html (texte en rouge etc...).
+            alert(e.message);
+        } else if (e.name === "ErrorPassword") {
+            //TODO : gérer l'erreur pour changer le css/html (texte en rouge etc...).
+            alert(e.message);
+        } else {
+            alert(e.message);
+        }
         return;
     }
 
@@ -30,28 +36,49 @@ formulaire.addEventListener("submit", function (event) {
     fetch("/signin", params)
         .then((response) => response.text())
         .then((json) => {
-            //We store the token in the browser's local storage.
-            let jsonObj = JSON.parse(json);
-            localStorage.setItem("token", jsonObj["accessToken"]);
-            //We redirect the user to the index page.
-            location.assign("/");
+            if (json === "failure") {
+                //TODO : gérer l'erreur pour changer le css/html (texte en rouge etc...).
+                alert("Mauvais mdp ou identifiant");
+            } else if (json === "error") {
+                throw new Error("Mauvaise requête");
+            } else {
+                //We store the token in the browser's local storage.
+                let jsonObj = JSON.parse(json);
+                localStorage.setItem("token", jsonObj["accessToken"]);
+                //We redirect the user to the index page.
+                location.assign("/");
+            }
+        }).catch((err) => {
+            console.log(err);
         });
 });
 
 function checkEmail(email) {
     // Tests if fields are filled and if values matches the regex.
     if (email.value === "") {
-        throw new Error("Indiquez un email !");
+        throw new ErrorEmail("Indiquez un email !");
     } else if (!email.value.match("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$")) {
-        throw new Error("Le mail ne correspond pas au modèle necéssaire !");
+        throw new ErrorEmail("Le mail ne correspond pas au modèle necéssaire !");
     }
 }
 
 function checkPassword(password) {
     // Tests if fields are filled and if values matches the regex.
     if (password.value === "") {
-        throw new Error("Sélectionner un password !");
+        throw new ErrorPassword("Sélectionner un password !");
     } else if (!password.value.match("^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$")) {
-        throw new Error("Le mot de passe ne correspond pas au modèle necéssaire !");
+        throw new ErrorPassword("Le mot de passe ne correspond pas au modèle necéssaire !");
     }
+}
+
+// Exception thrown when the email isn't in lin with our model.
+function ErrorEmail(message) {
+    this.message = message;
+    this.name = "ExceptionEmail";
+}
+
+// Exception thrown when the email isn't in lin with our model.
+function ErrorPassword(message) {
+    this.message = message;
+    this.name = "ExceptionPassword";
 }

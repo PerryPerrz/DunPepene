@@ -1,0 +1,36 @@
+div {
+    text-align: center;
+    font-family: 'Poppins', sans-serif;
+    color: rgb(215, 183, 156);
+    letter-spacing: 0.5px;
+    outline: none;
+    font-size: 24px;
+    font-weight: 500;
+    line-height: 42px;
+}
+
+div img {
+    vertical-align: middle;
+}
+
+img {
+    width: 50%;
+    height: 50%;
+}
+
+p {
+    color: #d6b79c;
+    font-family: 'Poppins', sans-serif;
+    font-size: 32px;
+    font-weight: 500;
+}
+
+.txt * {
+    font-family: 'Poppins', sans-serif;
+    color: rgb(215, 183, 156);
+    letter-spacing: 0.5px;
+    outline: none;
+    font-size: 24px;
+    font-weight: 500;
+    line-height: 42px;
+}

@@ -243,7 +243,6 @@ app.get('*', (req, res) => {
 })
 
 
-
 function authenticateToken(req, res, next) {
     const authHeader = req.headers['authorization']
     const token = authHeader && authHeader.split(' ')[1]; //If authHeader exist, split it otherwise return undefine.

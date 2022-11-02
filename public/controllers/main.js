@@ -11,7 +11,7 @@ const NextButton = document.querySelector("#NextButton");
 const divCalendar = document.querySelector("#calendar");
 const LogoutButton = document.querySelector("#LogOut");
 
-if(localStorage.getItem("token") === ""){
+if (localStorage.getItem("token") === "") {
     window.location.assign("/unauthorized");
 }
 

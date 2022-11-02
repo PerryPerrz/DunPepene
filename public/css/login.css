@@ -95,14 +95,14 @@ button {
     position: absolute;
     display: none;
     width: max-content;
-    transform:translateX(-50%);
+    transform: translateX(-50%);
     bottom: 25px;
     padding: 0.5em;
     background-color: #d6b79c;
     border-radius: 0.25em;
     color: white;
     text-align: center;
-    transition:0.2s;
+    transition: 0.2s;
 }
 
 [data-tooltip]:after {
@@ -113,7 +113,7 @@ button {
     margin-left: -5px;
     border: 5px solid #d6b79c;
     border-color: #d6b79c transparent transparent transparent;
-    transition:0.2s;
+    transition: 0.2s;
 }
 
 [data-tooltip]:hover:before,
@@ -122,10 +122,10 @@ button {
 
 }
 
-.redBorder{
+.redBorder {
     border-color: red;
 }
 
-.left{
+.left {
     text-align: left;
 }

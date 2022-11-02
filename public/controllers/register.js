@@ -65,7 +65,7 @@ formulaire.addEventListener("submit", function (event) {
                 }
             }).catch((err) => {
             console.log(err);
-            });
+        });
     }
 });
 

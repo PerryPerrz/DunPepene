@@ -51,8 +51,8 @@ formulaire.addEventListener("submit", function (event) {
                 location.assign("/");
             }
         }).catch((err) => {
-            console.log(err);
-        });
+        console.log(err);
+    });
 });
 
 function checkEmail(email) {

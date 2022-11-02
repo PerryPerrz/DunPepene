@@ -223,6 +223,16 @@ app.get('/account/getUsername', (req, res) => {
     }
 })
 
+app.get('/teapot', (req, res) => {
+    res.status(418);
+    res.sendFile(path.join(__dirname + "/../views/teapotView.html"));
+})
+
+app.get('/unauthorized', (req, res) => {
+    res.status(401);
+    res.sendFile(path.join(__dirname + "/../views/error401View.html"));
+})
+
 app.get('*', (req, res) => {
     res.status(404);
     res.sendFile(path.join(__dirname + "/../views/error404View.html"));

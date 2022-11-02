@@ -2,6 +2,7 @@
   {
     "id": "0",
     "owner": "Hugo",
+    "owner_email": "hugo@dindon.fr",
     "title": "Ingredients",
     "description": "Acheter des ingrédients frais au marché.",
     "date": "2022-10-29",
@@ -12,6 +13,7 @@
   {
     "id": "1",
     "owner": "Hugo",
+    "owner_email": "hugo@dindon.fr",
     "title": "Accueillir",
     "description": "Accueillir les clients à l'entrée du restaurant.",
     "date": "2022-10-23",
@@ -22,6 +24,7 @@
   {
     "id": "2",
     "owner": "Hugo",
+    "owner_email": "hugo@dindon.fr",
     "title": "Fromage",
     "description": "Chercher le fromage dans la cave.",
     "date": "2022-10-22",
@@ -32,6 +35,7 @@
   {
     "id": "3",
     "owner": "Hugo",
+    "owner_email": "hugo@dindon.fr",
     "title": "Médicament",
     "description": "S'acheter des médicaments contre les mini-pouces.",
     "date": "2022-10-29",
@@ -42,6 +46,7 @@
   {
     "id": "4",
     "owner": "Hugo",
+    "owner_email": "hugo@dindon.fr",
     "title": "Carte",
     "description": "Ne pas oublier sa carte de la salle.",
     "date": "2022-10-29",
@@ -52,6 +57,7 @@
   {
     "id": "5",
     "owner": "Hugo",
+    "owner_email": "hugo@dindon.fr",
     "title": "Travail",
     "description": "Horaires de travail au restaurant.",
     "date": "2022-10-29",
@@ -62,6 +68,7 @@
   {
     "id": "6",
     "owner": "Hugo",
+    "owner_email": "hugo@dindon.fr",
     "title": "Travail",
     "description": "Horaires de travail au restaurant.",
     "date": "2022-10-25",
@@ -72,6 +79,7 @@
   {
     "id": "7",
     "owner": "Hugo",
+    "owner_email": "hugo@dindon.fr",
     "title": "Insomnie",
     "description": "Pas réussir à dormir, encore.",
     "date": "2022-10-27",
@@ -82,6 +90,7 @@
   {
     "id": "666",
     "owner": "Hugo",
+    "owner_email": "hugo@dindon.fr",
     "title": "Cuisine",
     "description": "Transitionner pour pouvoir faire la cuisine",
     "date": "2022-10-23",

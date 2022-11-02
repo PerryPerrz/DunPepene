@@ -1,83 +1,31 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>DunPepene</title>
+    <title>DunPepene's Homepage</title>
     <link href="/assets/croissant.png" rel="icon" type="image/png"/>
     <link href="css/style.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600&display=swap" rel="stylesheet">
 </head>
 <body>
 
-<div id="modal-windows"></div>
-
-<div class="modal" id="modalAddEvent">
-    <div class="modal-content formModal">
-        <div class="modal-header title"> Ajouter un événement
-            <button class="icon modal-close"><i class="material-icons">close</i></button>
-        </div>
-        <div class="modal-body center">
-            <form id="addEvent" method="post">
-                <label for="title"></label>
-                <input id="title" maxlength="10" placeholder="Titre (10 car. max)" required type="text">
-
-                <label for="description"></label>
-                <textarea cols="33" id="description"
-                          name="description" placeholder="La description (facultative) de votre événement."
-                          rows="5"></textarea>
-
-                <label for="start-date"></label>
-                <input class="hour" id="start-date" min="2022-11-01" name="start-date" required
-                       style="margin-right:6px" type="date" value="2022-11-01">
-
-                <label for="start_time"></label>
-                <input class="hour" id="start_time" max="23" min="0"
-                       placeholder="Heure de départ" required style="margin-right: 6px" type="number">
-
-                <label for="duration"></label>
-                <input class="hour" id="duration" max="24" min="1" placeholder="Durée en h (24 max)" required
-                       type="number">
-
-                <label for="color"></label>
-                <select id="color" name="color">
-                    <option value="green">Peu important...mais nécessaire !</option>
-                    <option value="yellow">Assez important</option>
-                    <option value="orange">Important</option>
-                    <option value="red">Très important !</option>
-                </select>
-
-            </form>
-        </div>
-        <div class="modal-footer center">
-            <button class="modal-close">Annuler</button>
-            <button class="smallButton" form="addEvent">Créer</button>
-        </div>
-    </div>
-</div>
-
-<br>
-<h2 align="center" class="titleDate" id="ShowDate"></h2>
-<br>
-
 <div class="menu">
     <div class="menu2 sideMenu">
-        <button class="bigButton" id="LogOut">Déconnexion</button>
-        <button class="bigButton modal-open" data-modal="modalAddEvent" id="CreateEventButton">Ajouter Événement
-        </button>
-    </div>
-    <div class="menu2">
-        <button class="bigButton" id="PrevButton">🡄</button>
-        <button class="bigButton" id="NextButton">🡆</button>
-    </div>
-    <div class="menu2 sideMenu">
-        <button class="bigButton" id="DayButton">Jour</button>
-        <button class="bigButton" id="WeekButton">Semaine</button>
-        <button class="bigButton" id="MonthButton">Mois</button>
+        <button class="bigButton" id="firstButton"></button>
+        <button class="bigButton" id="secondButton"></button>
     </div>
 </div>
-<br>
-<br>
-<div id="calendar"></div>
 
-<script src="controllers/main.js"></script>
+<div class="logo center">
+    <img alt="DunPepene's logo" src="assets/logo.png">
+</div>
+
+<br>
+<br>
+
+<div class="pic">
+    <img class="bord" alt="DunPepene" src="assets/dunpepene.jpg">
+</div>
+
+<script src="/controllers/main.js"></script>
 </body>
 </html>

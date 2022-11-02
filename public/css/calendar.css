@@ -1,0 +1,367 @@
+body {
+    background-color: rgb(255, 255, 255);
+}
+
+#menu {
+    display: inline-block;
+    height: 600px;
+    width: 200px;
+    background-color: rgba(255, 255, 255, 0.13);
+    top: 50%;
+    left: 50%;
+    border-radius: 10px;
+    backdrop-filter: blur(10px);
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 0 40px rgb(255, 255, 255);
+    padding: 50px 35px;
+}
+
+.bigButton {
+    display: block;
+    margin-top: 50px;
+    width: 100%;
+    background-color: rgb(215, 183, 156);
+    color: #000000;
+    padding: 15px;
+    font-size: 24px;
+    font-weight: 600;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    margin-right: 13px;
+}
+
+.titleDate {
+    color: #d6b79c;
+    font-family: 'Poppins', sans-serif;
+    font-size: 32px;
+    font-weight: 500;
+}
+
+.menu {
+    display: flex;
+    justify-content: space-between;
+    padding: 0 15px;
+}
+
+.menu2 {
+    display: flex;
+}
+
+.sideMenu {
+    width: 37%;
+}
+
+.frame {
+    background-color: rgb(255, 255, 255);
+    box-shadow: 0 0 40px rgb(215, 183, 156);
+    border-radius: 10px;
+    padding-bottom: 30px;
+}
+
+.calendarDay {
+    width: 80%;
+    height: 90%;
+    color: black;
+    font-family: 'Poppins', sans-serif;
+    font-size: 24px;
+    font-weight: 500;
+    border-collapse: collapse;
+    table-layout: fixed;
+    border-spacing: 0;
+    padding-left: 30px;
+}
+
+.calendarWeek {
+    width: 90%;
+    height: 90%;
+    color: black;
+    font-family: 'Poppins', sans-serif;
+    font-size: 24px;
+    font-weight: 500;
+    border-collapse: collapse;
+    table-layout: fixed;
+    border-spacing: 0;
+    padding-left: 30px;
+}
+
+.calendarMonth {
+    width: 90%;
+    height: 90%;
+    color: black;
+    font-family: 'Poppins', sans-serif;
+    font-size: 24px;
+    font-weight: 500;
+    border-collapse: collapse;
+    table-layout: fixed;
+    border-spacing: 0;
+    padding-left: 30px;
+}
+
+.line {
+    border: 2.5px solid #d7b79c;
+    padding: 10px;
+    text-align: center;
+    width: 50%;
+}
+
+.column {
+    text-align: center;
+}
+
+.firstBody .secondTh {
+    text-align: right;
+}
+
+.secondTh:nth-child(1) {
+    width: 50px;
+}
+
+.redEvent {
+    background-color: #e3806d;
+
+    display: block;
+    margin-top: 10px;
+    width: 100%;
+    color: #000000;
+    padding: 10px;
+    font-size: 24px;
+    font-weight: 600;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    margin-right: 13px;
+}
+
+.orangeEvent {
+    background-color: #e1b377;
+
+    display: block;
+    margin-top: 10px;
+    width: 100%;
+    color: #000000;
+    padding: 10px;
+    font-size: 24px;
+    font-weight: 600;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    margin-right: 13px;
+}
+
+.yellowEvent {
+    background-color: #e2ce6a;
+
+    display: block;
+    margin-top: 10px;
+    width: 100%;
+    color: #000000;
+    padding: 10px;
+    font-size: 24px;
+    font-weight: 600;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    margin-right: 13px;
+}
+
+.greenEvent {
+    background-color: #92ce6f;
+
+    display: block;
+    margin-top: 10px;
+    width: 100%;
+    color: #000000;
+    padding: 10px;
+    font-size: 24px;
+    font-weight: 600;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    margin-right: 13px;
+}
+
+.empty {
+    background-color: #f5eae4;
+}
+
+.circle {
+    margin-left: auto;
+    margin-right: auto;
+    background: rgb(172, 235, 255);
+    border-radius: 50%;
+    width: 35px;
+    height: 35px;
+    border: 2px solid rgba(0, 60, 255, 0.68);
+}
+
+.rectangle {
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 100px;
+    background: rgb(172, 235, 255);
+    border-radius: 30px;
+    width: 10%;
+    height: 10%;
+}
+
+.modal-open {
+}
+
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 2;
+    display: none;
+}
+
+.modal-content {
+    background: #ffffff;
+    margin-top: 10%;
+    width: 50%;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 8px 24px;
+    border-radius: 5px;
+    box-shadow: 0 0 40px rgb(214, 183, 156);
+    z-index: 4;
+}
+
+.modal-content.formModal {
+    margin-top: 6%;
+}
+
+.modal-header {
+    font-family: 'Poppins', sans-serif;
+    font-size: 32px;
+    font-weight: 600;
+    padding: 10px 0;
+}
+
+.title {
+    color: #d6b79c
+}
+
+.modal-header .modal-close {
+    font-family: 'Poppins', sans-serif;
+    font-size: 18px;
+    font-weight: 400;
+    float: right;
+    background: #d6b79c;
+    border: 0;
+    outline: 0;
+    padding: 5px 8px;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.modal-body {
+    font-family: 'Poppins', sans-serif;
+    font-size: 24px;
+    font-weight: 400;
+    padding: 15px 0;
+    color: #000000;
+}
+
+.modal-footer {
+    padding: 15px 0;
+}
+
+.modal-footer .modal-close {
+    padding: 15px;
+    font-size: 16px;
+    font-family: 'Poppins', sans-serif;
+    border: none;
+    outline: none;
+    color: #000000;
+    display: inline-block;
+    margin-top: 10px;
+    width: 20%;
+    background-color: rgb(215, 183, 156);
+    font-weight: 600;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-right: 13px;
+}
+
+.smallButton {
+    display: inline-block;
+    margin-top: 10px;
+    width: 20%;
+    background-color: rgb(215, 183, 156);
+    color: #000000;
+    padding: 15px;
+    font-size: 16px;
+    font-weight: 600;
+    font-family: 'Poppins', sans-serif;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    margin-right: 16px;
+}
+
+.redText {
+    color: #e3806d;
+}
+
+.orangeText {
+    color: #e1b377;
+}
+
+.yellowText {
+    color: #e2ce6a;
+}
+
+.greenText {
+    color: #92ce6f;
+}
+
+input[type=text] {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    box-sizing: border-box;
+}
+
+input[type=text]:focus {
+    border: none;
+}
+
+textarea {
+    width: 100%;
+    height: 150px;
+    padding: 12px 20px;
+    box-sizing: border-box;
+    border: none;
+    border-radius: 5px;
+    background-color: #f1f1f1;
+    resize: none;
+    font-family: 'Poppins', sans-serif;
+}
+
+input, select {
+    width: 100%;
+    padding: 16px 20px;
+    border: none;
+    border-radius: 5px;
+    background-color: #f1f1f1;
+    font-family: 'Poppins', sans-serif;
+}
+
+.hour {
+    width: 27%;
+    padding: 16px 20px;
+    border: none;
+    border-radius: 5px;
+    background-color: #f1f1f1;
+    margin-bottom: 10px;
+    font-family: 'Poppins', sans-serif;
+}
+
+.center {
+    text-align: center;
+}

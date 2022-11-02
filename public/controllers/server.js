@@ -118,6 +118,10 @@ app.get('/calendar/show/day', (req, res) => {
     res.sendFile(path.join(__dirname + "/../views/calendarDayView.html"));
 })
 
+app.get('/calendar', (req, res) => {
+    res.sendFile(path.join(__dirname + "/../views/calendarView.html"));
+})
+
 app.get('/events', (req, res) => {
     let response = controller.getAllEvents();
 

@@ -6,7 +6,6 @@ module.exports = {
     getEventsByMonth: function (date, email) {
         let events = [];
         let parsedDate = parse(date, "-");
-
         //We search in the JSON file for all the events that have the same month and year as the month we want to display.
         json.forEach(function (event) {
 

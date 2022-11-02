@@ -98,7 +98,7 @@ module.exports = {
             return "failure"
 
         //We make sure that the owner and id stays the same.
-        if (event[1].id !== id && event[1].owner_email !== owner_email)
+        if (event[1].id !== id || event[1].owner_email !== owner_email)
             return "failure";
 
         //We delete the event.

@@ -127,14 +127,16 @@ formulaire.addEventListener("submit", function (event) {
     const duration = document.querySelector('#duration');
     const color = document.querySelector('#color');
 
+    const user_email = getLoggedInUser();
     //We get the username of the logged-in user.
-    fetch("/account/getUsername?email=" + getLoggedInUser())
+    fetch("/account/getUsername?email=" + user_email)
         .then((response) => response.text())
         .then((username) => {
             //We send the datas to our API
             let body = {
                 id: String(new Date().getTime()),
                 owner: username,
+                owner_email: user_email,
                 title: title.value,
                 description: description.value,
                 date: date.value,
@@ -339,26 +341,21 @@ function adjustMonth() {
     //We fill the first boxes of the calendar (before firstBox) with blanks.
     fillWithBlanksMonth(firstBox);
 
-    //We then get the username of the user logged-in.
-    fetch("/account/getUsername?email=" + getLoggedInUser())
+    //We retrieve the events of this month for this user.
+    fetch("/calendar/month?date=" + dateToJsonFormat(currentDate) + "&email=" + getLoggedInUser())
         .then((response) => response.text())
-        .then((username) => {
-            //We retrieve the events of this month for this user.
-            fetch("/calendar/month?date=" + dateToJsonFormat(currentDate) + "&user=" + username)
-                .then((response) => response.text())
-                .then((json) => {
-                    //We get a json object containing the events of this month.
-                    let jsonObj = JSON.parse(json);
+        .then((json) => {
+            //We get a json object containing the events of this month.
+            let jsonObj = JSON.parse(json);
 
-                    //We create a hashmap that contains the events in this way -> "day of the month" : "indexes of the events in the json object".
-                    let hashMap = createHashMapMonth(jsonObj);
+            //We create a hashmap that contains the events in this way -> "day of the month" : "indexes of the events in the json object".
+            let hashMap = createHashMapMonth(jsonObj);
 
-                    //We fill the boxes between the firstBox and the lastBox with the days of the month and the events for those days.
-                    fillWithEventsMonth(firstBox, lastBox, hashMap, jsonObj);
+            //We fill the boxes between the firstBox and the lastBox with the days of the month and the events for those days.
+            fillWithEventsMonth(firstBox, lastBox, hashMap, jsonObj);
 
-                    createModalWindows(jsonObj);
-                    associateModalBtnsToWindows();
-                })
+            createModalWindows(jsonObj);
+            associateModalBtnsToWindows();
         })
 
     //We fill the last boxes with the first days of the next month.
@@ -432,36 +429,31 @@ function fillWithEventsMonth(firstBox, lastBox, hashMap, jsonObj) {
 
 //Function that adjusts shows the events on the day calendar.
 function adjustDay() {
-    //We get the username of the user logged-in.
-    fetch("/account/getUsername?email=" + getLoggedInUser())
+    //We retrieve the events of this day for this user.
+    fetch("/calendar/day?date=" + dateToJsonFormat(currentDate) + "&email=" + getLoggedInUser())
         .then((response) => response.text())
-        .then((username) => {
-            //We retrieve the events of this day for this user.
-            fetch("/calendar/day?date=" + dateToJsonFormat(currentDate) + "&user=" + username)
-                .then((response) => response.text())
-                .then((json) => {
-                    //We get a json object containing the events of this day.
-                    let jsonObj = JSON.parse(json);
+        .then((json) => {
+            //We get a json object containing the events of this day.
+            let jsonObj = JSON.parse(json);
 
-                    //We retrieve the events of the day before, in case they extend on this day.
-                    let yesterday = new Date();
-                    yesterday.setDate(currentDate.getDate() - 1);
-                    fetch("/calendar/day?date=" + dateToJsonFormat(yesterday) + "&user=" + username)
-                        .then((response2) => response2.text())
-                        .then((json2) => {
-                            //We get a json object containing the events of the day before.
-                            let jsonObj2 = JSON.parse(json2);
+            //We retrieve the events of the day before, in case they extend on this day.
+            let yesterday = new Date();
+            yesterday.setDate(currentDate.getDate() - 1);
+            fetch("/calendar/day?date=" + dateToJsonFormat(yesterday) + "&email=" + getLoggedInUser())
+                .then((response2) => response2.text())
+                .then((json2) => {
+                    //We get a json object containing the events of the day before.
+                    let jsonObj2 = JSON.parse(json2);
 
-                            //We create a hashmap that contains the events in this way -> "hour" : "indexes of the events in the json object".
-                            let hashMap = createHashMapDay(jsonObj, jsonObj2);
+                    //We create a hashmap that contains the events in this way -> "hour" : "indexes of the events in the json object".
+                    let hashMap = createHashMapDay(jsonObj, jsonObj2);
 
-                            //We fill the calendar hour by hour
-                            fillWithEventsDay(hashMap, jsonObj, jsonObj2);
+                    //We fill the calendar hour by hour
+                    fillWithEventsDay(hashMap, jsonObj, jsonObj2);
 
-                            createModalWindows(jsonObj);
-                            createModalWindows(jsonObj2);
-                            associateModalBtnsToWindows();
-                        })
+                    createModalWindows(jsonObj);
+                    createModalWindows(jsonObj2);
+                    associateModalBtnsToWindows();
                 })
         })
 }
@@ -521,28 +513,24 @@ function fillWithEventsDay(hashMap, jsonObj, jsonObj2) {
 
 //Function that adjusts shows the events on the week calendar.
 function adjustWeek() {
-    fetch("/account/getUsername?email=" + getLoggedInUser())
+    //We retrieve the events of this week for this user.
+    fetch("/calendar/week?date=" + dateToJsonFormat(currentDate) + "&email=" + getLoggedInUser())
         .then((response) => response.text())
-        .then((username) => {
-            //We retrieve the events of this week for this user.
-            fetch("/calendar/week?date=" + dateToJsonFormat(currentDate) + "&user=" + username)
-                .then((response) => response.text())
-                .then((json) => {
-                    //We get a json object containing the events of this week.
-                    let jsonObj = JSON.parse(json);
+        .then((json) => {
+            //We get a json object containing the events of this week.
+            let jsonObj = JSON.parse(json);
 
-                    //We create a hashmap that contains the events in this way -> ("day of the week-hour") : "indexes of the events in the json object".
-                    let hashMap = createHashMapWeek(jsonObj);
+            //We create a hashmap that contains the events in this way -> ("day of the week-hour") : "indexes of the events in the json object".
+            let hashMap = createHashMapWeek(jsonObj);
 
-                    //We add a rectangle on today if today is shown on this week.
-                    addRectangleOnToday();
+            //We add a rectangle on today if today is shown on this week.
+            addRectangleOnToday();
 
-                    //We fill the calendar day by day and hour by hour
-                    fillWithEventsWeek(hashMap, jsonObj);
+            //We fill the calendar day by day and hour by hour
+            fillWithEventsWeek(hashMap, jsonObj);
 
-                    createModalWindows(jsonObj);
-                    associateModalBtnsToWindows();
-                })
+            createModalWindows(jsonObj);
+            associateModalBtnsToWindows();
         })
 }
 
@@ -783,14 +771,16 @@ function associateForm(id) {
         let duration = document.querySelector('#duration' + id);
         let color = document.querySelector('#color' + id);
 
+        const user_email = getLoggedInUser();
         //We get the username of the logged-in user.
-        fetch("/account/getUsername?email=" + getLoggedInUser())
+        fetch("/account/getUsername?email=" + user_email)
             .then((response) => response.text())
             .then((username) => {
                 //We send the datas to our API
                 let body = {
                     id: id.substring(4),
                     owner: username,
+                    owner_email: user_email,
                     title: title.value,
                     description: description.value,
                     date: date.value,

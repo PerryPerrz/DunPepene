@@ -3,7 +3,7 @@ const fileName = './public/models/event.json';
 const json = require('./event.json'); //json is an object that's contains the whole file content "event.json"
 
 module.exports = {
-    getEventsByMonth: function (date, user) {
+    getEventsByMonth: function (date, email) {
         let events = [];
         let parsedDate = parse(date, "-");
 
@@ -11,13 +11,13 @@ module.exports = {
         json.forEach(function (event) {
 
             let parsedEventDate = parse(event.date, "-");
-            if (parsedEventDate.year === parsedDate.year && parsedEventDate.month === parsedDate.month && event.owner === user) {
+            if (parsedEventDate.year === parsedDate.year && parsedEventDate.month === parsedDate.month && event.owner_email === email) {
                 events.push(event);
             }
         })
         return events;
     },
-    getEventsByWeek: function (date, user) {
+    getEventsByWeek: function (date, email) {
         let events = [];
         let parsedDate = parse(date, "-");
         let weekNo = getWeekFromDate(new Date(date));
@@ -27,20 +27,20 @@ module.exports = {
             let parsedEventDate = parse(event.date, "-");
             let eventWeekNo = getWeekFromDate(new Date(event.date));
 
-            if (eventWeekNo === weekNo && parsedEventDate.year === parsedDate.year && event.owner === user) {
+            if (eventWeekNo === weekNo && parsedEventDate.year === parsedDate.year && event.owner_email === email) {
                 events.push(event);
             }
         })
         return events;
     },
-    getEventsByDay: function (date, user) {
+    getEventsByDay: function (date, email) {
         let events = [];
         let parsedDate = parse(date, "-");
 
         //We search in the JSON file for all the events that have the same  day,month and year as the day we want to display.
         json.forEach(function (event) {
             let parsedEventDate = parse(event.date, "-");
-            if (parsedEventDate.year === parsedDate.year && parsedEventDate.month === parsedDate.month && parsedEventDate.day === parsedDate.day && event.owner === user) {
+            if (parsedEventDate.year === parsedDate.year && parsedEventDate.month === parsedDate.month && parsedEventDate.day === parsedDate.day && event.owner_email === email) {
                 events.push(event);
             }
         })
@@ -61,7 +61,7 @@ module.exports = {
             return "failure"
         return res[1];
     },
-    addEvent: function (id, owner, title, description, date, duration, start_time, color) {
+    addEvent: function (id, owner, owner_email, title, description, date, duration, start_time, color) {
         if (findEventById(id)[0] !== null)
             return "failure";
 
@@ -70,6 +70,7 @@ module.exports = {
         json.push({
             "id": id,
             "owner": owner,
+            "owner_email": owner_email,
             "title": title,
             "description": description,
             "date": date,
@@ -91,15 +92,14 @@ module.exports = {
         saveInJsonFile();
         return "success";
     },
-    editEvent: function (id, owner, title, description, date, duration, start_time, color) {
+    editEvent: function (id, owner, owner_email, title, description, date, duration, start_time, color) {
         let event = findEventById(id);
-        console.log(id, owner, title, description, date, duration, start_time, color)
 
         if (event[0] === null)
             return "failure"
 
         //We make sure that the owner and id stays the same.
-        if (event[1].id !== id && event[1].owner !== owner)
+        if (event[1].id !== id && event[1].owner_email !== owner_email)
             return "failure";
 
         //We delete the event.
@@ -109,6 +109,7 @@ module.exports = {
         json.push({
             "id": id,
             "owner": owner,
+            "owner_email": owner_email,
             "title": title,
             "description": description,
             "date": date,

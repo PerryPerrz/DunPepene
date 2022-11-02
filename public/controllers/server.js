@@ -87,23 +87,23 @@ app.post('/signup', urlEncodedParser, (req, res) => {
 
 app.get('/calendar/month', (req, res) => {
     let date = req.query.date;
-    let user = req.query.user;
+    let email = req.query.email;
     res.status(200);
-    res.send(controller.getEventsByMonth(date, user));
+    res.send(controller.getEventsByMonth(date, email));
 })
 
 app.get('/calendar/week', (req, res) => {
     let date = req.query.date;
-    let user = req.query.user;
+    let email = req.query.email;
     res.status(200);
-    res.send(controller.getEventsByWeek(date, user));
+    res.send(controller.getEventsByWeek(date, email));
 })
 
 app.get('/calendar/day', (req, res) => {
     let date = req.query.date;
-    let user = req.query.user;
+    let email = req.query.email;
     res.status(200);
-    res.send(controller.getEventsByDay(date, user));
+    res.send(controller.getEventsByDay(date, email));
 })
 
 app.get('/calendar/show/month', (req, res) => {
@@ -146,6 +146,7 @@ app.get('/events/get', (req, res) => {
 app.post('/events/edit', urlEncodedParser, (req, res) => {
     let id = req.body.id;
     let owner = req.body.owner;
+    let owner_email = req.body.owner_email;
     let title = req.body.title;
     let description = req.body.description;
     let date = req.body.date;
@@ -153,7 +154,7 @@ app.post('/events/edit', urlEncodedParser, (req, res) => {
     let start_time = req.body.start_time;
     let color = req.body.color;
 
-    let response = controller.editEvent(id, owner, title, description, date, duration, start_time, color);
+    let response = controller.editEvent(id, owner, owner_email, title, description, date, duration, start_time, color);
 
     if (response === "failure") {
         res.status(400);
@@ -170,6 +171,7 @@ app.post('/events/edit', urlEncodedParser, (req, res) => {
 app.post('/events/add', urlEncodedParser, (req, res) => {
     let id = req.body.id;
     let owner = req.body.owner;
+    let owner_email = req.body.owner_email;
     let title = req.body.title;
     let description = req.body.description;
     let date = req.body.date;
@@ -177,7 +179,7 @@ app.post('/events/add', urlEncodedParser, (req, res) => {
     let start_time = req.body.start_time;
     let color = req.body.color;
 
-    let response = controller.addEvent(id, owner, title, description, date, duration, start_time, color);
+    let response = controller.addEvent(id, owner, owner_email, title, description, date, duration, start_time, color);
 
     if (response === "failure") {
         res.status(400);

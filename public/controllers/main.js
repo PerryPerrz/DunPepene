@@ -20,7 +20,7 @@ fetch("/account/getUsername?email=" + getLoggedInUser())
     .then((response) => response.text())
     .then((username) => {
         //If the request tells us that there is no account with the email of the logged-in user, the access is unauthorized.
-        if (username === "no content") {
+        if (username === "failure") {
             throw new Error();
         }
     }).catch(() => {
@@ -149,7 +149,10 @@ formulaire.addEventListener("submit", function (event) {
             };
             fetch("/events/add", params)
                 .then((response) => response.text())
-                .then(() => {
+                .then((str) => {
+                    if (str === "failure" || str === "error") {
+                        alert("Une erreur est survenue lors de l'ajout d'un événement ! Veuillez recommencer")
+                    }
                     //We redirect the user to the index page.
                     location.reload();
                 });
@@ -743,7 +746,11 @@ function associateDeleteBtns() {
             };
             fetch("/events/delete", params)
                 .then((response) => response.text())
-                .then(() => {
+                .then((str) => {
+                    console.log(str);
+                    if (str === "failure" || str === "error") {
+                        alert("Une erreur est survenue lors de l'ajout d'un événement ! Veuillez recommencer")
+                    }
                     location.reload();
                 })
         }
@@ -798,7 +805,10 @@ function associateForm(id) {
                 };
                 fetch("/events/edit", params)
                     .then((response) => response.text())
-                    .then(() => {
+                    .then((str) => {
+                        if (str === "failure" || str === "error") {
+                            alert("Une erreur est survenue lors de l'ajout d'un événement ! Veuillez recommencer")
+                        }
                         //We redirect the user to the index page.
                         location.reload();
                     });

@@ -123,7 +123,7 @@ app.get('/events', (req, res) => {
 
     if (response.length === 0) {
         res.status(204);
-        res.send("no content");
+        res.send();
     } else {
         res.status(200);
         res.send(response);
@@ -136,7 +136,7 @@ app.get('/events/get', (req, res) => {
 
     if (response === "failure") {
         res.status(204);
-        res.send("no content");
+        res.send();
     } else {
         res.status(200);
         res.send(response);
@@ -200,7 +200,7 @@ app.delete('/events/delete', urlEncodedParser, (req, res) => {
         res.send(response);
     } else if (response === "success") {
         res.status(204);
-        res.send(response);
+        res.send();
     } else {
         res.status(400);
         res.send("error");
@@ -213,8 +213,8 @@ app.get('/account/getUsername', (req, res) => {
 
 
     if (response === "failure") {
-        res.status(204);
-        res.send("no content");
+        res.status(400);
+        res.send(response);
     } else {
         res.status(200);
         res.send(response);

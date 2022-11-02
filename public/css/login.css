@@ -11,7 +11,7 @@ body {
 }
 
 form {
-    height: 440px;
+    height: 480px;
     width: 500px;
     background-color: rgba(255, 255, 255, 0.13);
     position: absolute;
@@ -78,4 +78,45 @@ button {
 
 .center {
     text-align: center;
+}
+
+[data-tooltip] {
+    position: relative;
+    cursor: pointer;
+    background: #d6b79c;
+    color: white;
+    font-size: 12px;
+    border-radius: 1em;
+    padding: 0 0.5em;
+}
+
+[data-tooltip]:before {
+    content: attr(data-tooltip);
+    position: absolute;
+    opacity: 0;
+    width: 150px;
+    transform:translateX(-50%);
+    bottom: 25px;
+    padding: 0.5em;
+    background-color: #d6b79c;
+    border-radius: 0.25em;
+    color: white;
+    text-align: center;
+    transition:0.2s;
+}
+
+[data-tooltip]:after {
+    content: "";
+    position: absolute;
+    opacity: 0;
+    bottom: 15px;
+    margin-left: -5px;
+    border: 5px solid #d6b79c;
+    border-color: #d6b79c transparent transparent transparent;
+    transition:0.2s;
+}
+
+[data-tooltip]:hover:before,
+[data-tooltip]:hover:after {
+    opacity: 1;
 }

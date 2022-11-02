@@ -10,16 +10,17 @@ formulaire.addEventListener("submit", function (event) {
     let email = document.querySelector('#email');
     let password = document.querySelector('#password');
 
+    email.classList.remove("redBorder");
+    password.classList.remove("redBorder");
+
     try {
         checkEmail(email);
         checkPassword(password);
     } catch (e) {
         if (e.name === "ErrorEmail") {
-            //TODO : gérer l'erreur pour changer le css/html (texte en rouge etc...).
-            alert(e.message);
+            email.classList.add("redBorder");
         } else if (e.name === "ErrorPassword") {
-            //TODO : gérer l'erreur pour changer le css/html (texte en rouge etc...).
-            alert(e.message);
+            password.classList.add("redBorder");
         } else {
             alert(e.message);
         }
@@ -37,8 +38,9 @@ formulaire.addEventListener("submit", function (event) {
         .then((response) => response.text())
         .then((json) => {
             if (json === "failure") {
-                //TODO : gérer l'erreur pour changer le css/html (texte en rouge etc...).
-                alert("Mauvais mdp ou identifiant");
+                email.classList.add("redBorder");
+                password.classList.add("redBorder");
+                alert("Votre email ou votre mot de passe est invalide !");
             } else if (json === "error") {
                 throw new Error("Mauvaise requête");
             } else {
@@ -74,11 +76,11 @@ function checkPassword(password) {
 // Exception thrown when the email isn't in lin with our model.
 function ErrorEmail(message) {
     this.message = message;
-    this.name = "ExceptionEmail";
+    this.name = "ErrorEmail";
 }
 
 // Exception thrown when the email isn't in lin with our model.
 function ErrorPassword(message) {
     this.message = message;
-    this.name = "ExceptionPassword";
+    this.name = "ErrorPassword";
 }

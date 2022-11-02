@@ -12,6 +12,11 @@ formulaire.addEventListener("submit", function (event) {
     let password = document.querySelector('#password');
     let confirmPassword = document.querySelector('#confirm_password');
 
+    username.classList.remove("redBorder")
+    email.classList.remove("redBorder");
+    password.classList.remove("redBorder");
+    confirmPassword.classList.remove("redBorder");
+
     try {
         checkUsername(username);
         checkEmail(email);
@@ -20,26 +25,20 @@ formulaire.addEventListener("submit", function (event) {
     } catch (e) {
         console.log(e, e.name)
         if (e.name === "ErrorEmail") {
-            //TODO : gérer l'erreur pour changer le css/html (texte en rouge etc...).
-            alert(e.message);
-            console.log("email");
+            email.classList.add("redBorder");
         } else if (e.name === "ErrorPassword") {
-            //TODO : gérer l'erreur pour changer le css/html (texte en rouge etc...).
-            alert(e.message);
-            console.log("mdp");
+            password.classList.add("redBorder");
+            confirmPassword.classList.add("redBorder");
         } else if (e.name === "ErrorUsername") {
-            //TODO : gérer l'erreur pour changer le css/html (texte en rouge etc...).
-            alert(e.message);
-            console.log("user");
+            username.classList.add("redBorder");
         } else {
             alert(e.message);
-            console.log("aled")
         }
         return;
     }
 
     if (password.value !== confirmPassword.value) {
-        //TODO : gérer l'erreur pour changer le css/html (texte en rouge etc...).
+        confirmPassword.classList.add("redBorder");
         alert("Les mots de passes doivent correspondre !")
     } else {
         //We send the datas to our API
@@ -53,7 +52,7 @@ formulaire.addEventListener("submit", function (event) {
             .then((response) => response.text())
             .then((json) => {
                 if (json === "failure") {
-                    //TODO : gérer l'erreur pour changer le css/html (texte en rouge etc...).
+                    email.classList.add("redBorder");
                     alert("Email déjà utilisé !");
                 } else if (json === "error") {
                     throw new Error("Mauvaise requête");

@@ -120,3 +120,7 @@ button {
 [data-tooltip]:hover:after {
     opacity: 1;
 }
+
+.redBorder{
+    border-color: red;
+}

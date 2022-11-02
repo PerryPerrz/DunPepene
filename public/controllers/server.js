@@ -24,7 +24,7 @@ app.get('/posts', authenticateToken, (req, res) => {
 })
 
 app.get('/', (req, res) => {
-
+    res.status(200);
 })
 
 app.get('/login', (req, res) => {

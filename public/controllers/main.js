@@ -24,8 +24,8 @@ fetch("/account/getUsername?email=" + getLoggedInUser())
             throw new Error();
         }
     }).catch(() => {
-        window.location.assign("/401");
-    });
+    window.location.assign("/401");
+});
 
 
 //We listen to the scroll actions that the user takes to use it when we display modal windows.
@@ -370,6 +370,7 @@ function fillWithBlanksMonth(firstBox) {
         td.classList.add("empty");
     }
 }
+
 //Function that fills the last boxes of the calendar (after lastBox) with the days of the next month.
 function fillWithDaysOfNextMonth(lastBox) {
     let j = 1;

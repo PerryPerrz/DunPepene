@@ -119,7 +119,7 @@ button {
 [data-tooltip]:hover:before,
 [data-tooltip]:hover:after {
     display: inline-block;
-
+    opacity: 0.70;
 }
 
 .redBorder {

@@ -211,12 +211,10 @@ app.get('/account/getUsername', (req, res) => {
     let email = req.query.email;
     let response = controllerAccount.getUsernameWithEmail(email);
 
-    if (response === null) {
+
+    if (response === "failure") {
         res.status(204);
         res.send("no content");
-    } else if (response === "failure") {
-        res.status(400);
-        res.send("failure");
     } else {
         res.status(200);
         res.send(response);
@@ -228,10 +226,16 @@ app.get('/teapot', (req, res) => {
     res.sendFile(path.join(__dirname + "/../views/teapotView.html"));
 })
 
-app.get('/unauthorized', (req, res) => {
+app.get('/401', (req, res) => {
     res.status(401);
     res.sendFile(path.join(__dirname + "/../views/error401View.html"));
 })
+
+app.get('/500', (req, res) => {
+    res.status(500);
+    res.sendFile(path.join(__dirname + "/../views/error500View.html"));
+})
+
 
 app.get('*', (req, res) => {
     res.status(404);

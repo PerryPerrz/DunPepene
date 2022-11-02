@@ -66,12 +66,12 @@ app.post('/signup', urlEncodedParser, (req, res) => {
     let email = req.body.email;
     let password = req.body.password;
 
-    let reponse = controllerAccount.signUp(username, email, password);
+    let response = controllerAccount.signUp(username, email, password);
 
-    if (reponse === "failure") {
+    if (response === "failure") {
         res.status(400);
-        res.send(reponse);
-    } else if (reponse === "success") {
+        res.send(response);
+    } else if (response === "success") {
         res.status(201);
 
         //We authenticate the user when he registers.
@@ -88,21 +88,21 @@ app.post('/signup', urlEncodedParser, (req, res) => {
 app.get('/calendar/month', (req, res) => {
     let date = req.query.date;
     let user = req.query.user;
-    res.status(200); // TODO : gérer les erreurs possibles une fois que l'on à le calendrier.
+    res.status(200);
     res.send(controller.getEventsByMonth(date, user));
 })
 
 app.get('/calendar/week', (req, res) => {
     let date = req.query.date;
     let user = req.query.user;
-    res.status(200); // TODO : gérer les erreurs possibles une fois que l'on à le calendrier.
+    res.status(200);
     res.send(controller.getEventsByWeek(date, user));
 })
 
 app.get('/calendar/day', (req, res) => {
     let date = req.query.date;
     let user = req.query.user;
-    res.status(200); // TODO : gérer les erreurs possibles une fois que l'on à le calendrier.
+    res.status(200);
     res.send(controller.getEventsByDay(date, user));
 })
 
@@ -119,27 +119,27 @@ app.get('/calendar/show/day', (req, res) => {
 })
 
 app.get('/events', (req, res) => {
-    let reponse = controller.getAllEvents();
+    let response = controller.getAllEvents();
 
-    if (reponse === null) {
+    if (response.length === 0) {
         res.status(204);
         res.send("no content");
     } else {
         res.status(200);
-        res.send(reponse);
+        res.send(response);
     }
 })
 
 app.get('/events/get', (req, res) => {
     let id = req.query.id;
-    let reponse = controller.getEventById(id)
+    let response = controller.getEventById(id)
 
-    if (reponse === "failure") {
+    if (response === "failure") {
         res.status(204);
         res.send("no content");
     } else {
         res.status(200);
-        res.send(reponse);
+        res.send(response);
     }
 })
 
@@ -153,15 +153,14 @@ app.post('/events/edit', urlEncodedParser, (req, res) => {
     let start_time = req.body.start_time;
     let color = req.body.color;
 
-    let reponse = controller.editEvent(id, owner, title, description, date, duration, start_time, color);
+    let response = controller.editEvent(id, owner, title, description, date, duration, start_time, color);
 
-    //TODO : préciser les erreurs et les codes et en rajouter si nécessaire.
-    if (reponse === "failure") {
+    if (response === "failure") {
         res.status(400);
-        res.send(reponse);
-    } else if (reponse === "success") {
+        res.send(response);
+    } else if (response === "success") {
         res.status(201);
-        res.send(reponse);
+        res.send(response);
     } else {
         res.status(400);
         res.send("error");
@@ -178,15 +177,14 @@ app.post('/events/add', urlEncodedParser, (req, res) => {
     let start_time = req.body.start_time;
     let color = req.body.color;
 
-    let reponse = controller.addEvent(id, owner, title, description, date, duration, start_time, color);
+    let response = controller.addEvent(id, owner, title, description, date, duration, start_time, color);
 
-    //TODO : préciser les erreurs et les codes et en rajouter si nécessaire.
-    if (reponse === "failure") {
+    if (response === "failure") {
         res.status(400);
-        res.send(reponse);
-    } else if (reponse === "success") {
+        res.send(response);
+    } else if (response === "success") {
         res.status(201);
-        res.send(reponse);
+        res.send(response);
     } else {
         res.status(400);
         res.send("error");
@@ -197,12 +195,11 @@ app.delete('/events/delete', urlEncodedParser, (req, res) => {
     let id = req.body.id;
     let response = controller.deleteEvent(id);
 
-    //TODO : préciser les erreurs et les codes et en rajouter si nécessaire.
     if (response === "failure") {
         res.status(400);
         res.send(response);
     } else if (response === "success") {
-        res.status(200);
+        res.status(204);
         res.send(response);
     } else {
         res.status(400);
@@ -212,19 +209,25 @@ app.delete('/events/delete', urlEncodedParser, (req, res) => {
 
 app.get('/account/getUsername', (req, res) => {
     let email = req.query.email;
-    let reponse = controllerAccount.getUsernameWithEmail(email);
+    let response = controllerAccount.getUsernameWithEmail(email);
 
-    if (reponse === null) {
+    if (response === null) {
         res.status(204);
         res.send("no content");
-    } else if (reponse === "failure") {
+    } else if (response === "failure") {
         res.status(400);
         res.send("failure");
     } else {
         res.status(200);
-        res.send(reponse);
+        res.send(response);
     }
 })
+
+app.get('*', (req, res) => {
+    res.status(404);
+    res.sendFile(path.join(__dirname + "/../views/error404View.html"));
+})
+
 
 
 function authenticateToken(req, res, next) {

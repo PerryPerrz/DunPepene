@@ -506,7 +506,7 @@ function fillWithEventsDay(hashMap, jsonObj, jsonObj2) {
                 } else if (jsonObj2[hashMap.get(i)[j]] != null) {
                     events += '<button class="modal-open ' + jsonObj2[hashMap.get(i)[j]]["color"] + 'Event" data-modal="modal' + jsonObj2[hashMap.get(i)[j]]["id"] + '">' + jsonObj2[hashMap.get(i)[j]]["title"] + '</button>';
                 } else {
-                    console.log("UNKNOWN ERROR");
+                    location.assign("/500");
                 }
             }
             td.innerHTML = events;
@@ -935,7 +935,7 @@ function getLoggedInUser() {
         let decodedEmail = JSON.parse(window.atob(encodedEmail));
         return decodedEmail.email;
     } catch (err) {
-        window.location.assign("/login");
+        window.location.assign("/401");
     }
 }
 

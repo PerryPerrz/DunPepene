@@ -11,6 +11,10 @@ const NextButton = document.querySelector("#NextButton");
 const divCalendar = document.querySelector("#calendar");
 const LogoutButton = document.querySelector("#LogOut");
 
+if(localStorage.getItem("token") === ""){
+    window.location.assign("/unauthorized");
+}
+
 window.addEventListener('scroll', () => {
     sessionStorage.setItem('scrollY', `${window.scrollY}px`);
 });

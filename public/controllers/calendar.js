@@ -9,7 +9,7 @@ const PrevButton = document.querySelector("#PrevButton");
 const NextButton = document.querySelector("#NextButton");
 
 const divCalendar = document.querySelector("#calendar");
-const LogoutButton = document.querySelector("#LogOut");
+const homepageButton = document.querySelector("#HomePage");
 
 if (localStorage.getItem("token") === "") {
     window.location.assign("/401");
@@ -105,12 +105,9 @@ NextButton.addEventListener("click", function () {
 })
 
 //Function that log out the user.
-LogoutButton.addEventListener("click", function () {
-    //We reset the token here.
-    localStorage.removeItem("token");
-    cleanDateAndVersion();
-    //We send the user to the login page.
-    location.assign("/login");
+homepageButton.addEventListener("click", function () {
+    //We send the user to the home page.
+    location.assign("/");
 })
 
 const formulaire = document.querySelector("#addEvent");

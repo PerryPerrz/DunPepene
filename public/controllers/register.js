@@ -23,7 +23,7 @@ formulaire.addEventListener("submit", function (event) {
         checkPassword(password);
         checkPassword(confirmPassword);
     } catch (e) {
-        console.log(e, e.name)
+        console.log(e)
         if (e.name === "ErrorEmail") {
             email.classList.add("redBorder");
         } else if (e.name === "ErrorPassword") {

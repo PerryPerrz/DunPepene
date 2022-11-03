@@ -734,7 +734,6 @@ function associateDeleteBtns() {
             fetch("/events/delete", params)
                 .then((response) => response.text())
                 .then((str) => {
-                    console.log(str);
                     if (str === "failure" || str === "error") {
                         alert("Une erreur est survenue lors de l'ajout d'un événement ! Veuillez recommencer")
                     }

@@ -40,8 +40,6 @@ module.exports = {
 function saveInJsonFile() {
     fs.writeFile(fileName, JSON.stringify(json, null, 2), function writeJSON(err) {
         if (err) return console.log(err);
-        console.log(JSON.stringify(json, null, 2));
-        console.log('writing to ' + fileName);
     });
 }
 

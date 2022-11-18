@@ -4,7 +4,7 @@
   "description": "Projet de Design Patterns de M1.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "run" : "node public/controllers/server.js"
   },
   "keywords": [],
   "author": "IOPETI Hugo, YVOZ Ludovic",

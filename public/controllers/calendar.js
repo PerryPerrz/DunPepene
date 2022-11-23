@@ -4,12 +4,12 @@
 const ws = new WebSocket("ws://localhost:3030");
 
 //When connected, we log that fact
-ws.addEventListener('open', function () {
+ws.addEventListener('open', function (event) {
     console.log('Connection established to WebSocket server');
 })
 
 //When we receive a message, it means that the calendar data has changed so we refresh it.
-ws.addEventListener('message',function () {
+ws.addEventListener('message',function (message) {
     //We need to parse the message because of buffering issues.
     let string_arr = JSON.parse(message['data']).data;
     let data = "";

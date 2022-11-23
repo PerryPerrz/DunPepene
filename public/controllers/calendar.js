@@ -1,5 +1,33 @@
 "use strict";
 
+//Connecting to the websocket client
+const ws = new WebSocket("ws://localhost:3030");
+
+//When connected, we log that fact
+ws.addEventListener('open', function () {
+    console.log('Connection established to WebSocket server');
+})
+
+//When we receive a message, it means that the calendar data has changed so we refresh it.
+ws.addEventListener('message',function () {
+    //We need to parse the message because of buffering issues.
+    let string_arr = JSON.parse(message['data']).data;
+    let data = "";
+
+    string_arr.forEach(element => {
+        data+=String.fromCharCode(element);
+    });
+
+    //Once we have gotten the message data, if the user is concerned by the change, we refresh their data.
+    if (data === getLoggedInUser())
+        adjustCalendarData();
+})
+
+//Function used to send a notice to the WebSocket server when we change the calendar data.
+const sendNotice = () => {
+    ws.send(getLoggedInUser());
+}
+
 //Getting the html elements we need to use.
 const showDate = document.querySelector("#ShowDate");
 const dayButton = document.querySelector("#DayButton");
@@ -152,6 +180,8 @@ formulaire.addEventListener("submit", function (event) {
                     if (str === "failure" || str === "error") {
                         alert("Une erreur est survenue lors de l'ajout d'un événement ! Veuillez recommencer")
                     }
+                    //We notify the other users of the change
+                    sendNotice();
                     //We redirect the user to the index page.
                     location.reload();
                 });
@@ -733,6 +763,9 @@ function associateDeleteBtns() {
                 .then((str) => {
                     if (str === "failure" || str === "error") {
                         alert("Une erreur est survenue lors de l'ajout d'un événement ! Veuillez recommencer")
+                    } else {
+                        //We notify the other users of the change
+                        sendNotice();
                     }
                     location.reload();
                 })
@@ -794,6 +827,8 @@ function associateForm(id) {
                         if (str === "failure" || str === "error") {
                             alert("Une erreur est survenue lors de l'ajout d'un événement ! Veuillez recommencer")
                         }
+                        //We notify the other users of the change
+                        sendNotice();
                         //We redirect the user to the index page.
                         location.reload();
                     });

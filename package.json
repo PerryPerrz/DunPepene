@@ -4,7 +4,7 @@
   "description": "Projet de Design Patterns de M1.",
   "main": "index.js",
   "scripts": {
-    "run" : "node public/controllers/server.js"
+    "run": "node public/controllers/server.js"
   },
   "keywords": [],
   "author": "IOPETI Hugo, YVOZ Ludovic",
@@ -13,6 +13,7 @@
     "body-parser": "^1.20.1",
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
-    "jsonwebtoken": "^8.5.1"
+    "jsonwebtoken": "^8.5.1",
+    "ws": "^8.11.0"
   }
 }

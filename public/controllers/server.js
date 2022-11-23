@@ -3,8 +3,9 @@ require('dotenv').config()
 const controller = require('../models/event.js')
 const controllerAccount = require('../models/account.js')
 const express = require('express')
-const path = require('path')
 const app = express()
+const path = require('path')
+const WebSocket = require('ws')
 
 const jwt = require('jsonwebtoken')
 const bodyParser = require("body-parser")
@@ -15,8 +16,24 @@ const account = require('../models/account.json')
 app.use(express.json())
 app.use(express.static(__dirname + '/../../public'));
 
-app.listen(3030, () => {
+const server = app.listen(3030, () => {
     console.log("Server is starting !")
+})
+
+//Creating the WebSocket server
+const wss = new WebSocket.Server({server:server});
+
+//When a new client connects itself to the server
+wss.on('connection', (ws) => {
+    console.log('New client connection to WebSocket server')
+    //When we receive a message from the client, it means that the client made a change, so we notify all the other clients of that fact.
+    ws.on('message', function incoming(message) {
+        wss.clients.forEach(function each(client) {
+            if(client !== ws && client.readyState === WebSocket.OPEN) {
+                client.send(JSON.stringify(message));
+            }
+        })
+    })
 })
 
 app.get('/posts', authenticateToken, (req, res) => {
